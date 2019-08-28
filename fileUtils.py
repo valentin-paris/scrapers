@@ -94,43 +94,44 @@ def getLatestUpdate(directory, name):
 
 # send a mail with potentially attached file
 def send_email_to(send_to, subject, message, filesToAttach):
-    s = smtplib.SMTP(host='smtp.gmail.com', port=587)
-    s.starttls()
-    s.login('tcdailyscrape@gmail.com', 'donotreply0001')
-    msg = MIMEMultipart()
-    msg['From'] = 'tcdailyscrape@gmail.com'
-    msg['To'] = send_to
-    msg['Subject'] = subject
+    for mailUser in send_to:
+        s = smtplib.SMTP(host='smtp.gmail.com', port=587)
+        s.starttls()
+        s.login('tcdailyscrape@gmail.com', 'donotreply0001')
+        msg = MIMEMultipart()
+        msg['From'] = 'tcdailyscrape@gmail.com'
+        msg['To'] = mailUser
+        msg['Subject'] = subject
 
-    # add in the message body
-    msg.attach(MIMEText(str('\n'.join(message)), 'plain'))
+        # add in the message body
+        msg.attach(MIMEText(str('\n'.join(message)), 'plain'))
 
-    if filesToAttach:
-        for filename in filesToAttach:
-            # attachment = open(os.path.join(os.getcwd(), directory, filename), "rb")
-            attachment = open(filename, "rb")
+        if filesToAttach:
+            for filename in filesToAttach:
+                # attachment = open(os.path.join(os.getcwd(), directory, filename), "rb")
+                attachment = open(filename, "rb")
 
-            # instance of MIMEBase and named as p
-            p = MIMEBase('application', 'octet-stream')
+                # instance of MIMEBase and named as p
+                p = MIMEBase('application', 'octet-stream')
 
-            # To change the payload into encoded form
-            p.set_payload(attachment.read())
+                # To change the payload into encoded form
+                p.set_payload(attachment.read())
 
-            # encode into base64
-            encoders.encode_base64(p)
+                # encode into base64
+                encoders.encode_base64(p)
 
-            p.add_header('Content-Disposition', "attachment; filename= %s" % filename)
+                p.add_header('Content-Disposition', "attachment; filename= %s" % filename)
 
-            # attach the instance 'p' to instance 'msg'
-            msg.attach(p)
+                # attach the instance 'p' to instance 'msg'
+                msg.attach(p)
 
-    # send the message via the server set up earlier.
-    s.send_message(msg)
+        # send the message via the server set up earlier.
+        s.send_message(msg)
 
-    del msg
+        del msg
 
-    # Terminate the SMTP session and close the connection
-    s.quit()
+        # Terminate the SMTP session and close the connection
+        s.quit()
 
 
 
