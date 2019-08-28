@@ -22,6 +22,8 @@ headers = {
     'cache-control': "no-cache"
     }
 
+
+#loan types and their codes for the requests
 loanTypes = {
     'Prêt Voiture Neuve': ('80301', 'CBCX0001'),
     'Prêt Voiture d\'occasion': ('80303', 'CBCX0002'),
