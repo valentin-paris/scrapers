@@ -148,7 +148,7 @@ def axaLoanScraper():
     dataMatrix = DataUtils.formatDataFrom(DataUtils.createGroups(bankData()), 'AXA_BANK')
     return DataUtils.processData(dataMatrix, tab_Column, 'AXA SCRAPE', 'axa_rates')
 
-axaLoanScraper()
+#axaLoanScraper()
 
 
 
