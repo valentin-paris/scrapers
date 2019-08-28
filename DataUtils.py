@@ -35,6 +35,15 @@ def addAtributes(loanList, lType, duration, rate, pdtID):
         loan['rate'] = rate
         loan['productID'] = pdtID
 
+#define a more generic function to process the data
+def proc_data(b_data, provider, dir_name, file_name, tab_col):
+    data_matrix = formatDataFrom(createGroups(b_data), provider)
+    if data_matrix:
+        fileUtils.displayRates(tab_col, data_matrix)
+        return fileUtils.upToDate(file_name, dir_name, data_matrix, tab_col, [])
+    else:
+        return None
+
 
 
 
