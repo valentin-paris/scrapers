@@ -19,7 +19,7 @@ tcBanksScrapers = {
     'CPH_Bank': CPH_Rates.cphLoansScraper,
     'CARREFOUR_BANK': Bank_Carrefour_Rates.carrefourLoanScraper,
     'CBC_BANK': CBC_Loan_Rates.cbcLoanScraper,
-    'AXA': Axa_Int_Rates.axaLoanScraper,
+    'AXA': Axa_Int_Rates.axaLoanScraper, 
     'CRELAN': Crelan_Rates.crelanLoansScraper,
     'HELLO BANK': HelloBank_Rates.helloBankScraper,
     'CETELEM': Cetelem_Rates_Scraper.cetelemLoanScraper
