@@ -76,11 +76,13 @@ def requestDataFor(lType, amount, term):
 
 def bankData():
     bankData = []
+    print('KBC LOAN SCRAPE PROCESSING: ')
     for loanId in loantTypes:
         loanData = []
         for term in loanRangePerMonth:
             for amount in loanRangePerMonth[term]:
                 for eachTerm in range(12, term + 6, 6):
+                    print('.', end='')
                     loanJson = requestDataFor(loanId, amount, eachTerm)
                     loanJson['rate'] = float(loanJson['personalProperty']['yearInterestPercent']['V'])
                     loanJson['type'] = loanId
@@ -88,6 +90,7 @@ def bankData():
                     loanJson['duration'] = eachTerm
                     loanJson['productID'] = loantTypes[loanId][1]
                     loanData.append(loanJson)
+        print()
         bankData.append(loanData)
     return bankData
 
@@ -115,7 +118,7 @@ def formatDataFrom(groups, provider):
 
 
 def kBC_loan_scrape():
-    tab_Column = ['PROVIDER ', 'PRODUCT_ID', 'LOAN TYPE', 'MIN AMT', 'MAX AMT', 'TERM', 'RATE']
+    tab_Column = ['PROVIDER ', 'LOAN TYPE', 'PRODUCT_ID', 'MIN AMT', 'MAX AMT', 'TERM', 'RATE']
     dataMatrix = formatDataFrom(createGroupsForKBC(bankData()), 'KBC')
     return DataUtils.processData(dataMatrix, tab_Column, 'KBC BANK SCRAPE', 'kbc_rates')
 

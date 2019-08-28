@@ -57,10 +57,13 @@ def bankData(category):
     helloLoanData = []
     if category == 'Appareils Diditaux':
         for mnt in smallLoanRange:
+            print('.', end='')
             helloLoanData.append(addAttributeId(makeDataRequestFor(category, mnt), category))
     else:
         for mnt in bigLoansRange:
+            print('.', end='')
             helloLoanData.append(addAttributeId(makeDataRequestFor(category, mnt), category))
+    print()
     return helloLoanData
 
 #fetch the data for a category creates the groups and handle the file creation.
@@ -88,70 +91,23 @@ def showCompleteData(category):
 #                                           SCRAPER
 #scrape all categories
 def helloBankScraper():
+    print('HELLOBANK SCRAPE PROCESSING ', end='')
+    result = []
     for category in loanCategories:
-        return helloLoanProcedure(category)
+        print('PROCESSING ', end='')
+        result + helloLoanProcedure(category)
+    return result
 
-helloBankScraper()
+
+# helloBankScraper()
 
 
-dataSample = [
-   {
-      'amount':'7750',
-      'rate':'3.90',
-      'duration':'12',
-      'installment':'659.31',
-      'grossAmount':'7911.72',
-      'promo':None
-   },
-   {
-      'amount':'7750',
-      'rate':'3.90',
-      'duration':'18',
-      'installment':'443.73',
-      'grossAmount':'7987.14',
-      'promo':None
-   },
-   {
-      'amount':'7750',
-      'rate':'3.90',
-      'duration':'24',
-      'installment':'335.96',
-      'grossAmount':'8063.04',
-      'promo':None
-   },
-   {
-      'amount':'7750',
-      'rate':'3.90',
-      'duration':'30',
-      'installment':'271.31',
-      'grossAmount':'8139.30',
-      'promo':None
-   },
-   {
-      'amount':'7750',
-      'rate':'3.90',
-      'duration':'36',
-      'installment':'228.23',
-      'grossAmount':'8216.28',
-      'promo':None
-   },
-   {
-      'amount':'7750',
-      'rate':'3.90',
-      'duration':'42',
-      'installment':'197.46',
-      'grossAmount':'8293.32',
-      'promo':None
-   },
-   {
-      'amount':'7750',
-      'rate':'3.90',
-      'duration':'48',
-      'installment':'174.40',
-      'grossAmount':'8371.20',
-      'promo':None
-   }
-]
+
+
+
+
+
+
 
 
 

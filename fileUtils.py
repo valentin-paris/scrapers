@@ -5,7 +5,6 @@ import time
 import datetime
 import glob
 import smtplib
-from string import Template
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
@@ -140,59 +139,3 @@ def send_email_to(send_to, subject, message, filesToAttach):
 
 
 
-'''
-to test functions 
-'''
-
-colonnes = ["type", "duration", "min amt", "max amt", "rate"]
-
-directory = "testDir"
-startUpData = [
-    ["home loan", 12, 3500, 7500, 2.5],
-    ["car loan", 24, 3500, 7500, 3.5],
-    ["work loan", 36, 3500, 7500, 2.5],
-    ["second hand loan", 12, 3500, 7500, 4.5],
-    ["personal loan", 72, 3500, 7500, 5.6]
-]
-
-modifiedData = [
-    ["home loan", 12, 3500, 7500, 2.5],
-    ["car loan", 24, 3500, 7500, 3.5],
-    ["work loan", 36, 3500, 7500, 2.5],
-    ["second hand loan", 12, 3500, 7500, 3.2],
-    ["personal loan", 72, 3500, 7500, 6.5]
-]
-
-modifiedData2 = [
-    ["home loan", 12, 3500, 7500, 3],
-    ["car loan", 24, 3500, 7500, 3.5],
-    ["work loan", 36, 3500, 7500, 2.5],
-    ["second hand loan", 12, 3500, 7500, 3.2],
-    ["personal loan", 72, 3500, 7500, 6.5]
-]
-modifiedData4 = [
-    ["home loan", 12, 3500, 7500, 3],
-    ["car loan", 24, 3500, 7500, 3.5],
-    ["work loan", 36, 3500, 7500, 4.5],
-    ["second hand loan", 12, 3500, 7500, 3.2],
-    ["personal loan", 72, 3500, 7500, 6.5]
-]
-
-dataList = [startUpData, modifiedData, modifiedData2, modifiedData4]
-
-# for data in dataList:
-#     time.sleep(2)
-#     upToDate("test_12", directory, data, colonnes)
-
-
-# for fichier in os.listdir(os.path.join(os.getcwd(), "Carrefour Finance Loans")):
-#     print(fichier)
-#     print(fichier.startswith("Tweedehands voertuig"))
-#     print(os.path.isfile(os.path.join(os.getcwd(), "Carrefour Finance Loans", fichier)))
-#     print("------------------------------------------------------------------------------")
-#     print()
-#     print(fichier)
-#     print(fichier.startswith("Werken"))
-#     print(os.path.isfile(os.path.join(os.getcwd(), "Carrefour Finance Loans", fichier)))
-
-print(getLatestUpdate(directory, "test_4"))

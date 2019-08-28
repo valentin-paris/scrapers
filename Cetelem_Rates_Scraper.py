@@ -74,16 +74,20 @@ def cetelemLoanProcedure(category):
     loanData = []
     if category == 'Prêt Etudes':
         for mnt in smallLoansRange:
+            print('.', end='')
             loanList = addAttributeID(makeDataRequestFor(category, mnt), category)
             loanData.append(loanList)
     elif category == 'Prêt Personnel':
         for mnt in list(range(1200, 2500, 500)) + bigLoansRange:
+            print('.', end='')
             loanList = addAttributeID(makeDataRequestFor(category, mnt), category)
             loanData.append(loanList)
     else:
         for mnt in bigLoansRange:
+            print('.', end='')
             loanList = addAttributeID(makeDataRequestFor(category, mnt), category)
             loanData.append(loanList)
+    print()
     dataMatrix = formatDataFrom(createGroups(category, loanData), 'CETELEM')
     fileUtils.displayRates(tab_Column, dataMatrix)
     return fileUtils.upToDate(category, 'CETELEM SCRAPING', dataMatrix, tab_Column, [])
@@ -91,11 +95,18 @@ def cetelemLoanProcedure(category):
 
 
 def cetelemLoanScraper():
+    print('CETELEM SCRAPE PROCESSING', end='')
+    result = []
     for category in loanCategories:
-        cetelemLoanProcedure(category)
+        print('PROCESSING', end='')
+        result + cetelemLoanProcedure(category)
+    return result
 
 
-cetelemLoanScraper()
+
+
+
+# cetelemLoanScraper()
 
 #print(makeDataRequestFor('Prêt Voiture neuve', 13500))
 

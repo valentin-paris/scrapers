@@ -31,8 +31,8 @@ cphProducts = {
                 'new car': (110, 'CPHX0004'),
                 'second hand car under 24 months': (116, 'CPHX0005'),
                 'second hand car under 60 months': (117, 'CPHX0005'),
-                'renovation max 84 months': (56, 'CPHX0002'),
-                'renovation 84-120 months': (12, 'CPHX0002'),
+                'renovation max 84 months': (12, 'CPHX0002'),
+                'renovation 84-120 months': (56, 'CPHX0002'),
                 'energy chauffage': (71, 'CPHX0003'),
                 'energy photovoltaique': (74, 'CPHX0003'),
                 'energy chassis double vitrage': (76, 'CPHX0003'),
@@ -41,7 +41,7 @@ cphProducts = {
               }
 
 loanRateAmt = list(range(1250, 10000, 1250)) + list(range(10000, 50000, 5000)) + list(range(50000, 110000, 10000))
-
+# loanRateAmt = [3000, 4500, 5000, 16800, 25000, 56200]
 
 def applyLoanRequest(amount, product):
     payload = {
@@ -62,9 +62,11 @@ def applyLoanRequest(amount, product):
 #here we set a sleep time of 2 seconds between request bcoz the api only allows a limited amount of 1 request each second
 def bankData():
     loanData = []
+    print('CPH SCRAPE PROCESSING ')
     for pdt in cphProducts:
         amtData = []
         for amt in loanRateAmt:
+            print('.', end='')
             time.sleep(2)
             loanJsonList = applyLoanRequest(amt, pdt)
             for loanObject in loanJsonList:
@@ -73,6 +75,7 @@ def bankData():
                 loanObject['productID'] = cphProducts[pdt][1]
                 amtData.append(loanObject)
         loanData.append(amtData)
+        print()
     return loanData
 
 def cphLoansScraper():
@@ -80,9 +83,5 @@ def cphLoansScraper():
     dataMatrix = DataUtils.formatDataFrom(DataUtils.createGroups(bankData()), 'CPH')
     return DataUtils.processData(dataMatrix, tab_Column, 'CPH SCRAPE', 'cph_rates')
 
-
-
-
-
-cphLoansScraper()
+# cphLoansScraper()
 

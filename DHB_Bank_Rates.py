@@ -2,6 +2,10 @@ import requests
 import json
 import DataUtils
 import time
+import urllib3
+
+
+
 
 url = "https://loans.dhbbank.com/BelgiumLoanAppForm/Home/CalculateInterestRate"
 
@@ -32,13 +36,20 @@ dHBLoanTypes = {
 
 
 def makeRequestFor(creditType, amount, duration):
-    payload2 = {
-                "CreditId": creditType,
-                "Month": duration,
-                "InterestAmount": amount
-    }
-    response = requests.request("POST", url, json=payload2, headers=headers, verify=False)
-    return json.loads(response.text)
+    try:
+        payload2 = {
+                    "CreditId": creditType,
+                    "Month": duration,
+                    "InterestAmount": amount
+        }
+        urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+        response = requests.request("POST", url, json=payload2, headers=headers, verify=False)
+        return json.loads(response.text)
+    except:
+        print('THIS WEBSITE IS NOT AVAILABLE AT THE MOMENT')
+        return None
+
+
 
 
 def bankData():
@@ -46,86 +57,48 @@ def bankData():
     for lType in dHBLoanTypes:
         loanData = []
         for amnt in loanAmtRange:
+            print('.', end='')
             loanJson = makeRequestFor(dHBLoanTypes[lType][0], amnt, duration=24)
-            loanJson['rate'] = loanJson['InterestModel']['InterestRate']
-            loanJson['amount'] = amnt
-            loanJson['duration'] = 24
-            loanJson['type'] = lType
-            loanJson['productID'] = dHBLoanTypes[lType][1]
-            loanData.append(loanJson)
-            for term in range(36, loanJson['MonthlyModel']['MonthMax']+12, 12):
-                moreLoan = makeRequestFor(dHBLoanTypes[lType][0], amnt, term)
-                print('amount: ', amnt)
-                print()
-                print('term ', term)
-                print()
-                print(moreLoan)
-                print()
-                # if not moreLoan['InterestModel']['InterestRate']:
-                moreLoan['rate'] = moreLoan['InterestModel']['InterestRate']
-                moreLoan['amount'] = amnt
-                moreLoan['duration'] = term
-                moreLoan['type'] = lType
-                moreLoan['productID'] = dHBLoanTypes[lType][1]
-                print('OK')
-                loanData.append(moreLoan)
+            try:
+                loanJson['rate'] = loanJson['InterestModel']['InterestRate']
+                loanJson['amount'] = amnt
+                loanJson['duration'] = 24
+                loanJson['type'] = lType
+                loanJson['productID'] = dHBLoanTypes[lType][1]
+                loanData.append(loanJson)
+            except:
+                loanJson = {}
+                print('OUPS this is not a valid request!')
+            if loanJson:
+                for term in range(36, loanJson['MonthlyModel']['MonthMax']+12, 12):
+                    moreLoan = makeRequestFor(dHBLoanTypes[lType][0], amnt, term)
+                    try:
+                        moreLoan['rate'] = moreLoan['InterestModel']['InterestRate']
+                        moreLoan['amount'] = amnt
+                        moreLoan['duration'] = term
+                        moreLoan['type'] = lType
+                        moreLoan['productID'] = dHBLoanTypes[lType][1]
+                        loanData.append(moreLoan)
+                    except:
+                        print()
+                        print("OUPS this is not a valid request!")
+        print()
         bankData.append(loanData)
+
     return bankData
-
-
-# def createGroupsForDHB(bankData):
-#     loanGroups = {}
-#     for loanList in bankData:
-#         for loanElement in loanList:
-#             if (loanElement['type'], loanElement['duration'],
-#                             loanElement['rate']) not in loanGroups.keys():
-#                 loanGroups[(loanElement['type'], loanElement['duration'],
-#                             loanElement['rate'])] = [loanElement['amount']]
-#             else:
-#                 loanGroups[(loanElement['type'], loanElement['duration'],
-#                             loanElement['rate'])].append(loanElement['amount'])
-#     return loanGroups
-
-
-
-def formatDataFrom(groups, provider):
-    frameToExport = []
-    for eachGroup in groups:
-        frameToExport.append([provider, eachGroup[3], eachGroup[0], min(map(int, groups[eachGroup])), max(map(int, groups[eachGroup]))
-                                 ,int(eachGroup[1]), float(eachGroup[2])])
-    return frameToExport
-
-
-# def formatDataFrom2(groups, provider):
-#     frameToExport = []
-#     for eachGroup in groups:
-#         frameToExport.append([provider, eachGroup[3], eachGroup[0], min(map(int, groups[eachGroup])),
-#                               max(map(int, groups[eachGroup])), int(eachGroup[1]), float(eachGroup[2])])
-#     return frameToExport
 
 
 
 def dHBLoanScraper():
+    print("DHB LOAN SCRAPER PROCESSING:")
     tab_Column = ['PROVIDER ', 'PRODUCTID', 'LOAN TYPE', 'MIN AMT', 'MAX AMT', 'TERM', 'RATE']
     dataMatrix = DataUtils.formatDataFrom(DataUtils.createGroups(bankData()), 'DHB_BANK')
     return DataUtils.processData(dataMatrix, tab_Column, 'DHB SCRAPE', 'dhb_rates')
 
 
 
-dHBLoanScraper()
+# dHBLoanScraper()
 
-dataSample = {
-   "CreditModel": None,
-   "MonthlyModel": {
-      "MonthMax": 120,
-      "MonthMin": 24
-   },
-   "InterestModel": {
-      "InterestRate": 6.50,
-      "CreditType": 1,
-      "Calculation": 1120.41
-   }
-}
 
 
 

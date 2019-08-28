@@ -48,11 +48,13 @@ def makeDataRequestFor(amount, category, duration):
 
 def buildStructuredData():
     structuredData = []
+    print('CBC LOAN SCRAPE PROCESSING ', end='')
     for category in loanTypes:
         for amtRange in amntToMonthRanges:
             for amount in amtRange:
                 ratePerMonth = []
                 for duration in amntToMonthRanges[amtRange]:
+                    print('.', end='')
                     dataForAmtAndDuration = makeDataRequestFor(amount, category, duration)
                     dataForAmtAndDuration['type'] = category
                     dataForAmtAndDuration['amount'] = amount
@@ -61,6 +63,7 @@ def buildStructuredData():
                     dataForAmtAndDuration['productID'] = loanTypes[category][1]
                     ratePerMonth.append(dataForAmtAndDuration)
                 structuredData.append(ratePerMonth)
+        print()
     return structuredData
 
 def createGroups(structuredData):
@@ -82,7 +85,7 @@ def formatDataFrom(groups, provider):
                               max(map(float, groups[eachGroup])), int(eachGroup[1]), float(eachGroup[2])])
     return frameToExport
 
-def cbcScraper():
+def cbcLoanScraper():
     cbcBankData = buildStructuredData()
     dataMatrix = formatDataFrom(createGroups(cbcBankData), 'CBC BANK')
     tab_Column = ['PROVIDER ', 'PRODUCTID', 'LOAN TYPE', 'MIN AMT', 'MAX AMT', 'TERM', 'RATE']
@@ -90,7 +93,7 @@ def cbcScraper():
     return fileUtils.upToDate('CBC LOANS', 'CBC BANK SCRAPING', dataMatrix, tab_Column, [])
 
 
-cbcScraper()
+# cbcLoanScraper()
 
 
 # print(makeDataRequestFor(15000, 'Prêt Voiture Neuve', 36))

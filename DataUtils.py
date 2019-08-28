@@ -1,11 +1,4 @@
-import json
 import fileUtils
-
-def makeGetRequestFor(category, amount, dataUrl):
-    url = dataUrl.format(amount, loanCategories[category])
-    response = requests.request("GET", url, headers=headers, params=querystring)
-    return json.loads(response.text)
-
 
 #BankData is a matrix ie list of list of jsonData type amount duration and rate
 def createGroups(bankData):
@@ -41,5 +34,7 @@ def addAtributes(loanList, lType, duration, rate, pdtID):
         loan['duration'] = duration
         loan['rate'] = rate
         loan['productID'] = pdtID
+
+
 
 

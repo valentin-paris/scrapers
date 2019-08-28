@@ -70,6 +70,7 @@ def getLoansData(loanType, subTypes):
         loans = []
         lRange = wideRange if loanType == 'mobility' else loanRange
         for amt in lRange:
+            print('.', end='')
             loans.append(applyLoanRequest(amt, subTypes[key][0], loanType))
         for loanObject in loans:
             for loan in loanObject['d']:
@@ -79,10 +80,12 @@ def getLoansData(loanType, subTypes):
                 loan['rate'] = loan['AnnualRate']
                 loan['productID'] = subTypes[key][1]
                 loanData.append(loan)
+    print()
     return loanData
 
 
 def bankData():
+    print('ING LOAN SCRAPE PROCESSING: ')
     return [getLoansData('renovation', renovationLoanSubTypes), getLoansData('mobility', mobilityLoansSubTypes),
                getLoansData('personal', personalLoanSubTypes)]
 
@@ -94,7 +97,7 @@ def iNGLoanscraper():
 
 
 
-iNGLoanscraper()
+# iNGLoanscraper()
 
 
 

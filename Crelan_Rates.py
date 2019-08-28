@@ -34,7 +34,11 @@ reqRangeAmnt = {
 
 }
 
-loanPurposes = ('new_car', 'second_hand_car', 'renovation', 'eco_energy')
+loanPurposes = {'new_car': 'CREL0001',
+                'second_hand_car': 'CREL0002',
+                'renovation': 'CREL0003',
+                'eco_energy': 'CREL0005'
+                }
 
 homeLoanUrl = "https://www.crelan.be/credits-simulation-rs/loan-simulation/credit-rate-from-monthly-cost"
 
@@ -80,6 +84,7 @@ def applyRequestFor(destination, amount, duration):
 #in the range rates there is a particularity with 2nd hand car loan so we develop a custum procedure for it
 def bankData():
     bankData = []
+    print('CRELAN SCRAPE PROCESSING: ')
     for purpose in loanPurposes:
         if purpose == 'second_hand_car':
             loanList = []
@@ -87,6 +92,7 @@ def bankData():
                 if term == 84:
                     for amt in reqRangeAmnt[term]:
                         for month in [13] + list(range(18, term - 18, 6)):
+                            print('.', end='')
                             loan = applyRequestFor(purpose, amt, month)
                             for jsElement in loan['calculatedInterestTypes']:
                                 if jsElement['rate']:
@@ -94,10 +100,12 @@ def bankData():
                                     loan['duration'] = month
                                     loan['type'] = purpose
                                     loan['amount'] = amt
+                                    loan['productID'] = loanPurposes[purpose]
                                     loanList.append(loan)
                 else:
                     for amt in reqRangeAmnt[term]:
                         for month in [13] + list(range(18, term + 6, 6)):
+                            print('.', end='')
                             loan = applyRequestFor(purpose, amt, month)
                             for jsElement in loan['calculatedInterestTypes']:
                                 if jsElement['rate']:
@@ -105,6 +113,7 @@ def bankData():
                                     loan['duration'] = month
                                     loan['type'] = purpose
                                     loan['amount'] = amt
+                                    loan['productID'] = loanPurposes[purpose]
                                     loanList.append(loan)
             bankData.append(loanList)
         else:
@@ -112,6 +121,7 @@ def bankData():
             for term in reqRangeAmnt:
                 for amt in reqRangeAmnt[term]:
                     for month in [13] + list(range(18, term + 6, 6)):
+                        print('.', end='')
                         loan = applyRequestFor(purpose, amt, month)
                         for jsElement in loan['calculatedInterestTypes']:
                             if jsElement['rate']:
@@ -119,8 +129,10 @@ def bankData():
                                 loan['duration'] = month
                                 loan['type'] = purpose
                                 loan['amount'] = amt
+                                loan['productID'] = loanPurposes[purpose]
                                 loanList.append(loan)
             bankData.append(loanList)
+        print()
     return bankData
 
 
@@ -182,78 +194,15 @@ def homeLoanScraper():
     tab_Column = ['PROVIDER ', 'LOAN TYPE', 'PAY FROM \n (month payment in euros)', 'TO', 'FOR \n (duration in years)',
                   'RATE \n (starting rate)', 'REVISED \n(rates can be revised on a 3 years period)', 'REVISED_2']
     dataMatrix = formatDataFrom(createGroupsForHomeLoan(hLoanData()),'CRELAN')
-    DataUtils.processData(dataMatrix, tab_Column, 'CRELAN SCRAPE', 'crelan_homeLoans')
+    return DataUtils.processData(dataMatrix, tab_Column, 'CRELAN SCRAPE', 'crelan_homeLoans')
 
 def crelanLoansScraper():
-    tab_Column = ['PROVIDER ', 'LOAN TYPE', 'MIN AMT', 'MAX AMT', 'TERM', 'RATE']
+    tab_Column = ['PROVIDER ', 'PRODUCTID', 'LOAN TYPE', 'MIN AMT', 'MAX AMT', 'TERM', 'RATE']
     dataMatrix = DataUtils.formatDataFrom(DataUtils.createGroups(bankData()), 'CRELAN')
-    DataUtils.processData(dataMatrix, tab_Column, 'CRELAN SCRAPE', 'crelan_rates')
-    homeLoanScraper()
-
-crelanLoansScraper()
+    return DataUtils.processData(dataMatrix, tab_Column, 'CRELAN SCRAPE', 'crelan_rates') + homeLoanScraper()
 
 
 
-
-
-#for testing purposes
-sampledata = {
-   "destinationId":"home",
-   "productTypeId":"MORTGAGE",
-   "calculatedInterestTypes":[
-      {
-         "rate":{
-            "rateType":"BASIC",
-            "monthlyPayment":5000.00,
-            "monthlyPaymentBestCase":4337.68,
-            "monthlyPaymentWorstCase":5475.66,
-            "yearlyInterestRate":2.93,
-            "yearlyCostRate":3.01,
-            "loanAmount":520521.59,
-            "loanAmountBestCase":600000.00,
-            "loanAmountWorstCase":475304.82,
-            "totalCosts":602083.00,
-            "totalCostsBestCase":522604.60,
-            "totalCostsWorstCase":659162.20
-         },
-         "interest_type_id":"1/1/1 +3/-3"
-      },
-      {
-         "rate":{
-            "rateType":"BASIC",
-            "monthlyPayment":5000.00,
-            "monthlyPaymentBestCase":4541.13,
-            "monthlyPaymentWorstCase":5478.26,
-            "yearlyInterestRate":2.74,
-            "yearlyCostRate":2.82,
-            "loanAmount":525157.30,
-            "loanAmountBestCase":578223.44,
-            "loanAmountWorstCase":479310.42,
-            "totalCosts":602083.00,
-            "totalCostsBestCase":547018.60,
-            "totalCostsWorstCase":659474.20
-         },
-         "interest_type_id":"3/3/3 +2/-2"
-      },
-      {
-         "rate":{
-            "rateType":"BASIC",
-            "monthlyPayment":5000.00,
-            "monthlyPaymentBestCase":4376.31,
-            "monthlyPaymentWorstCase":5659.66,
-            "yearlyInterestRate":2.74,
-            "yearlyCostRate":2.82,
-            "loanAmount":525157.30,
-            "loanAmountBestCase":600000.00,
-            "loanAmountWorstCase":463947.95,
-            "totalCosts":602083.00,
-            "totalCostsBestCase":527240.20,
-            "totalCostsWorstCase":681242.20
-         },
-         "interest_type_id":"3/3/3 +5/-5"
-      }
-   ]
-}
 
 
 
