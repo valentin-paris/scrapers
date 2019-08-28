@@ -96,49 +96,8 @@ def cbcLoanScraper():
 # cbcLoanScraper()
 
 
-# print(makeDataRequestFor(15000, 'Prêt Voiture Neuve', 36))
 
 
-dataSample = {
-   'personalProperty': {
-      'loanAmount': {
-         'V': '15000',
-         'E': 'Ed/PxXROTQR+KJnlsTkTbeiCSbk8Fqu99qZwjlxaCu4=',
-         'T': 'decimal'
-      },
-      'maturityMonthQuantity': {
-         'V': '36',
-         'E': 'VRihQBwcMlLTNkb4zQV93QmQwv6E3nj152IZPu6TRi4=',
-         'T': 'short'
-      },
-      'termAmount': {
-         'V': '426.31',
-         'E': 'z4PPIWrQw2+YrKkHnPVNA92facBEC9GkoDUbmceqVNQ=',
-         'T': 'decimal'
-      },
-      'yearCostPercent':{
-         'V': '1.50000',
-         'E': 'slUbrNJnZv8tjCnHQ94MwUYI43nR4tqLI7IkADFdK9Y=',
-         'T': 'decimal'
-      },
-      'yearInterestPercent': {
-         'V': '1.50000',
-         'E': '2/pwqWlguqROjlkFlyBITgYTDt07uzXj/R9u+/BhYN4=',
-         'T': 'decimal'
-      },
-      'totalLoanAmount': {
-         'V': '15346.88',
-         'E': 'ZoMMdXv7Hg05BYhViLph/sLVSH/6oMEq4yCKmgqnzTw=',
-         'T': 'decimal'
-      }
-   },
-   'header': {
-      'resultCode': {
-         'V': '00',
-         'T': 'text'
-      }
-   }
-}
 
 
 
