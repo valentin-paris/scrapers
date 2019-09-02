@@ -49,6 +49,7 @@ test = 'alerts@topcompare.com'
 
 tcLoanScrape()
 
+BPOST_Loan_Rates.bpostLoanScraper()
 
 
 
