@@ -104,6 +104,7 @@ axaLoanTypes = {
 }
 
 amountRanges = list(range(2500, 15000, 1000)) + list(range(15000, 30000, 2500)) + list(range(30000, 75000, 10000))
+# amountRanges   = [15300, 26700]
 
 #request for data
 def makeRequestFor(lType, amount):
@@ -123,13 +124,17 @@ def makeRequestFor(lType, amount):
     return json.loads(response.text)
 
 
+
 def bankData():
     bankdata = []
     for lType in axaLoanTypes:
         loan_type_data = []
         for amt in amountRanges:
             print('.', end='')
-            loanList = makeRequestFor(lType, amt)['d']['CarouselItems']
+            try:
+                loanList = makeRequestFor(lType, amt)['d']['CarouselItems']
+            except:
+                loanList = []
             for loan in loanList:
                 loan['type'] = lType
                 loan['duration'] = loan['Duration']
@@ -145,10 +150,12 @@ def bankData():
 def axaLoanScraper():
     print('AXA LOAN SCRAPER PROCESSING ')
     tab_Column = ['PROVIDER ', 'PRODUCT_ID', 'LOAN TYPE', 'MIN AMT', 'MAX AMT', 'TERM', 'RATE']
-    dataMatrix = DataUtils.formatDataFrom(DataUtils.createGroups(bankData()), 'AXA_BANK')
-    return DataUtils.processData(dataMatrix, tab_Column, 'AXA SCRAPE', 'axa_rates')
+    return DataUtils.proc_data(bankData(), 'AXA_BANK', 'AXA SCRAPE', 'axa_rates', tab_Column)
 
-axaLoanScraper()
+
+
+
+
 
 
 
