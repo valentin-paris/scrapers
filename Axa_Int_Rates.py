@@ -104,7 +104,6 @@ axaLoanTypes = {
 }
 
 amountRanges = list(range(2500, 15000, 1000)) + list(range(15000, 30000, 2500)) + list(range(30000, 75000, 10000))
-# amountRanges   = [15300, 26700]
 
 #request for data
 def makeRequestFor(lType, amount):

@@ -42,14 +42,11 @@ def tcLoanScrape():
             generalMessage += ['an error occured with {} scrape'.format(bank)]
     if not generalMessage:
         generalMessage += ['the scraper executed sucessfully and there is no change in the rates!']
-    fileUtils.send_email_to([ "paulbernaud@yahoo.fr"], 'daily scrape', generalMessage, filesToBeMailed)
+    fileUtils.send_email_to(['alerts@topcompare.com', "paulbernaud@yahoo.fr"], 'daily scrape', generalMessage, filesToBeMailed)
     print(filesToBeMailed, generalMessage)
-
-test = 'alerts@topcompare.com'
 
 tcLoanScrape()
 
-BPOST_Loan_Rates.bpostLoanScraper()
 
 
 

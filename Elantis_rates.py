@@ -6,8 +6,7 @@ import DataUtils
 
 
 def requestForData():
-    # url = "https://www.elantis.be/fr/simulateur-pret-a-temperament/"
-    url = "https://www.elantis.be/fr/simulateur-pret-temperament/"
+    url = "https://www.elantis.be/fr/simulateur-pret-a-temperament/"
 
     querystring = {"objective":"renovation","renovation-amount":"12.500"}
 
@@ -114,10 +113,10 @@ def formatDataFromBank(bank_data, provider):
     return frame_to_export
 
 def elantisLoanScraper():
+    print('ELANTIS SCRAPE PROCESSING ...')
     tab_col = ['PROVIDER ', 'PRODUCTID', 'LOAN TYPE', 'MIN AMT', 'MAX AMT', 'TERM', 'RATE']
     return DataUtils.proc_data(bankData(), 'ELANTIS', 'ELANTIS SCRAPE', 'elantis_rates', tab_col)
 
-print(elantisLoanScraper())
 
 
 
