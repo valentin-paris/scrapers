@@ -1,6 +1,7 @@
 import requests
 import json
-import fileUtils
+# import fileUtils
+import DataUtils
 
 url = "https://www.cbc.be/PSA/A058/service/calculateLoanSimulation/1"
 
@@ -89,10 +90,8 @@ def formatDataFrom(groups, provider):
 
 def cbcLoanScraper():
     cbcBankData = buildStructuredData()
-    dataMatrix = formatDataFrom(createGroups(cbcBankData), 'CBC BANK')
     tab_Column = ['PROVIDER ', 'PRODUCTID', 'LOAN TYPE', 'MIN AMT', 'MAX AMT', 'TERM', 'RATE']
-    fileUtils.displayRates(tab_Column, formatDataFrom(createGroups(cbcBankData), 'CBC BANK'))
-    return fileUtils.upToDate('CBC LOANS', 'CBC BANK SCRAPING', dataMatrix, tab_Column, [])
+    return DataUtils.proc_data(cbcBankData, 'CBC BANK', 'CBC BANK SCRAPING', 'CBC LOANS', tab_Column)
 
 
 # cbcLoanScraper()

@@ -15,18 +15,18 @@ import Europa_Bank_Rates
 
 
 tcBanksScrapers = {
-    'ING': ING_Rates.iNGLoanscraper,
-    'KBC': KBC_Rates.kBC_loan_scrape,
-    'DHB_Bank': DHB_Bank_Rates.dHBLoanScraper,
-    'CPH_Bank': CPH_Rates.cphLoansScraper,
-    'CARREFOUR_BANK': Bank_Carrefour_Rates.carrefourLoanScraper,
+    # 'ING': ING_Rates.iNGLoanscraper,
+    # 'KBC': KBC_Rates.kBC_loan_scrape,
+    # 'DHB_Bank': DHB_Bank_Rates.dHBLoanScraper,
+    # 'CPH_Bank': CPH_Rates.cphLoansScraper
+    # 'CARREFOUR_BANK': Bank_Carrefour_Rates.carrefourLoanScraper,
     'CBC_BANK': CBC_Loan_Rates.cbcLoanScraper,
-    'AXA': Axa_Int_Rates.axaLoanScraper,
-    'CRELAN': Crelan_Rates.crelanLoansScraper,
-    'HELLO BANK': HelloBank_Rates.helloBankScraper,
-    'CETELEM': Cetelem_Rates_Scraper.cetelemLoanScraper,
-    'BPOST': BPOST_Loan_Rates.bpostLoanScraper,
-    'EUROPA BANK': Europa_Bank_Rates.europaLoanScraper
+    # 'AXA': Axa_Int_Rates.axaLoanScraper,
+    # 'CRELAN': Crelan_Rates.crelanLoansScraper,
+    # 'HELLO BANK': HelloBank_Rates.helloBankScraper,
+    # 'CETELEM': Cetelem_Rates_Scraper.cetelemLoanScraper,
+    # 'BPOST': BPOST_Loan_Rates.bpostLoanScraper,
+    # 'EUROPA BANK': Europa_Bank_Rates.europaLoanScraper
 }
 
 def tcLoanScrape():
@@ -42,12 +42,12 @@ def tcLoanScrape():
             generalMessage += ['an error occured with {} scrape'.format(bank)]
     if not generalMessage:
         generalMessage += ['the scraper executed sucessfully and there is no change in the rates!']
-    fileUtils.send_email_to(['alerts@topcompare.com', "paulbernaud@yahoo.fr"], 'daily scrape', generalMessage, filesToBeMailed)
+    fileUtils.send_email_to([ "paulbernaud@yahoo.fr"], 'daily scrape', generalMessage, filesToBeMailed)
     print(filesToBeMailed, generalMessage)
 
 tcLoanScrape()
 
-
+test = 'alerts@topcompare.com',
 
 
 

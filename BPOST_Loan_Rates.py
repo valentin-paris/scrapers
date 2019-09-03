@@ -72,7 +72,7 @@ def formatDataFromBank(bank_data, provider):
 def bpostLoanScraper():
     print('BPOST LOAN SCRAPER PROCESSING ...')
     tab_col = ['PROVIDER ', 'PRODUCTID', 'LOAN TYPE', 'MIN AMT', 'MAX AMT', 'TERM', 'RATE']
-    DataUtils.proc_data(bankdata(), 'BPOST', 'BPOST SCRAPE', 'bpost_rates', tab_col)
+    return DataUtils.proc_data(bankdata(), 'BPOST', 'BPOST SCRAPE', 'bpost_rates', tab_col)
 
 
 #bpostLoanScraper()

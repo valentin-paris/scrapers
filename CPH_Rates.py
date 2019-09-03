@@ -2,6 +2,7 @@ import requests
 import json
 import time
 import DataUtils
+import math
 
 
 url = "https://mycph.cph.be/api/Simulation"
@@ -58,6 +59,8 @@ def applyLoanRequest(amount, product):
     except:
         print("VOTRE REQUETE N'A PAS PU ABOUTIR CE SITE EST MOMENTANEMENT INDISPONIBLE")
 
+def truncate(f, n):
+    return math.floor(f * 10 ** n) / 10 ** n
 
 #here we set a sleep time of 2 seconds between request bcoz the api only allows a limited amount of 1 request each second
 def bankData():
@@ -71,7 +74,7 @@ def bankData():
             loanJsonList = applyLoanRequest(amt, pdt)
             for loanObject in loanJsonList:
                 loanObject['type'] = pdt
-                loanObject['rate'] *= 100
+                loanObject['rate'] = truncate(loanObject['rate'] * 100, 2)
                 loanObject['productID'] = cphProducts[pdt][1]
                 amtData.append(loanObject)
         loanData.append(amtData)
@@ -80,8 +83,8 @@ def bankData():
 
 def cphLoansScraper():
     tab_Column = ['PROVIDER ', 'PRODUCT_ID', 'LOAN TYPE', 'MIN AMT', 'MAX AMT', 'TERM', 'RATE']
-    dataMatrix = DataUtils.formatDataFrom(DataUtils.createGroups(bankData()), 'CPH')
-    return DataUtils.processData(dataMatrix, tab_Column, 'CPH SCRAPE', 'cph_rates')
+    return DataUtils.proc_data(bankData(), 'CPH', 'CPH SCRAPE', 'cph_rates', tab_Column)
+
 
 # cphLoansScraper()
 
