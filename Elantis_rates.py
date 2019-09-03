@@ -117,6 +117,8 @@ def elantisLoanScraper():
     tab_col = ['PROVIDER ', 'PRODUCTID', 'LOAN TYPE', 'MIN AMT', 'MAX AMT', 'TERM', 'RATE']
     return DataUtils.proc_data(bankData(), 'ELANTIS', 'ELANTIS SCRAPE', 'elantis_rates', tab_col)
 
+elantisLoanScraper()
+
 
 
 
