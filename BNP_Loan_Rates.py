@@ -153,7 +153,7 @@ def bnpLoanScraper():
 
 
 
-#for testing purposes
+#for testing purposes another way to store the rate may be better
 def pdt_bank_data(product):
     bank_data = []
     data_for_type = []
@@ -191,27 +191,8 @@ def scraper():
         loanProcedure(pdt)
 
 
-tab_col = ['PROVIDER ', 'PRODUCTID', 'LOAN TYPE', 'MIN AMT', 'MAX AMT', 'MINTERM', 'MAXTERM', 'RATE']
-
-fileUtils.displayRates(tab_col, formatDataFromBank(bankData(),"BNP"))
-scraper()
 
 
-print(makeRequestFor("NEW_MOTO_OR_QUAD", 25000))
 
-dat = makeRequestFor("NEW_MOTO_OR_QUAD", 35000)
 
-t =['0', '18', '10000', '14999', '1.6']
 
-# print(bankData())
-
-for l in dat:
-    if l:
-        lo = l.split('|')
-        print(type(lo[3]))
-        lo[3] = '50000' if int(lo[3]) > 50000 else lo[3]
-        lo[1] = '-' if int(lo[1]) > 120 else lo[1]
-        print(lo)
-        print(lo[4][:3])
-
-# print(makeRequestFor('PERSONAL LOAN', 30000))
