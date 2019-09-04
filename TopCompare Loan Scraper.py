@@ -11,6 +11,7 @@ import HelloBank_Rates
 import Cetelem_Rates_Scraper
 import BPOST_Loan_Rates
 import Europa_Bank_Rates
+import Elantis_rates
 
 
 
@@ -26,7 +27,8 @@ tcBanksScrapers = {
     'HELLO BANK': HelloBank_Rates.helloBankScraper,
     'CETELEM': Cetelem_Rates_Scraper.cetelemLoanScraper,
     'BPOST': BPOST_Loan_Rates.bpostLoanScraper,
-    'EUROPA BANK': Europa_Bank_Rates.europaLoanScraper
+    'EUROPA BANK': Europa_Bank_Rates.europaLoanScraper,
+    'ELANTIS': Elantis_rates.elantisLoanScraper
 }
 
 def tcLoanScrape():
@@ -42,13 +44,13 @@ def tcLoanScrape():
             generalMessage += ['an error occured with {} scrape'.format(bank)]
     if not generalMessage:
         generalMessage += ['the scraper executed sucessfully and there is no change in the rates!']
-    fileUtils.send_email_to(['alerts@topcompare.com' ,"paulbernaud@yahoo.fr"], 'daily scrape', generalMessage, filesToBeMailed)
+    fileUtils.send_email_to(["paulbernaud@yahoo.fr"], 'daily scrape', generalMessage, filesToBeMailed)
     print(filesToBeMailed, generalMessage)
 
 tcLoanScrape()
 
 
-
+test = 'alerts@topcompare.com' ,
 
 
 

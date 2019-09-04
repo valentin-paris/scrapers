@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import json
 import ast
-import DataUtils
+import fileUtils
 
 
 def requestForData():
@@ -36,7 +36,7 @@ def bankData():
     for lType in script_data:
         data_for_type = []
         if lType == 'car':
-            print(script_data[lType]['types'])
+            # print(script_data[lType]['types'])
             for pdType in script_data[lType]['types']:
                 if pdType['type'] == 'new':
                     for rates in pdType['rates']:
@@ -115,9 +115,14 @@ def formatDataFromBank(bank_data, provider):
 def elantisLoanScraper():
     print('ELANTIS SCRAPE PROCESSING ...')
     tab_col = ['PROVIDER ', 'PRODUCTID', 'LOAN TYPE', 'MIN AMT', 'MAX AMT', 'TERM', 'RATE']
-    return DataUtils.proc_data(bankData(), 'ELANTIS', 'ELANTIS SCRAPE', 'elantis_rates', tab_col)
+    data_matrix = formatDataFromBank(bankData(), 'ELANTIS')
+    if data_matrix:
+        fileUtils.displayRates(tab_col, data_matrix)
+        return fileUtils.upToDate('elantis_rates', 'ELANTIS SCRAPE', data_matrix, tab_col, [])
+    else:
+        return None
 
-elantisLoanScraper()
+# print(elantisLoanScraper())
 
 
 

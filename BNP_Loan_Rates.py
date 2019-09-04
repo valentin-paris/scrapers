@@ -62,7 +62,7 @@ prodctTypes = {
         "code": "232",
         "product_ID": "BNPF0002"
     },
-    "DBL_WINDOW": {
+    "NRG_DBL_WINDOW": {
         "code": "241",
         "product_ID": "BNPF0002"
     },
@@ -70,7 +70,7 @@ prodctTypes = {
         "code": "242",
         "product_ID": "BNPF0002"
     },
-    "OTHERS": {
+    "NRG_OTHERS": {
         "code": "243",
         "product_ID": "BNPF0002"
     },
@@ -120,11 +120,17 @@ def bankData():
                     loan_data = loan.split('|')
                     loan_data[3] = '50000' if int(loan_data[3]) > 50000 else loan_data[3]
                     loan_data[1] = '-' if int(loan_data[1]) > 120 else loan_data[1]
+                    try:
+                        taux = float(loan_data[4][:4])
+                    except:
+                        taux = float(loan_data[4][:3])
                     data_for_type.append(dict(amount=loan_data[2], type=pdt, productID=prodctTypes[pdt]["product_ID"],
-                                              maxAmnt=loan_data[3],rate=loan_data[4][:3], duration=loan_data[0],
+                                              maxAmnt=loan_data[3],rate=str(taux), duration=loan_data[0],
                                               maxDuration=loan_data[1]))
         bank_data.append(data_for_type)
     return bank_data
+
+
 
 
 def formatDataFromBank(bank_data, provider):
@@ -135,10 +141,60 @@ def formatDataFromBank(bank_data, provider):
                                     loan['duration'], loan['maxDuration'], loan['rate']])
     return frame_to_export
 
+def bnpLoanScraper():
+    print('BNP SCRAPE PROCESSING ...')
+    tab_col = ['PROVIDER ', 'PRODUCTID', 'LOAN TYPE', 'MIN AMT', 'MAX AMT', 'MINTERM','MAXTERM' , 'RATE']
+    data_matrix = formatDataFromBank(bankData(), 'BNP')
+    if data_matrix:
+        fileUtils.displayRates(tab_col, data_matrix)
+        return fileUtils.upToDate('bnp_rates', 'BNP SCRAPE', data_matrix, tab_col, [])
+    else:
+        return None
+
+
+
+#for testing purposes
+def pdt_bank_data(product):
+    bank_data = []
+    data_for_type = []
+    for amount in amountRange:
+        loanList = makeRequestFor(product, amount)
+        for loan in loanList:
+            if loan:
+                loan_data = loan.split('|')
+                loan_data[3] = '50000' if int(loan_data[3]) > 50000 else loan_data[3]
+                loan_data[1] = '-' if int(loan_data[1]) > 120 else loan_data[1]
+                try:
+                    taux = float(loan_data[4][:4])
+                except:
+                    taux = float(loan_data[4][:3])
+                data_for_type.append(dict(amount=loan_data[2], type=product, productID=prodctTypes[product]["product_ID"],
+                                          maxAmnt=loan_data[3],rate=str(taux), duration=loan_data[0],
+                                          maxDuration=loan_data[1]))
+    bank_data.append(data_for_type)
+    return bank_data
+
+def loanProcedure(pdt):
+    print('BNP SCRAPE PROCESSING ...')
+    tab_col = ['PROVIDER ', 'PRODUCTID', 'LOAN TYPE', 'MIN AMT', 'MAX AMT', 'MINTERM','MAXTERM' , 'RATE']
+    data_matrix = formatDataFromBank(pdt_bank_data(pdt), 'BNP')
+    if data_matrix:
+        fileUtils.displayRates(tab_col, data_matrix)
+        #return fileUtils.upToDate('bnp_{}_rates'.format(pdt), 'BNP SCRAPE', data_matrix, tab_col, [])
+        print("GOOOOOOOOD")
+    else:
+        #return None
+        print("NOT GOOOOOOOOOOOOOD")
+
+def scraper():
+    for pdt in prodctTypes:
+        loanProcedure(pdt)
+
 
 tab_col = ['PROVIDER ', 'PRODUCTID', 'LOAN TYPE', 'MIN AMT', 'MAX AMT', 'MINTERM', 'MAXTERM', 'RATE']
 
 fileUtils.displayRates(tab_col, formatDataFromBank(bankData(),"BNP"))
+scraper()
 
 
 print(makeRequestFor("NEW_MOTO_OR_QUAD", 25000))

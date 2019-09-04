@@ -95,9 +95,10 @@ def dHBLoanScraper():
     dataMatrix = DataUtils.formatDataFrom(DataUtils.createGroups(bankData()), 'DHB_BANK')
     return DataUtils.processData(dataMatrix, tab_Column, 'DHB SCRAPE', 'dhb_rates')
 
-
+print(loanAmtRange)
 
 # dHBLoanScraper()
+
 
 
 
