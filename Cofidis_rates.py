@@ -45,15 +45,12 @@ def requestDataforUrl(product):
             except:
                 return {}
 
-
-
-print(requestDataforUrl('PERSONAL LOAN'))
-
 def computeRate(rateString):
     try:
         rate_num = rateString.replace(',', '.')
         return float(rate_num[:5])
     except:
+        rate_num = rateString.replace(',', '.')
         return float(rate_num[:4])
 
 def data_for_product(product):
@@ -71,7 +68,7 @@ def bankData():
         bank_data.append(data_for_product(pdt))
     return bank_data
 
-def colfidisLoanScraper():
+def cofidisLoanScraper():
     print('COLFIDIS SCRAPE PROCESSING ...')
     tab_col = ['PROVIDER ', 'PRODUCTID', 'LOAN TYPE', 'MIN AMT', 'MAX AMT', 'TERM', 'RATE']
     return DataUtils.proc_data(bankData(), 'COLFIDIS', 'COLFIDIS SCRAPE', 'colfidis_rate', tab_col)
@@ -79,6 +76,6 @@ def colfidisLoanScraper():
 
 
 
-colfidisLoanScraper()
+cofidisLoanScraper()
 
 

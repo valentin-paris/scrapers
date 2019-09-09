@@ -53,6 +53,7 @@ def bankData():
             except:
              print('THE LINK {} FOR EUROPA BANK IS NOT AVAILABLE FOR THE MOMENT'.format(ltype))
              break
+        print()
         bankdata.append(data_for_type) if data_for_type else bankdata + data_for_type
     return bankdata
 

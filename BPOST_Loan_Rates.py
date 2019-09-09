@@ -3,9 +3,6 @@ import json
 import DataUtils
 
 
-
-
-
 loanTypes = {
     'PERSONAL LOAN': ('b5cc4fa4-718d-4abf-b0ee-6c8bf91e21c3', 'BPOS0005'),
     'NEW CAR': ('afc2a560-93ad-46d4-8745-308cad87c9b7', 'BPOS0001'),
@@ -35,9 +32,6 @@ def requestDataFor(creditType):
     }
     response = requests.request("GET", url, headers=headers, params=querystring)
     return json.loads(response.text)
-
-
-
 
 def bankdata():
     bank_data = []

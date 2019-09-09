@@ -28,12 +28,11 @@ headers = {
     'cache-control': "no-cache"
     }
 
-loanAmtRange = list(range(5000, 20500, 500)) + list(range(21000, 101000, 1000))
+loanAmtRange = list(range(5000, 14000, 500)) + list(range(14000, 101000, 1000))
 
 dHBLoanTypes = {
     "personal": (1, 'DHBX0001')
 }
-
 
 def makeRequestFor(creditType, amount, duration):
     try:
@@ -48,9 +47,6 @@ def makeRequestFor(creditType, amount, duration):
     except:
         print('THIS WEBSITE IS NOT AVAILABLE AT THE MOMENT')
         return None
-
-
-
 
 def bankData():
     bankData = []
@@ -87,15 +83,11 @@ def bankData():
 
     return bankData
 
-
-
 def dHBLoanScraper():
     print("DHB LOAN SCRAPER PROCESSING:")
     tab_Column = ['PROVIDER ', 'PRODUCTID', 'LOAN TYPE', 'MIN AMT', 'MAX AMT', 'TERM', 'RATE']
     dataMatrix = DataUtils.formatDataFrom(DataUtils.createGroups(bankData()), 'DHB_BANK')
     return DataUtils.processData(dataMatrix, tab_Column, 'DHB SCRAPE', 'dhb_rates')
-
-print(loanAmtRange)
 
 # dHBLoanScraper()
 

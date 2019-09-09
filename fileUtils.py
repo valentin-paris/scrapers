@@ -9,6 +9,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 from email import encoders
+import ntpath
 
 
 # displays list as lisible tableau
@@ -120,7 +121,8 @@ def send_email_to(send_to, subject, message, filesToAttach):
                 # encode into base64
                 encoders.encode_base64(p)
 
-                p.add_header('Content-Disposition', "attachment; filename= %s" % filename)
+                # p.add_header('Content-Disposition', "attachment; filename= %s" % filename)
+                p.add_header('Content-Disposition', "attachment", filename=ntpath.basename(filename))
 
                 # attach the instance 'p' to instance 'msg'
                 msg.attach(p)

@@ -42,7 +42,6 @@ cphProducts = {
               }
 
 loanRateAmt = list(range(1250, 10000, 1250)) + list(range(10000, 50000, 5000)) + list(range(50000, 110000, 10000))
-# loanRateAmt = [3000, 4500, 5000, 16800, 25000, 56200]
 
 def applyLoanRequest(amount, product):
     payload = {
