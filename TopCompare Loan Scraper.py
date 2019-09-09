@@ -12,8 +12,12 @@ import Cetelem_Rates_Scraper
 import BPOST_Loan_Rates
 import Europa_Bank_Rates
 import Elantis_rates
+import Santander_rates
+import BNPPF_Loan_Rates
+import Cofidis_rates
 
-
+mailList = ['alerts@topcompare.be', 'quentin@topcompare.be', "bernaud.toukam@topcompare.be"]
+mailTest = ["bernaud.toukam@topcompare.be"]
 
 tcBanksScrapers = {
     'ING': ING_Rates.iNGLoanscraper,
@@ -28,7 +32,10 @@ tcBanksScrapers = {
     'CETELEM': Cetelem_Rates_Scraper.cetelemLoanScraper,
     'BPOST': BPOST_Loan_Rates.bpostLoanScraper,
     'EUROPA BANK': Europa_Bank_Rates.europaLoanScraper,
-    'ELANTIS': Elantis_rates.elantisLoanScraper
+    'ELANTIS': Elantis_rates.elantisLoanScraper,
+    'SANTANDER': Santander_rates.santanderLoanScraper,
+    'BNPPF': BNPPF_Loan_Rates.scraper,
+    "COFIDIS": Cofidis_rates.cofidisLoanScraper
 }
 
 def tcLoanScrape():
@@ -44,12 +51,12 @@ def tcLoanScrape():
             generalMessage += ['an error occured with {} scrape'.format(bank)]
     if not generalMessage:
         generalMessage += ['the scraper executed sucessfully and there is no change in the rates!']
-    fileUtils.send_email_to(['alerts@topcompare.be', 'quentin@topcompare.be' ,'paulbernaud@yahoo.fr'], 'daily scrape', generalMessage, filesToBeMailed)
+    fileUtils.send_email_to(mailList, 'daily scrape', generalMessage, filesToBeMailed)
     print(filesToBeMailed, generalMessage)
 
 tcLoanScrape()
 
-mailList = ['alerts@topcompare.be', 'quentin@topcompare.be' , ]
+
 
 
 

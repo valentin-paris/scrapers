@@ -5,11 +5,11 @@ import DataUtils
 
 
 loanTypes = {
-    "RENOVATION": {
+    "renovation": {
         "productID": "SANT0003",
         "index": 1
     },
-    "PERSONAL": {
+    "personal": {
         "productID": "SANT0001",
         "index": 8
     }
@@ -41,7 +41,10 @@ def requestDataFor(lType, amount, monthPayment):
         "SelectedOptionIndex": loanTypes[lType]["index"],
         "UmbracoNodeId": 1282}
     response = requests.request("POST", url, json=payload, headers=headers)
-    return json.loads(response.text)
+    try:
+        return json.loads(response.text)
+    except:
+        return {}
 
 
 def data_for_type(lType):
@@ -50,7 +53,10 @@ def data_for_type(lType):
         for amt in key:
             for term in range_for_loan[key]:
                 print(".", end="")
-                loanList = requestDataFor(lType, amt, amt/term)["CalculatedInstallmentOptions"]
+                try :
+                    loanList = requestDataFor(lType, amt, amt/term)["CalculatedInstallmentOptions"]
+                except:
+                    loanList = []
                 for loanJson in loanList:
                     loan = {
                         "type" : lType,
@@ -63,11 +69,14 @@ def data_for_type(lType):
                     if loan not in data_for_type:
                         data_for_type.append(loan)
     print()
+    if not data_for_type:
+        print("THE EXTENSION {} LOANS FOR SANTANDER IS NOT AVAILABLE.".format(lType.upper()))
+        print()
     return data_for_type
 
 
 def loanProceduree(lType):
-    print("SANTANDER {} SCRAPE PROCESSING ...".format(lType))
+    print("SANTANDER {} LOANS SCRAPE PROCESSING ...".format(lType.upper()))
     bank_data = [data_for_type(lType)]
     tab_col = ['PROVIDER ', 'PRODUCTID', 'LOAN TYPE', 'MIN AMT', 'MAX AMT', 'TERM', 'RATE']
     return DataUtils.proc_data(bank_data, "SANTANDER", "SANTANDER SCRAPE", "santander_{}_loans_rates".format(lType), tab_col)

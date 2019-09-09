@@ -69,9 +69,9 @@ def bankData():
     return bank_data
 
 def cofidisLoanScraper():
-    print('COLFIDIS SCRAPE PROCESSING ...')
+    print('COFIDIS SCRAPE PROCESSING ...')
     tab_col = ['PROVIDER ', 'PRODUCTID', 'LOAN TYPE', 'MIN AMT', 'MAX AMT', 'TERM', 'RATE']
-    return DataUtils.proc_data(bankData(), 'COLFIDIS', 'COLFIDIS SCRAPE', 'colfidis_rate', tab_col)
+    return DataUtils.proc_data(bankData(), 'COFIDIS', 'COFIDIS SCRAPE', 'cofidis_rate', tab_col)
 
 
 

@@ -1,3 +1,5 @@
+from builtins import print
+
 import requests
 import fileUtils
 
@@ -125,7 +127,7 @@ def bankData():
                     except:
                         taux = float(loan_data[4][:3])
                     data_for_type.append(dict(amount=loan_data[2], type=pdt, productID=prodctTypes[pdt]["product_ID"],
-                                              maxAmnt=loan_data[3],rate=str(taux), duration=loan_data[0],
+                                              maxAmnt=loan_data[3],rate=taux, duration=int(loan_data[0]),
                                               maxDuration=loan_data[1]))
         bank_data.append(data_for_type)
     return bank_data
@@ -144,13 +146,12 @@ def bnpLoanScraper():
     data_matrix = formatDataFromBank(bankData(), 'BNP')
     if data_matrix:
         fileUtils.displayRates(tab_col, data_matrix)
-        #return fileUtils.upToDate('bnp_rates', 'BNP SCRAPE', data_matrix, tab_col, [])
+        return fileUtils.upToDate('bnp_rates', 'BNP SCRAPE', data_matrix, tab_col, [])
     else:
         return None
 
 #for testing purposes another way to store the rate may be better
 def pdt_bank_data(product):
-    bank_data = []
     data_for_type = []
     for amount in amountRange:
         loanList = makeRequestFor(product, amount)
@@ -163,30 +164,28 @@ def pdt_bank_data(product):
                     taux = float(loan_data[4][:4])
                 except:
                     taux = float(loan_data[4][:3])
-                data_for_type.append(dict(amount=loan_data[2], type=product, productID=prodctTypes[product]["product_ID"],
-                                          maxAmnt=loan_data[3],rate=str(taux), duration=loan_data[0],
+                data_for_type.append(dict(amount=float(loan_data[2]), type=product, productID=prodctTypes[product]["product_ID"],
+                                          maxAmnt=float(loan_data[3]),rate=taux, duration=int(loan_data[0]),
                                           maxDuration=loan_data[1]))
-    bank_data.append(data_for_type)
-    return bank_data
+    return [data_for_type]
 
 def loanProcedure(pdt):
-    print('BNP SCRAPE PROCESSING ...')
+    print('BNPPF {} SCRAPE PROCESSING ...'.format(pdt))
     tab_col = ['PROVIDER ', 'PRODUCTID', 'LOAN TYPE', 'MIN AMT', 'MAX AMT', 'MINTERM','MAXTERM' , 'RATE']
     data_matrix = formatDataFromBank(pdt_bank_data(pdt), 'BNPPF')
     if data_matrix:
         fileUtils.displayRates(tab_col, data_matrix)
-        #return fileUtils.upToDate('bnp_{}_rates'.format(pdt), 'BNP SCRAPE', data_matrix, tab_col, [])
-        print("GOOOOOOOOD")
+        return fileUtils.upToDate('bnp_{}_rates'.format(pdt.lower()), 'BNP SCRAPE', data_matrix, tab_col, [])
     else:
-        #return None
-        print("NOT GOOOOOOOOOOOOOD")
+        return None
 
 def scraper():
     for pdt in prodctTypes:
         loanProcedure(pdt)
 
-bnpLoanScraper()
+#use the scrape method to run the scraper
 scraper()
+
 
 
 
