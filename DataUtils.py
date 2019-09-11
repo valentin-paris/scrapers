@@ -45,5 +45,14 @@ def proc_data(b_data, provider, dir_name, file_name, tab_col):
         return None
 
 
+#design for carrefour data
+def process_crf_data(dataMatrix, tab_Column, directoryName, fileName):
+    data_to_display = fileUtils.createNewFrame(dataMatrix, fileUtils.getFileContentAsList(fileName, directoryName))
+    fileUtils.displayRates(tab_Column, data_to_display)
+    return fileUtils.carrefourRatesUpdate(fileName, directoryName, dataMatrix, tab_Column, [])
+
+
+
+
 
 

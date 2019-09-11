@@ -180,11 +180,13 @@ def loanProcedure(pdt):
         return None
 
 def scraper():
+    result = []
     for pdt in prodctTypes:
-        loanProcedure(pdt)
+       result += loanProcedure(pdt)
+    return result
 
 #use the scrape method to run the scraper
-scraper()
+# scraper()
 
 
 

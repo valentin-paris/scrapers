@@ -191,6 +191,7 @@ def formatDataFrom(groups, provider):
     return frameToExport
 
 def homeLoanScraper():
+    print("HELLO BANK HOME LOAN SCRAPE PROCESSING ...")
     tab_Column = ['PROVIDER ', 'LOAN TYPE', 'PAY FROM \n (month payment in euros)', 'TO', 'FOR \n (duration in years)',
                   'RATE \n (starting rate)', 'REVISED \n(rates can be revised on a 3 years period)', 'REVISED_2']
     dataMatrix = formatDataFrom(createGroupsForHomeLoan(hLoanData()),'CRELAN')

@@ -4,6 +4,7 @@ import DataUtils
 import requests
 
 
+
 def requestForData():
     params = (
         ('retailer', '2487635'),
@@ -60,8 +61,8 @@ def bankData():
     for loanList in list_of_Data:
         for loan in loanList:
             loan['duration'] = loan['minDuration']
-            loan['amount'] = loan['minCreditAmount']
-            loan['rate'] = loan['taeg']
+            loan['amount'] = float(loan['minCreditAmount'])
+            loan['rate'] = float(loan['taeg'])
             loan['type'] = 'All Loans'
             loan['productID'] = 'CAFI0001'
     return list_of_Data
@@ -72,15 +73,21 @@ def dataToExport(bankData, provider):
     frameToExport = []
     for loanList in bankData:
         for loan in loanList:
-            frameToExport.append([provider, loan['productID'], loan['type'], loan['amount'], loan['maxCreditAmount'],
+            frameToExport.append([provider, loan['productID'], loan['type'], loan['amount'], float(loan['maxCreditAmount']),
                                   loan['duration'], loan['maxDuration'], loan['rate']])
     return frameToExport
 
-#print(dataToExport(bankData(), 'CAF'))
+# print(dataToExport(bankData(), 'CAF'))
 
 def carrefourLoanScraper():
     tab_Column = ['PROVIDER', 'PRODUCTID', 'PRODUCT TYPE', 'LOAN FROM', 'TO', 'MIN DURATION', 'MAX DURATION', 'RATE']
     dataMatrix = dataToExport(bankData(), 'CARREFOUR FINANCE')
-    return DataUtils.processData(dataMatrix, tab_Column, 'CARREFOUR SCRAPE', 'carrefour_rates')
+    return DataUtils.process_crf_data(dataMatrix, tab_Column, 'CARREFOUR SCRAPE', 'carrefour_rates')
 
-#carrefourLoanScraper()
+# carrefourLoanScraper()
+
+
+
+
+
+

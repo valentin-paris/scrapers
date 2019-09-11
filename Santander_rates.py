@@ -82,9 +82,11 @@ def loanProceduree(lType):
     return DataUtils.proc_data(bank_data, "SANTANDER", "SANTANDER SCRAPE", "santander_{}_loans_rates".format(lType), tab_col)
 
 def santanderLoanScraper():
+    result = []
     for lType in loanTypes:
-        loanProceduree(lType)
+        result += loanProceduree(lType)
+    return result
 
 
 
-santanderLoanScraper()
+# santanderLoanScraper()

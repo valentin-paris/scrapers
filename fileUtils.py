@@ -11,6 +11,11 @@ from email.mime.base import MIMEBase
 from email import encoders
 import ntpath
 
+#a custom function to remove duplicates from a list might be usefull
+no_double = lambda l : [] if l == [] else no_double(l[:-1]) + [l[-1]] if l[-1] not in l[:-1] else no_double(l[:-1])
+
+#to show duplicates in a list
+show_double = lambda l : [] if l == [] else show_double(l[:-1]) + [l[-1]] if l[-1] in l[:-1] else show_double(l[:-1])
 
 # displays list as lisible tableau
 def displayRates(colonnes, content):
@@ -93,6 +98,66 @@ def getLatestUpdate(directory, name):
         return max(list_of_files, key=os.path.getctime)
 
 
+#designed for carrefour loan scraper
+def trace_loan(current_content, line):
+    if current_content == []:
+        return [line]
+    if line != current_content[0] and len(current_content) > 1:
+        if line[3:5] == current_content[0][3:5] and line[5:7] == current_content[0][5:7]:
+            return [line] + current_content[1:]
+        else:
+            return [current_content[0]] + trace_loan(current_content[1:], line)
+    elif line != current_content[0] and len(current_content) < 2:
+        if line[3:5] == current_content[0][3:5] and line[5:7] == current_content[0][5:7]:
+            return [line]
+        else:
+            return [current_content[0]] + [line]
+    else:
+        return [line] + current_content[1:]
+
+
+def createNewFrame(dailyscrape, curentContent):
+    if not dailyscrape:
+        return curentContent
+    else:
+        curentContent = trace_loan(curentContent, dailyscrape[0])
+        return createNewFrame(dailyscrape[1:], curentContent)
+
+
+def getFileContentAsList(fileName, directory):
+    if os.path.exists(os.path.join(os.getcwd(), directory)):
+        if os.listdir(os.path.join(os.getcwd(), directory)):
+            for fichier in os.listdir(os.path.join(os.getcwd(), directory)):
+                # check if the file exists and get its right name
+                if os.path.isfile(os.path.join(os.getcwd(), directory, fichier)) and fichier.startswith(fileName):
+                    return pd.read_csv(os.path.join(os.getcwd(), directory, fichier)).values.tolist()
+    else:
+        return []
+
+def carrefourRatesUpdate(fileName, dirName, dailyScrape, tabColumns, fileForEmail):
+    checkToCreate(dirName)
+    found = False
+    # if the folder is not empty
+    if os.listdir(os.path.join(os.getcwd(), dirName)):
+        for fichier in os.listdir(os.path.join(os.getcwd(), dirName)):
+            # check if the file exists and get its right name
+            if os.path.isfile(os.path.join(os.getcwd(), dirName, fichier)) and fichier.startswith(fileName):
+                newData = compareFileAndList(fichier, dirName, dailyScrape)
+                if newData:
+                    data_to_export = createNewFrame(dailyScrape, getFileContentAsList(fichier, dirName))
+                    createUpdate(dirName, fileName, newData, tabColumns)
+                    moveToHistory(dirName, fileName, fichier)
+                    exportListToCsv(data_to_export, tabColumns, dirName, fileName)
+                    fileForEmail.append(getLatestUpdate(dirName, fileName))
+                found = True
+        if not found:
+            exportListToCsv(dailyScrape, tabColumns, dirName, fileName)
+    else:
+        exportListToCsv(dailyScrape, tabColumns, dirName, fileName)
+    return fileForEmail
+
+
+
 # send a mail with potentially attached file
 def send_email_to(send_to, subject, message, filesToAttach):
     for mailUser in send_to:
@@ -134,6 +199,15 @@ def send_email_to(send_to, subject, message, filesToAttach):
 
         # Terminate the SMTP session and close the connection
         s.quit()
+
+
+
+
+
+
+
+
+
 
 
 

@@ -76,6 +76,6 @@ def cofidisLoanScraper():
 
 
 
-cofidisLoanScraper()
+# cofidisLoanScraper()
 
 
