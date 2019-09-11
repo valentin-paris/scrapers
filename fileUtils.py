@@ -97,8 +97,14 @@ def getLatestUpdate(directory, name):
         list_of_files = glob.glob(os.path.join(os.getcwd(), directory, "{}_{}".format(name, 'update'), '*.csv'))
         return max(list_of_files, key=os.path.getctime)
 
-
+'''
+    because the request data are never the same after each request ie the data_set rotates upon request, 
+    the carrefour procedure first create a base knowledge of all the data_set that are already been requested
+    and can therefore the scrape becomes sensitive only to relevant changes...
+'''
 #designed for carrefour loan scraper
+
+#trace if a loan is present in the current loan_base
 def trace_loan(current_content, line):
     if current_content == []:
         return [line]
@@ -115,7 +121,7 @@ def trace_loan(current_content, line):
     else:
         return [line] + current_content[1:]
 
-
+#trace each loan in the daily scrape and add only the new ones to the current loan_base
 def createNewFrame(dailyscrape, curentContent):
     if not dailyscrape:
         return curentContent
@@ -134,6 +140,7 @@ def getFileContentAsList(fileName, directory):
     else:
         return []
 
+#handle data by creating a signaficant database to become less sensitive to non relevant changes
 def carrefourRatesUpdate(fileName, dirName, dailyScrape, tabColumns, fileForEmail):
     checkToCreate(dirName)
     found = False
@@ -155,7 +162,6 @@ def carrefourRatesUpdate(fileName, dirName, dailyScrape, tabColumns, fileForEmai
     else:
         exportListToCsv(dailyScrape, tabColumns, dirName, fileName)
     return fileForEmail
-
 
 
 # send a mail with potentially attached file
