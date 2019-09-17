@@ -48,7 +48,7 @@ def tcLoanScrape():
             if newData:
                 generalMessage += ['{} updated its rates, a file is attached with up to date rates.'.format(bank)]
         except:
-            generalMessage += ['an error occured with {} scrape'.format(bank)]
+            generalMessage += ['an error occured with {} scrape, please check the console for more informations.'.format(bank)]
     if not generalMessage:
         generalMessage += ['the scraper executed sucessfully and there is no change in the rates!']
     fileUtils.send_email_to(mailList, 'daily scrape', generalMessage, filesToBeMailed)

@@ -69,7 +69,7 @@ def bpostLoanScraper():
     return DataUtils.proc_data(bankdata(), 'BPOST', 'BPOST SCRAPE', 'bpost_rates', tab_col)
 
 
-bpostLoanScraper()
+# bpostLoanScraper()
 
 
 
