@@ -4,7 +4,7 @@ import DataUtils
 
 
 loanTypes = {
-    'PERSONAL LOAN': ('b5cc4fa4-718d-4abf-b0ee-6c8bf91e21c3', 'BPOS0005'),
+    'PERSONAL LOAN': ('539efc82-8caa-4edd-93d1-8168d3f310fe', 'BPOS0005'),
     'NEW CAR': ('afc2a560-93ad-46d4-8745-308cad87c9b7', 'BPOS0001'),
     'NEW MOTORHOME': ('c374ecca-e878-4204-9794-2fa69b3ca35f', 'BPOS0001'),
     'MOTORHOME_lt_36': ('24acfa8c-97b9-4e95-86de-d599fee69b4d', 'BPOS0002'),
@@ -69,7 +69,9 @@ def bpostLoanScraper():
     return DataUtils.proc_data(bankdata(), 'BPOST', 'BPOST SCRAPE', 'bpost_rates', tab_col)
 
 
-#bpostLoanScraper()
+bpostLoanScraper()
+
+
 
 
 

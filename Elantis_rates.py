@@ -24,7 +24,7 @@ def requestForData():
 
     response = requests.request("GET", url, headers=headers, params=querystring)
     soup = BeautifulSoup(response.text, 'html.parser')
-
+    #extract the scripts list and recover the json in the script at position 7
     return ast.literal_eval(json.loads(soup.find_all('script')[7].text[39:13300]))
 
 def bankData():

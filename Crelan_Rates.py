@@ -212,3 +212,5 @@ def crelanLoansScraper():
 
 
 
+
+
