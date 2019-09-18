@@ -140,17 +140,18 @@ def formatDataFromBank(bank_data, provider):
                                     loan['duration'], loan['maxDuration'], loan['rate']])
     return frame_to_export
 
-def bnpLoanScraper():
-    print('BNP SCRAPE PROCESSING ...')
-    tab_col = ['PROVIDER ', 'PRODUCTID', 'LOAN TYPE', 'MIN AMT', 'MAX AMT', 'MINTERM','MAXTERM' , 'RATE']
-    data_matrix = formatDataFromBank(bankData(), 'BNP')
-    if data_matrix:
-        fileUtils.displayRates(tab_col, data_matrix)
-        return fileUtils.upToDate('bnp_rates', 'BNP SCRAPE', data_matrix, tab_col, [])
-    else:
-        return None
+# def bnpLoanScraper():
+#     print('BNP SCRAPE PROCESSING ...')
+#     tab_col = ['PROVIDER ', 'PRODUCTID', 'LOAN TYPE', 'MIN AMT', 'MAX AMT', 'MINTERM','MAXTERM' , 'RATE']
+#     data_matrix = formatDataFromBank(bankData(), 'BNP')
+#     if data_matrix:
+#         fileUtils.displayRates(tab_col, data_matrix)
+#         return fileUtils.upToDate('bnp_rates', 'BNP SCRAPE', data_matrix, tab_col, [])
+#     else:
+#         return None
 
 #for testing purposes another way to store the rate may be better
+
 def pdt_bank_data(product):
     data_for_type = []
     for amount in amountRange:
@@ -185,7 +186,7 @@ def scraper():
        result += loanProcedure(pdt)
     return result
 
-#use the scrape method to run the scraper
+#use the scraper method to run the scraper
 # scraper()
 
 
