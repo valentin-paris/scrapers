@@ -1,7 +1,7 @@
 import requests
 import json
 import DataUtils
-
+import fileUtils
 url = "https://www.crelan.be/credits-simulation-rs/loan-simulation/credit-rate-from-amount"
 
 headers = {
@@ -62,8 +62,9 @@ hLHeaders = {
     }
 
 hLMonthPaymentRange = list(range(100, 10000, 500)) + [10000]
-
+# hLMonthPaymentRange = [100, 1000, 10000]
 hLDurationRange = list(range(10, 30, 2)) + [30]
+
 
 
 def applyRequestFor(destination, amount, duration):
@@ -136,7 +137,7 @@ def bankData():
     return bankData
 
 
-def hLoanRequest(amount, period):
+def hLoanRequest(amount, period, category):
     payload = {
         "periodType": "YEARLY",
         "destinationId": "home",
@@ -144,63 +145,108 @@ def hLoanRequest(amount, period):
         "amount": amount,
         "periods": period,
         "language": "NL",
-        "selectedFormulae": ["1/1/1", "3/3/3"],
+        "selectedFormulae": category,
         "advantageRate": None
     }
     response = requests.request("POST", homeLoanUrl, json=payload, headers=hLHeaders)
     return json.loads(response.text)
 
-def hLoanData():
+
+def hl_bankdata():
     bankData = []
-    for amt in hLMonthPaymentRange:
-        loanData = []
-        for period in hLDurationRange:
-            loanObject = hLoanRequest(amt, period)
-            loanObject['amount'] = amt
-            loanObject['duration'] = period
-            loanObject['type'] = loanObject['destinationId']
-            loanObject['rate_2'] = '-'
-            for i in range(len(loanObject['calculatedInterestTypes'])):
-                if i == 0 and loanObject['calculatedInterestTypes'][i]['rate']:
-                    loanObject['rate'] = loanObject['calculatedInterestTypes'][i]['rate']['yearlyInterestRate']
-                elif loanObject['calculatedInterestTypes'][i]['rate']:
-                    loanObject['rate_{}'.format(i)] = loanObject['calculatedInterestTypes'][i]['rate']['yearlyInterestRate']
-            loanData.append(loanObject)
-        bankData.append(loanData)
+    hl_category = (
+        ("", ["fixed"]),
+        ("variable", ["1/1/1"]),
+        ("variable", ["3/3/3"]),
+        ("variable", ["5/5/5"]),
+        ("variable", ["8/3/3"]),
+        ("variable", ["10/5/5"]),
+        ("variable", ["15/5/5"])
+    )
+    for category in hl_category:
+        loan_data = []
+        for amt in hLMonthPaymentRange:
+            for period in hLDurationRange:
+                print('.', end='')
+                loanObject = hLoanRequest(amt, period, category[1])
+                try:
+                    loanObject['amount'] = amt
+                    loanObject['duration'] = period
+                    loanObject['type'] = loanObject['destinationId']
+                    for i in range(len(loanObject['calculatedInterestTypes'])):
+                        if i == 0:
+                            loanObject['rate'] = loanObject['calculatedInterestTypes'][i]['rate']['yearlyInterestRate']
+                            loanObject['category'] = loanObject['calculatedInterestTypes'][i]['interest_type_id']
+                            loan_data.append(loanObject)
+                        else:
+                            loanObject2 = {}
+                            loanObject2['rate'] = loanObject['calculatedInterestTypes'][i]['rate']['yearlyInterestRate']
+                            loanObject2['category'] = loanObject['calculatedInterestTypes'][i]['interest_type_id']
+                            loanObject2['amount'] = amt
+                            loanObject2['duration'] = period
+                            loanObject2['type'] = loanObject['destinationId']
+                            loan_data.append(loanObject2)
+                except:
+                    pass
+        bankData.append(loan_data)
+        print()
     return bankData
+
+
 
 #we had to redefine the functions due to the particularity of home loans data
 def createGroupsForHomeLoan(bankData):
     loanGroups = {}
     for loanList in bankData:
         for loanElement in loanList:
-            if (loanElement['type'], loanElement['duration'], loanElement['rate'], loanElement['rate_1'],
-                    loanElement['rate_2']) not in loanGroups.keys():
-                loanGroups[(loanElement['type'], loanElement['duration'], loanElement['rate'], loanElement['rate_1'],
-                    loanElement['rate_2'])] = [loanElement['amount']]
+            if (loanElement['type'], loanElement['duration'], loanElement['rate'],
+                    loanElement['category']) not in loanGroups.keys():
+                loanGroups[(loanElement['type'], loanElement['duration'], loanElement['rate'],
+                    loanElement['category'])] = [loanElement['amount']]
             else:
-                loanGroups[(loanElement['type'], loanElement['duration'], loanElement['rate'], loanElement['rate_1'],
-                    loanElement['rate_2'])].append(loanElement['amount'])
+                loanGroups[(loanElement['type'], loanElement['duration'], loanElement['rate'],
+                     loanElement['category'])].append(loanElement['amount'])
     return loanGroups
 
 def formatDataFrom(groups, provider):
     frameToExport = []
     for eachGroup in groups:
-        frameToExport.append([provider, eachGroup[0], min(map(int, groups[eachGroup])), max(map(int, groups[eachGroup]))
-                                 , int(eachGroup[1]), float(eachGroup[2]), float(eachGroup[3]), str(eachGroup[4])])
+        frameToExport.append([provider, eachGroup[0],min(map(int, groups[eachGroup])), max(map(int, groups[eachGroup])), int(eachGroup[1]),
+                              float(eachGroup[2]), float(eachGroup[3]), str(eachGroup[4])])
     return frameToExport
 
+
+def formatData_for_hloan(groups, provider):
+    frameToExport = []
+    for eachGroup in groups:
+        frameToExport.append([provider,
+                              eachGroup[0],
+                              eachGroup[3],
+                              min(map(int, groups[eachGroup])),
+                              max(map(int, groups[eachGroup])),
+                              int(eachGroup[1]),
+                              eachGroup[2]])
+    return frameToExport
 def homeLoanScraper():
-    print("HELLO BANK HOME LOAN SCRAPE PROCESSING ...")
-    tab_Column = ['PROVIDER ', 'LOAN TYPE', 'PAY FROM \n (month payment in euros)', 'TO', 'FOR \n (duration in years)',
-                  'RATE \n (starting rate)', 'REVISED \n(rates can be revised on a 3 years period)', 'REVISED_2']
-    dataMatrix = formatDataFrom(createGroupsForHomeLoan(hLoanData()),'CRELAN')
+    print("CRELAN HOME LOAN SCRAPE PROCESSING ...")
+    tab_Column = ['PROVIDER ', 'CATEGORY ', 'LOAN TYPE', ' PAY FROM \n(month payment in euros)', 'TO', ' FOR \n (duration in years)',
+                  'RATE \n (base rate)']
+    dataMatrix = formatData_for_hloan(createGroupsForHomeLoan(hl_bankdata()),'CRELAN')
+    # fileUtils.displayRates(tab_Column, dataMatrix)
     return DataUtils.processData(dataMatrix, tab_Column, 'CRELAN SCRAPE', 'crelan_homeLoans')
 
 def crelanLoansScraper():
     tab_Column = ['PROVIDER ', 'PRODUCTID', 'LOAN TYPE', 'MIN AMT', 'MAX AMT', 'TERM', 'RATE']
     dataMatrix = DataUtils.formatDataFrom(DataUtils.createGroups(bankData()), 'CRELAN')
     return DataUtils.processData(dataMatrix, tab_Column, 'CRELAN SCRAPE', 'crelan_rates') + homeLoanScraper()
+
+
+
+
+
+
+# homeLoanScraper()
+
 
 
 

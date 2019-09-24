@@ -168,8 +168,11 @@ def carrefourRatesUpdate(fileName, dirName, dailyScrape, tabColumns, fileForEmai
 def send_email_to(send_to, subject, message, filesToAttach):
     for mailUser in send_to:
         s = smtplib.SMTP(host='smtp.gmail.com', port=587)
+        # s = smtplib.SMTP(host='smtp-pulse.com', port=2525)
         s.starttls()
         s.login('tcdailyscrape@gmail.com', 'donotreply0001')
+        # s.login('quentindenis@topcompare.be', 'ZL8WNiqHsF')
+
         msg = MIMEMultipart()
         msg['From'] = 'tcdailyscrape@gmail.com'
         msg['To'] = mailUser

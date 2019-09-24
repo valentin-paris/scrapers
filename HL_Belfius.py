@@ -31,10 +31,6 @@ def fix_rate_procedure():
     if data_as_frameList:
         try :
             dataMatrix = data_as_frameList[2].values.tolist()[2:]
-        except:
-            print("THE STURCTURE OF THE PDF HAS BEEN MODIFIED PLEASE PROCESS IT BACK!")
-            dataMatrix = None
-        if dataMatrix:
             for i in range(len(dataMatrix)):
                 dataMatrix[i][3:] = [
                                         computeBase_rate(dataMatrix[i][3], reduced_values[0]),
@@ -42,6 +38,9 @@ def fix_rate_procedure():
                                      ]
                 dataMatrix[i] = ["BELFIUS", "HOME LOAN FIXED RATES"] + dataMatrix[i]
             return DataUtils.processData(dataMatrix, tab_col, "BELFIUS HOME LOANS", "Belfius_hl_fixed_rates")
+        except:
+            print("THE STURCTURE OF BELFIUS THE PDF HAS BEEN MODIFIED PLEASE PROCESS IT BACK!")
+            return None
     else:
         print("THE BELFIUS HOME LOAN LINK IS MOMENTALLY UNAVAILABLE PLEASE CHECK ON THE WEBSITE!")
         return None
@@ -82,8 +81,10 @@ def scraper():
     print("BELFIUS HOME LOAN PROCESSING ...")
     return fix_rate_procedure() + variable_rate_procedure()
 
+scraper()
 
-print(scraper())
+
+
 
 
 

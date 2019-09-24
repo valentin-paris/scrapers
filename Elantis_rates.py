@@ -4,7 +4,6 @@ import json
 import ast
 import fileUtils
 
-
 def requestForData():
     url = "https://www.elantis.be/fr/simulateur-pret-a-temperament/"
 
@@ -23,15 +22,27 @@ def requestForData():
         }
 
     response = requests.request("GET", url, headers=headers, params=querystring)
-    soup = BeautifulSoup(response.text, 'html.parser')
-    #extract the scripts list and recover the json in the script at position 7
-    return ast.literal_eval(json.loads(soup.find_all('script')[7].text[39:13300]))
+    soup = BeautifulSoup(response.text, "html.parser")
+
+    #get all the scripts
+    scripts = soup.find_all("script")
+
+    #get the script at position 7
+    data_script = scripts[7].text
+
+    #extracts data_string from the script from the position of JSON.parse( to the closing parenthese );
+    js_data = data_script[data_script.find("JSON.parse("): data_script.find(");")]
+
+    #return the evaluation of the string without JSON.parse(
+    return json.loads(ast.literal_eval(js_data.replace("JSON.parse(", "")))
+
 
 def bankData():
     bank_data = []
     try:
         script_data = requestForData()
     except:
+        print("THE SCRIPT STRUCTURE OF ELANTIS HAS BEEN CHANGED PLEASE CHECK IT BACK")
         script_data = {}
     for lType in script_data:
         data_for_type = []
@@ -121,9 +132,6 @@ def elantisLoanScraper():
         return fileUtils.upToDate('elantis_rates', 'ELANTIS SCRAPE', data_matrix, tab_col, [])
     else:
         return None
-
-# print(elantisLoanScraper())
-
 
 
 

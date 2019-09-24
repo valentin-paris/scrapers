@@ -36,7 +36,7 @@ tcBanksScrapers = {
     'SANTANDER': Santander_rates.santanderLoanScraper,
     'BNPPF': BNPPF_Loan_Rates.scraper,
     "COFIDIS": Cofidis_rates.cofidisLoanScraper
-}
+ }
 
 def tcLoanScrape():
     filesToBeMailed = []
