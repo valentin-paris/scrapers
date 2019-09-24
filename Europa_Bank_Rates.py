@@ -57,8 +57,6 @@ def bankData():
         bankdata.append(data_for_type) if data_for_type else bankdata + data_for_type
     return bankdata
 
-
-
 def processData(dataMatrix, tab_Column, directoryName, fileName):
     fileUtils.displayRates(tab_Column, dataMatrix)
     return fileUtils.upToDate(fileName, directoryName, dataMatrix, tab_Column, [])

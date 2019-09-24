@@ -36,7 +36,6 @@ def requestForData():
     #return the evaluation of the string without JSON.parse(
     return json.loads(ast.literal_eval(js_data.replace("JSON.parse(", "")))
 
-
 def bankData():
     bank_data = []
     try:
@@ -93,7 +92,7 @@ def bankData():
                     for rates in pdType['rates']:
                         for rate in rates['rates']:
                             data_for_type.append({'type': 'RENOVATION LOAN',
-                                                  'productID': 'ELAN0004',
+                                                  'productID': 'ELAN0002',
                                                   'amount': rates['min'],
                                                   'maxAmnt': rates['max'],
                                                   'duration': rate['duration'],
@@ -105,7 +104,7 @@ def bankData():
                     for rates in pdType['rates']:
                         for rate in rates['rates']:
                             data_for_type.append({'type': 'ENERGY LOAN',
-                                                  'productID': 'ELAN0005',
+                                                  'productID': 'ELAN0003',
                                                   'amount': rates['min'],
                                                   'maxAmnt': rates['max'],
                                                   'duration': rate['duration'],
@@ -137,4 +136,4 @@ def elantisLoanScraper():
 
 
 
-
+# elantisLoanScraper()

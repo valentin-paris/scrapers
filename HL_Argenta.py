@@ -1,9 +1,6 @@
 import tabula
 import DataUtils
-import ast
 # import fileUtils
-
-
 
 try:
     data_as_frameList = tabula.read_pdf("https://www.argenta.be/content/dam/argenta/documents/emprunter/credit-logement/Feuille%20de%20tarifs%20Cr%C3%A9dits%20hypoth%C3%A9caires.pdf", pages=3, multiple_tables=True )
@@ -79,7 +76,7 @@ def variable_rate_procedure():
         try:
             data_matrix = variable_data()
         except:
-            print("THE SRUCTURE OF ARGENTA LOAN PDF HAS BEEN MODIFIED PLEASE PROCESS IT BACK")
+            print("THE SRUCTURE OF ARGENTA LOAN FOR VARIABLE RATES PDF HAS BEEN MODIFIED PLEASE PROCESS IT BACK")
             data_matrix = None
         if data_matrix:
             return DataUtils.processData(data_matrix, tab_col, "ARGENTA HOME LOANS", "argenta_hl_variable_rates")

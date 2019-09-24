@@ -1,7 +1,7 @@
 import requests
 import json
 import DataUtils
-import fileUtils
+# import fileUtils
 url = "https://www.crelan.be/credits-simulation-rs/loan-simulation/credit-rate-from-amount"
 
 headers = {
@@ -22,7 +22,6 @@ headers = {
     'Connection': "keep-alive",
     'cache-control': "no-cache"
     }
-
 
 reqRangeAmnt = {
     30: list(range(2501, 3700, 500)),
@@ -64,8 +63,6 @@ hLHeaders = {
 hLMonthPaymentRange = list(range(100, 10000, 500)) + [10000]
 # hLMonthPaymentRange = [100, 1000, 10000]
 hLDurationRange = list(range(10, 30, 2)) + [30]
-
-
 
 def applyRequestFor(destination, amount, duration):
     payload = {
@@ -136,7 +133,6 @@ def bankData():
         print()
     return bankData
 
-
 def hLoanRequest(amount, period, category):
     payload = {
         "periodType": "YEARLY",
@@ -150,7 +146,6 @@ def hLoanRequest(amount, period, category):
     }
     response = requests.request("POST", homeLoanUrl, json=payload, headers=hLHeaders)
     return json.loads(response.text)
-
 
 def hl_bankdata():
     bankData = []
@@ -192,8 +187,6 @@ def hl_bankdata():
         print()
     return bankData
 
-
-
 #we had to redefine the functions due to the particularity of home loans data
 def createGroupsForHomeLoan(bankData):
     loanGroups = {}
@@ -215,7 +208,6 @@ def formatDataFrom(groups, provider):
                               float(eachGroup[2]), float(eachGroup[3]), str(eachGroup[4])])
     return frameToExport
 
-
 def formatData_for_hloan(groups, provider):
     frameToExport = []
     for eachGroup in groups:
@@ -227,6 +219,7 @@ def formatData_for_hloan(groups, provider):
                               int(eachGroup[1]),
                               eachGroup[2]])
     return frameToExport
+
 def homeLoanScraper():
     print("CRELAN HOME LOAN SCRAPE PROCESSING ...")
     tab_Column = ['PROVIDER ', 'CATEGORY ', 'LOAN TYPE', ' PAY FROM \n(month payment in euros)', 'TO', ' FOR \n (duration in years)',
