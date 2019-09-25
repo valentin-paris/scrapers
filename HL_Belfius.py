@@ -3,7 +3,8 @@ import DataUtils
 import ast
 
 try:
-    data_as_frameList = tabula.read_pdf("https://www.belfius.be/imagingservlet/GetDocument?src=mifid&id=TARIFLOANFIDELITY_FR", pages= "all", multiple_tables=True )
+    data_as_frameList = tabula.read_pdf("https://www.belfius.be/imagingservlet/GetDocument?src=mifid&id=TARIFLOANFIDELITY_FR",
+                                        pages= "all", multiple_tables=True )
 except:
     data_as_frameList = None
 
@@ -12,7 +13,7 @@ except:
 def computeRateFrom(rate_string):
     return ast.literal_eval(rate_string.split(" ")[0].replace(",", "."))
 
-#convert rate to string from 1.96 to 1,96 %
+#convert rate to string eg from 1.96 to 1,96 %
 def convertRate_to_String(rate):
     return "{} %".format(str(rate).replace(".", ","))
 

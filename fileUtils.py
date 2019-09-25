@@ -42,12 +42,15 @@ def exportListToCsv(listData, tableColumns, directoryName, fileName):
     checkToCreate(directoryName)
     name = computeFileName(fileName)
     frame = pd.DataFrame(listData, columns=tableColumns)
-    frame.to_csv(os.path.join(os.getcwd(), directoryName, name), index=False)
+    frame.to_csv(os.path.join(os.getcwd(), directoryName, name), index=False, sep=';')
 
 
 # compare csv file content with list content and returns the difference
 def compareFileAndList(fichier, directory, todayScrape):
-    frame = pd.read_csv(os.path.join(os.getcwd(), directory, fichier))
+    try:
+        frame = pd.read_csv(os.path.join(os.getcwd(), directory, fichier), sep=';')
+    except:
+        frame = pd.read_csv(os.path.join(os.getcwd(), directory, fichier))
     currentContent = frame.values.tolist()
     return [lines for lines in todayScrape if (lines not in currentContent)]
 
