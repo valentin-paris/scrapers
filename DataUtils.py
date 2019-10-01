@@ -77,8 +77,8 @@ def home_loan_scraper(bank, b_data):
     print("{} HOME LOAN PROCESSING ...".format(bank))
     tab_col = ["PROVIDER", "CATEGORY", "CREDIT TYPE", "TERM", "RATE"]
     if b_data:
-        fileUtils.displayRates(tab_col, b_data)
-        # return processData(b_data, tab_col, "{} HOME LOANS".format(bank.upper()), "{}_hl_rates".format(bank.lower()))
+        # fileUtils.displayRates(tab_col, b_data)
+        return processData(b_data, tab_col, "{} HOME LOANS".format(bank.upper()), "{}_hl_rates".format(bank.lower()))
 
 #design for carrefour data
 def process_crf_data(dataMatrix, tab_Column, directoryName, fileName):

@@ -79,10 +79,10 @@ def variable_rate_procedure():
             return None
 
 def scraper():
-    print("BELFIUS HOME LOAN PROCESSING ...")
+    print("BELFIUS HOME LOAN PROCESSING...")
     return fix_rate_procedure() + variable_rate_procedure()
 
-scraper()
+# scraper()
 
 
 

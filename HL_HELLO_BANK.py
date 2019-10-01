@@ -28,4 +28,4 @@ def scraper():
     return DataUtils.home_loan_scraper("hello bank", bankData())
 
 
-scraper()
+# scraper()

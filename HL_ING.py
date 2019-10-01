@@ -64,12 +64,7 @@ def bank_data():
 
 
 def scraper():
-    print("ING HOME LOAN PROCESSING ...")
-    tab_col = ["PROVIDER", "CATEGORY", "CREDIT TYPE", "TERM", "RATE"]
-    data_matrix = bank_data()
-    if data_matrix:
-        # fileUtils.displayRates(tab_col, data_matrix)
-        return DataUtils.processData(data_matrix, tab_col, "BVBR HOME LOANS", "bvbr_hl_rates")
+    return DataUtils.home_loan_scraper("ING", bank_data())
 
 # scraper()
 

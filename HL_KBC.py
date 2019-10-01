@@ -64,7 +64,7 @@ def scraper():
     data_matrix = bankData()
     if data_matrix:
         # fileUtils.displayRates(tab_col, data_matrix)
-        return DataUtils.processData(data_matrix, tab_col, "BVBR HOME LOANS", "bvbr_hl_rates")
+        return DataUtils.processData(data_matrix, tab_col, "KBC HOME LOANS", "kbc_hl_rates")
 
 
-# scraper()
+scraper()

@@ -46,7 +46,7 @@ position = {
 def req_for_frame(coordinates):
     try:
         return read_pdf('https://www.banquevanbreda.be/media/2675/tariefregeling-jvb-fr-293.pdf', encoding='ISO-8859-1',
-                       pages=1, area=coordinates, pandas_options={'header': None})
+                       pages=1, area=coordinates, pandas_options={'header': None}, silent=True)
     except:
         print("THE BVBR LINK FOR HOME LOANS HAS BEEN MODIFIED PLEASE CHECK FOR THE NEW LINK ON THE WEBSITE! ")
         return None
@@ -82,4 +82,4 @@ def scraper():
         # fileUtils.displayRates(tab_col, data_matrix)
         return DataUtils.processData(data_matrix, tab_col, "BVBR HOME LOANS", "bvbr_hl_rates")
 
-# scraper()
+scraper()

@@ -83,6 +83,7 @@ def variable_rate_procedure():
             # fileUtils.displayRates(tab_col, data_matrix)
 
 def scraper():
+    print("ARGENTA HOME LOAN PROCESSING ...")
     return fixed_rate_procedure() + variable_rate_procedure()
 
 
