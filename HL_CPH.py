@@ -27,4 +27,4 @@ def scraper():
         # fileUtils.displayRates(tab_col, data_matrix)
         return DataUtils.processData(data_matrix, tab_col, "BVBR HOME LOANS", "bvbr_hl_rates")
 
-scraper()
+# scraper()

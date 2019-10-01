@@ -36,6 +36,14 @@ def checkToCreate(dirName):
     if not os.path.exists(final_path):
         os.makedirs(final_path)
 
+#returns the delimiter of a csv wether , or ;
+def detectDelimiter(csvFile):
+    with open(csvFile, 'r') as myCsvfile:
+        header=myCsvfile.readline()
+        if header.find(";")!=-1:
+            return ";"
+        else:
+            return ","
 
 # export a dataFrame from ListData as csv in a given folder
 def exportListToCsv(listData, tableColumns, directoryName, fileName):
@@ -47,10 +55,8 @@ def exportListToCsv(listData, tableColumns, directoryName, fileName):
 
 # compare csv file content with list content and returns the difference
 def compareFileAndList(fichier, directory, todayScrape):
-    try:
-        frame = pd.read_csv(os.path.join(os.getcwd(), directory, fichier), sep=';')
-    except:
-        frame = pd.read_csv(os.path.join(os.getcwd(), directory, fichier))
+    file_path = os.path.join(os.getcwd(), directory, fichier)
+    frame = pd.read_csv(os.path.join(os.getcwd(), directory, fichier), sep=detectDelimiter(file_path))
     currentContent = frame.values.tolist()
     return [lines for lines in todayScrape if (lines not in currentContent)]
 
@@ -211,19 +217,6 @@ def send_email_to(send_to, subject, message, filesToAttach):
 
         # Terminate the SMTP session and close the connection
         s.quit()
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

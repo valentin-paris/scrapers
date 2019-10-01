@@ -15,6 +15,18 @@ import Elantis_rates
 import Santander_rates
 import BNPPF_Loan_Rates
 import Cofidis_rates
+import HL_Argenta
+import HL_Belfius
+import HL_BNPPF
+import HL_BVBR
+import HL_CBC
+import HL_CPH
+import HL_FEDERALE_ASS
+import HL_HELLO_BANK
+import HL_ING
+import HL_KBC
+import HomeLoan_BPOST
+
 
 mailList = ['alerts@topcompare.be', 'quentin@topcompare.be', "bernaud.toukam@topcompare.be"]
 mailTest = ["bernaud.toukam@topcompare.be"]
@@ -35,7 +47,18 @@ tcBanksScrapers = {
     'ELANTIS': Elantis_rates.elantisLoanScraper,
     'SANTANDER': Santander_rates.santanderLoanScraper,
     'BNPPF': BNPPF_Loan_Rates.scraper,
-    "COFIDIS": Cofidis_rates.cofidisLoanScraper
+    "COFIDIS": Cofidis_rates.cofidisLoanScraper,
+    "HOME LOAN ARGENTA": HL_Argenta.scraper,
+    "HOME LOAN BELFIUS": HL_Belfius.scraper,
+    "HOME LOAN BNPPF": HL_BNPPF.scraper,
+    "HOME LOAN BVBR": HL_BVBR.scraper,
+    "HOME LOAN CBC": HL_CBC.scraper,
+    "HOME LOAN CPH": HL_CPH.scraper,
+    "HOME LOAN FEDERALE ASSUR": HL_FEDERALE_ASS.scraper,
+    "HOME LOAN HELLO BANK": HL_HELLO_BANK.scraper,
+    "HOME LOAN ING": HL_ING.scraper,
+    "HOME LOAN KBC": HL_KBC.scraper,
+    "HOME LOAN BPOST": HomeLoan_BPOST.scraper
  }
 
 def tcLoanScrape():

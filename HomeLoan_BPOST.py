@@ -72,7 +72,7 @@ def formatData():
     return [["BPOST", "HOME LOAN", min_max_LoanAmount()[0], min_max_LoanAmount()[1]] + requestForRates()] if min_max_LoanAmount() and requestForRates() else None
 
 
-def hl_scraper():
+def scraper():
     datamatrix = formatData()
     if datamatrix:
         return DataUtils.processData(datamatrix, tab_col, "BPOST HOME LOANS", "Bpost_hl_rates")
