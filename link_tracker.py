@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 from fileUtils import no_double
 import json
 import fileUtils
-from termcolor import colored
+
 
 
 mailList = ['alerts@topcompare.be', 'quentin@topcompare.be', "bernaud.toukam@topcompare.be"]
@@ -112,4 +112,3 @@ u ="https://www.topcompare.be/externalredirect?sendTo"
 # print(r.elapsed.total_seconds())
 
 
-print(check_links())
