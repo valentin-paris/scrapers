@@ -1,5 +1,6 @@
 from tabula import read_pdf
 import DataUtils
+from DataUtils import home_loan_scraper
 # import fileUtils
 
 cpt = lambda d: d*(72/25.4)
@@ -75,11 +76,6 @@ def bank_data():
     return bank_data
 
 def scraper():
-    print("BVBR HOME LOAN PROCESSING ...")
-    tab_col = ["PROVIDER", "CATEGORY", "CREDIT TYPE", "TERM", "RATE"]
-    data_matrix = bank_data()
-    if data_matrix:
-        # fileUtils.displayRates(tab_col, data_matrix)
-        return DataUtils.processData(data_matrix, tab_col, "BVBR HOME LOANS", "bvbr_hl_rates")
+    return home_loan_scraper("BVBR", bank_data())
 
-scraper()
+# scraper()

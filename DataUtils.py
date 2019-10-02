@@ -74,11 +74,14 @@ def compute_coord_from_object( positions, l_object):
 
 #design for home loan
 def home_loan_scraper(bank, b_data):
-    print("{} HOME LOAN PROCESSING ...".format(bank))
     tab_col = ["PROVIDER", "CATEGORY", "CREDIT TYPE", "TERM", "RATE"]
     if b_data:
-        # fileUtils.displayRates(tab_col, b_data)
-        return processData(b_data, tab_col, "{} HOME LOANS".format(bank.upper()), "{}_hl_rates".format(bank.lower()))
+        try:
+            print("{} HOME LOAN PROCESSING ...".format(bank))
+            fileUtils.displayRates(tab_col, b_data)
+            # return processData(b_data, tab_col, "{} HOME LOANS".format(bank.upper()), "{}_hl_rates".format(bank.lower()))
+        except:
+            print("THE STRUCTURE OF {} HOME LOAN PDF HAS BEEN MODIFIED PLEASE PROCESS IT BACK!".format(bank))
 
 #design for carrefour data
 def process_crf_data(dataMatrix, tab_Column, directoryName, fileName):

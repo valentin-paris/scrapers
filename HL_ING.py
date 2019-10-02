@@ -43,7 +43,7 @@ def get_frame_by_coord(coordinates):
         return read_pdf("https://www.ing.be/static/legacy/SiteCollectionDocuments/Bareme_CH_FR.pdf", encoding='ISO-8859-1',
                         pages="1",  area=coordinates)
     except:
-        print("THE LINK CBC FOR HOME LOAN IS NOT AVAILABLE PLEASE CHECK ON THE WEB SITE")
+        print("THE LINK ING FOR HOME LOAN IS NOT AVAILABLE PLEASE CHECK ON THE WEB SITE")
         return None
 
 def bank_data():

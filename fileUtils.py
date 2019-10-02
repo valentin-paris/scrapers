@@ -176,14 +176,14 @@ def carrefourRatesUpdate(fileName, dirName, dailyScrape, tabColumns, fileForEmai
 # send a mail with potentially attached file
 def send_email_to(send_to, subject, message, filesToAttach):
     for mailUser in send_to:
-        s = smtplib.SMTP(host='smtp.gmail.com', port=587)
-        # s = smtplib.SMTP(host='smtp-pulse.com', port=2525)
+        # s = smtplib.SMTP(host='smtp.gmail.com', port=587)
+        s = smtplib.SMTP(host='smtp-pulse.com', port=2525)
         s.starttls()
-        s.login('tcdailyscrape@gmail.com', 'donotreply0001')
-        # s.login('quentindenis@topcompare.be', 'ZL8WNiqHsF')
+        # s.login('tcdailyscrape@gmail.com', 'donotreply0001')
+        s.login('quentin@topcompare.be', 'TopCompare2019')
 
         msg = MIMEMultipart()
-        msg['From'] = 'tcdailyscrape@gmail.com'
+        msg['From'] = 'info@email.topcompare.be'
         msg['To'] = mailUser
         msg['Subject'] = subject
 
@@ -217,7 +217,6 @@ def send_email_to(send_to, subject, message, filesToAttach):
 
         # Terminate the SMTP session and close the connection
         s.quit()
-
 
 
 

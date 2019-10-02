@@ -30,7 +30,7 @@ headers = {
 cphProducts = {
                 'personal': (30, 'CPHX0001'),
                 'new car': (110, 'CPHX0004'),
-                'second hand car under 24 months': (116, 'CPHX0005'),
+                'second hand car under 24 months': (116, 'CPHX0004'),
                 'second hand car under 60 months': (117, 'CPHX0005'),
                 'renovation max 84 months': (12, 'CPHX0002'),
                 'renovation 84-120 months': (56, 'CPHX0002'),

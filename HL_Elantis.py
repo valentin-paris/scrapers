@@ -50,6 +50,7 @@ def bank_data():
                 print(term)
                 loan_list = req_data_for_loan(h_type, mnt, term)
                 for l in loan_list:
+                    print(l)
                     print(".", end='')
                     l["h_type"] = h_type
                     data_for_htype.append(l)
@@ -77,3 +78,5 @@ for i in range(len(test)):
             print(test[i][j][t])
 
 # print(req_data_for_loan("home", 25000, 22))
+
+print(bank_data())
