@@ -64,9 +64,10 @@ def check_links():
                 link = construct_link(product["link"]) if product["link"].startswith("/externalredirect") else product["link"]
                 if not (is_link_functional(link) and is_link_functional(api_product["linkGeneralDesktop"])):
                     general_message.append("there is a problem with the link  '{}'  please check on the web site!".format(api_product["name"]))
-    if general_message:
-        fileUtils.send_email_to(mailTest, "important  some personal loan links may be down!!", general_message, [])
+    if not general_message:
+        general_message += ["all the personal loan links are functional"]
     return general_message
+
 
 
 
@@ -112,3 +113,15 @@ u ="https://www.topcompare.be/externalredirect?sendTo"
 # print(r.elapsed.total_seconds())
 
 
+import json
+
+with open('json_data.txt') as json_file:
+    data = json.load(json_file)
+    print(data["username"]== "quentin@topcompare.be")
+
+    # for p in data:
+    #     print(data[p])
+
+credentials = json.load(open("json_data.txt"))
+
+print(credentials)

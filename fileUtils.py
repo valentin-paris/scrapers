@@ -10,6 +10,7 @@ from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 from email import encoders
 import ntpath
+import json
 
 #a custom function to remove duplicates from a list might be usefull
 no_double = lambda l : [] if l == [] else no_double(l[:-1]) + [l[-1]] if l[-1] not in l[:-1] else no_double(l[:-1])
@@ -176,14 +177,15 @@ def carrefourRatesUpdate(fileName, dirName, dailyScrape, tabColumns, fileForEmai
 # send a mail with potentially attached file
 def send_email_to(send_to, subject, message, filesToAttach):
     for mailUser in send_to:
-        username, password = open("credential.txt", "r").readline().strip().split(':')
+        #load the server configuration from an external json file
+        config = json.load(open("json_data.txt"))
         # s = smtplib.SMTP(host='smtp.gmail.com', port=587)
-        s = smtplib.SMTP(host='smtp-pulse.com', port=2525)
+        s = smtplib.SMTP(host=config['server'], port=config['port'])
         s.starttls()
         # s.login('tcdailyscrape@gmail.com', 'donotreply0001')
-        s.login(username, password)
+        s.login(config['username'], config['password'])
         msg = MIMEMultipart()
-        msg['From'] = 'info@email.topcompare.be'
+        msg['From'] = config['sender_email']
         msg['To'] = mailUser
         msg['Subject'] = subject
 

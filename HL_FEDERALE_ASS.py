@@ -33,5 +33,5 @@ def scraper():
     return home_loan_scraper("FEDERALE", bankData())
 
 
-print(scraper())
+# print(scraper())
 
