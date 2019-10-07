@@ -28,9 +28,9 @@ import HL_KBC
 import HL_BPOST
 from link_tracker import check_links
 
-
 mailList = ['alerts@topcompare.be', 'quentin@topcompare.be', "bernaud.toukam@topcompare.be"]
 mailTest = ["bernaud.toukam@topcompare.be"]
+console_file = "console_output.txt"
 
 tcBanksScrapers = {
     'ING': ING_Rates.iNGLoanscraper,
@@ -63,6 +63,8 @@ tcBanksScrapers = {
  }
 
 def tcLoanScrape():
+    import sys
+    sys.stdout = open(console_file, 'w')
     filesToBeMailed = []
     generalMessage = []
     for bank in tcBanksScrapers:
@@ -76,10 +78,19 @@ def tcLoanScrape():
     if not generalMessage:
         generalMessage += ['the scraper executed sucessfully and there is no change in the rates!']
     generalMessage += ["LINKS STATUS: "] + check_links()
-    fileUtils.send_email_to(mailTest, 'daily scrape', generalMessage, filesToBeMailed)
     print(filesToBeMailed, generalMessage)
+    sys.stdout.close()
+    filesToBeMailed += [fileUtils.get_console_file(console_file)]
+    fileUtils.send_email_to(mailTest, 'daily scrape', generalMessage, filesToBeMailed)
+    # fileUtils.send_console_output(mailList, console_file)
+
 
 tcLoanScrape()
+
+
+
+
+
 
 
 

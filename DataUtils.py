@@ -78,8 +78,8 @@ def home_loan_scraper(bank, b_data):
     if b_data:
         try:
             print("{} HOME LOAN PROCESSING ...".format(bank))
-            fileUtils.displayRates(tab_col, b_data)
-            # return processData(b_data, tab_col, "{} HOME LOANS".format(bank.upper()), "{}_hl_rates".format(bank.lower()))
+            # fileUtils.displayRates(tab_col, b_data)
+            return processData(b_data, tab_col, "{} HOME LOANS".format(bank.upper()), "{}_hl_rates".format(bank.lower()))
         except:
             print("THE STRUCTURE OF {} HOME LOAN PDF HAS BEEN MODIFIED PLEASE PROCESS IT BACK!".format(bank))
 

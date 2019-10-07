@@ -9,24 +9,9 @@ import urllib3
 
 url = "https://loans.dhbbank.com/BelgiumLoanAppForm/Home/CalculateInterestRate"
 
-headers = {
-    'Connection': "keep-alive",
-    'Content-Length': "53",
-    'Accept': "application/json, text/javascript, */*; q=0.01",
-    'X-Requested-With': "XMLHttpRequest",
-    'User-Agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.100 Safari/537.36",
-    'Sec-Fetch-Mode': "cors",
-    'Content-Type': "application/json;",
-    'Origin': "https://loans.dhbbank.com",
-    'Sec-Fetch-Site': "same-origin",
-    'Referer': "https://loans.dhbbank.com/BelgiumLoanAppForm?langue=fr",
-    'Accept-Encoding': "gzip, deflate, br",
-    'Accept-Language': "fr-FR,fr;q=0.9,en-US;q=0.8,en;q=0.7",
-    'Cache-Control': "no-cache",
-    'Postman-Token': "bfff3f0a-e283-44f8-8e31-a9a9e2db5005,d480cc24-d0b0-417b-87e6-9d31a2f2820e",
-    'Host': "loans.dhbbank.com",
-    'cache-control': "no-cache"
-    }
+
+
+
 
 loanAmtRange = list(range(5000, 14000, 500)) + list(range(14000, 101000, 1000))
 
@@ -35,6 +20,22 @@ dHBLoanTypes = {
 }
 
 def makeRequestFor(creditType, amount, duration):
+    headers = {
+        'Connection': "keep-alive",
+        'Content-Length': "52",
+        'Accept': "application/json, text/javascript, */*; q=0.01",
+        'Origin': "https://loans.dhbbank.be",
+        'X-Requested-With': "XMLHttpRequest",
+        'User-Agent': "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Mobile Safari/537.36",
+        'Sec-Fetch-Mode': "cors",
+        'Content-Type': "application/json;",
+        'Sec-Fetch-Site': "same-origin",
+        'Cache-Control': "no-cache",
+        'Postman-Token': "b41e2ead-3420-4d32-94e9-72900c6d1caf,12d5e852-61e2-4a75-8e13-80a99fd0cbec",
+        'Host': "loans.dhbbank.be",
+        'Accept-Encoding': "gzip, deflate",
+        'cache-control': "no-cache"
+    }
     try:
         payload2 = {
                     "CreditId": creditType,
@@ -54,11 +55,11 @@ def bankData():
         loanData = []
         for amnt in loanAmtRange:
             print('.', end='')
-            loanJson = makeRequestFor(dHBLoanTypes[lType][0], amnt, duration=24)
+            loanJson = makeRequestFor(dHBLoanTypes[lType][0], amnt, duration=36)
             try:
                 loanJson['rate'] = loanJson['InterestModel']['InterestRate']
                 loanJson['amount'] = amnt
-                loanJson['duration'] = 24
+                loanJson['duration'] = 36
                 loanJson['type'] = lType
                 loanJson['productID'] = dHBLoanTypes[lType][1]
                 loanData.append(loanJson)
@@ -66,7 +67,7 @@ def bankData():
                 loanJson = {}
                 print('OUPS this is not a valid request!')
             if loanJson:
-                for term in range(36, loanJson['MonthlyModel']['MonthMax']+12, 12):
+                for term in range(42, loanJson['MonthlyModel']['MonthMax']+12, 12):
                     moreLoan = makeRequestFor(dHBLoanTypes[lType][0], amnt, term)
                     try:
                         moreLoan['rate'] = moreLoan['InterestModel']['InterestRate']
@@ -94,5 +95,7 @@ def dHBLoanScraper():
 
 
 
+
+# dHBLoanScraper()
 
 

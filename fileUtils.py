@@ -2,7 +2,6 @@ from tabulate import tabulate
 import pandas as pd
 import os
 import time
-import datetime
 import glob
 import smtplib
 from email.mime.multipart import MIMEMultipart
@@ -178,14 +177,16 @@ def carrefourRatesUpdate(fileName, dirName, dailyScrape, tabColumns, fileForEmai
 def send_email_to(send_to, subject, message, filesToAttach):
     for mailUser in send_to:
         #load the server configuration from an external json file
-        config = json.load(open("json_data.txt"))
-        # s = smtplib.SMTP(host='smtp.gmail.com', port=587)
-        s = smtplib.SMTP(host=config['server'], port=config['port'])
+        # config = json.load(open("credential.txt"))
+        test_config = json.load("json_data.txt")
+        s = smtplib.SMTP(host=test_config['server'], port=test_config['port'])
+        # s = smtplib.SMTP(host=config['server'], port=config['port'])
         s.starttls()
-        # s.login('tcdailyscrape@gmail.com', 'donotreply0001')
-        s.login(config['username'], config['password'])
+        s.login(test_config['username'], test_config['password'])
+        # s.login(config['username'], config['password'])
         msg = MIMEMultipart()
-        msg['From'] = config['sender_email']
+        # msg['From'] = config['sender_email']
+        msg['From'] = test_config['sender_email']
         msg['To'] = mailUser
         msg['Subject'] = subject
 
@@ -220,5 +221,10 @@ def send_email_to(send_to, subject, message, filesToAttach):
         # Terminate the SMTP session and close the connection
         s.quit()
 
+
+
+def get_console_file(file_name):
+    pth = "{}/{}".format(os.getcwd(), file_name)
+    return pth if os.path.isfile(pth) else ""
 
 
