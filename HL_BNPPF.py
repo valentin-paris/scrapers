@@ -123,6 +123,8 @@ def bank_data():
     return bank_data
 
 def scraper():
+    import sys
+    sys.stdout.reconfigure(encoding='utf-8')
     return DataUtils.home_loan_scraper("BNPPF", bank_data())
 
 # scraper()

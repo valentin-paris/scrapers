@@ -3,6 +3,8 @@ from tabula import read_pdf
 import DataUtils
 # import fileUtils
 
+
+url = "https://www.ing.be/static/legacy/SiteCollectionDocuments/Bareme_CH_FR.pdf"
 try:
     data_as_frameList = tabula.read_pdf("https://www.ing.be/static/legacy/SiteCollectionDocuments/Bareme_CH_FR.pdf",
                                         pages= "1", silent=True,  multiple_tables=True )
@@ -67,6 +69,8 @@ def scraper():
     return DataUtils.home_loan_scraper("ING", bank_data())
 
 # scraper()
+
+
 
 
 

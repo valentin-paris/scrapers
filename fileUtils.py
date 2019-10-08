@@ -21,7 +21,8 @@ show_double = lambda l : [] if l == [] else show_double(l[:-1]) + [l[-1]] if l[-
 def displayRates(colonnes, content):
     print(tabulate(
         pd.DataFrame(content, columns=colonnes),
-        headers='keys', tablefmt='psql', showindex="never"))
+        headers='keys', showindex="never", tablefmt='psql'))
+
 
 
 # create a custom name for the file
@@ -177,16 +178,16 @@ def carrefourRatesUpdate(fileName, dirName, dailyScrape, tabColumns, fileForEmai
 def send_email_to(send_to, subject, message, filesToAttach):
     for mailUser in send_to:
         #load the server configuration from an external json file
-        # config = json.load(open("credential.txt"))
-        test_config = json.load("json_data.txt")
-        s = smtplib.SMTP(host=test_config['server'], port=test_config['port'])
-        # s = smtplib.SMTP(host=config['server'], port=config['port'])
+        config = json.load(open("credential.txt"))
+        # test_config = json.load(open("json_data.txt"))
+        # s = smtplib.SMTP(host=test_config['server'], port=test_config['port'])
+        s = smtplib.SMTP(host=config['server'], port=config['port'])
         s.starttls()
-        s.login(test_config['username'], test_config['password'])
-        # s.login(config['username'], config['password'])
+        # s.login(test_config['username'], test_config['password'])
+        s.login(config['username'], config['password'])
         msg = MIMEMultipart()
-        # msg['From'] = config['sender_email']
-        msg['From'] = test_config['sender_email']
+        msg['From'] = config['sender_email']
+        # msg['From'] = test_config['sender_email']
         msg['To'] = mailUser
         msg['Subject'] = subject
 

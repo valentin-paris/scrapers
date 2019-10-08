@@ -134,7 +134,6 @@ def is_link_functional(link):
         except:
             return False
 
-
 def car_links_from_api():
     url = "https://www.topcompare.be/api/personal-loan/v2/loans/vehicleLoan"
 
@@ -146,7 +145,6 @@ def car_links_from_api():
     response = requests.request("GET", url, params=querystring)
 
     return (json.loads(response.text)["products"])
-
 
 def pers_links_from_api():
     url = "https://www.topcompare.be/api/personal-loan/v2/loans/personalLoan"

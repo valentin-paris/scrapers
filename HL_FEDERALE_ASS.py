@@ -25,13 +25,17 @@ def bankData():
             l_type = all_loans[i+1].upper()
             l_data = data_as_frameList[i].values.tolist()[3:]
             for line in l_data:
-                bankData.append(["FEDERALE ASSUR", "HOME LOAN", l_type, line[0], line[1]])
+                bankData.append(["FEDERALE ASSUR", "HOME LOAN", l_type, line[0][1:], line[1]])
     return bankData
 
 
 def scraper():
+    import sys
+    sys.stdout.reconfigure(encoding='utf-8')
     return home_loan_scraper("FEDERALE", bankData())
 
-
-
+# print(scraper())
+# scraper()
+#
+# print(data_as_frameList)
 
