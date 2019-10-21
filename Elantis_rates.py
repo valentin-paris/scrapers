@@ -128,7 +128,7 @@ def elantisLoanScraper():
     data_matrix = formatDataFromBank(bankData(), 'ELANTIS')
     if data_matrix:
         fileUtils.displayRates(tab_col, data_matrix)
-        return fileUtils.upToDate('elantis_rates', 'ELANTIS SCRAPE', data_matrix, tab_col, [])
+        return fileUtils.upToDate('elantis_rates', 'ELANTIS SCRAPE', data_matrix, tab_col)
     else:
         return None
 

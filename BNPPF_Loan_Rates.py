@@ -176,7 +176,7 @@ def loanProcedure(pdt):
     data_matrix = formatDataFromBank(pdt_bank_data(pdt), 'BNPPF')
     if data_matrix:
         fileUtils.displayRates(tab_col, data_matrix)
-        return fileUtils.upToDate('bnp_{}_rates'.format(pdt.lower()), 'BNP SCRAPE', data_matrix, tab_col, [])
+        return fileUtils.upToDate('bnp_{}_rates'.format(pdt.lower()), 'BNP SCRAPE', data_matrix, tab_col)
     else:
         return None
 

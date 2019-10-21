@@ -59,7 +59,7 @@ def bankData():
 
 def processData(dataMatrix, tab_Column, directoryName, fileName):
     fileUtils.displayRates(tab_Column, dataMatrix)
-    return fileUtils.upToDate(fileName, directoryName, dataMatrix, tab_Column, [])
+    return fileUtils.upToDate(fileName, directoryName, dataMatrix, tab_Column)
 
 def europaLoanScraper():
    print('EUROPA BANK LOAN SCRAPE PROCESSING: ')

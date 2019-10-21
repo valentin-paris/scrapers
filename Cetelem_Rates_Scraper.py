@@ -90,7 +90,7 @@ def cetelemLoanProcedure(category):
     print()
     dataMatrix = formatDataFrom(createGroups(category, loanData), 'CETELEM')
     fileUtils.displayRates(tab_Column, dataMatrix)
-    return fileUtils.upToDate(category, 'CETELEM SCRAPING', dataMatrix, tab_Column, [])
+    return fileUtils.upToDate(category, 'CETELEM SCRAPING', dataMatrix, tab_Column)
     # return dataMatrix
 
 

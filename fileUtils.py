@@ -24,7 +24,6 @@ def displayRates(colonnes, content):
         headers='keys', showindex="never", tablefmt='psql'))
 
 
-
 # create a custom name for the file
 def computeFileName(name):
     return "{}_{}.csv".format(name, time.strftime("%Y-%m-%d %H.%M.%S"))
@@ -78,8 +77,9 @@ def moveToHistory(dirName, fileNamne, file):
 
 # update the directory with file in case of change
 # dailyScrape schould be a matrix ie list of list
-def upToDate(fileName, dirName, dailyScrape, tabColumns, fileForEmail):
+def upToDate(fileName, dirName, dailyScrape, tabColumns):
     checkToCreate(dirName)
+    fileForEmail = []
     found = False
     # if the folder is not empty
     if os.listdir(os.path.join(os.getcwd(), dirName)):
@@ -139,7 +139,7 @@ def createNewFrame(dailyscrape, curentContent):
         curentContent = trace_loan(curentContent, dailyscrape[0])
         return createNewFrame(dailyscrape[1:], curentContent)
 
-
+#returns the content of csv file as list
 def getFileContentAsList(fileName, directory):
     if os.path.exists(os.path.join(os.getcwd(), directory)):
         if os.listdir(os.path.join(os.getcwd(), directory)):
@@ -221,8 +221,6 @@ def send_email_to(send_to, subject, message, filesToAttach):
 
         # Terminate the SMTP session and close the connection
         s.quit()
-
-
 
 def get_console_file(file_name):
     pth = "{}/{}".format(os.getcwd(), file_name)
