@@ -34,8 +34,5 @@ def scraper():
     sys.stdout.reconfigure(encoding='utf-8')
     return home_loan_scraper("FEDERALE", bankData())
 
-# print(scraper())
-# scraper()
-#
-# print(data_as_frameList)
+
 

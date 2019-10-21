@@ -30,7 +30,7 @@ def fix_rate_procedure():
     tab_col = ["PROVIDER", "CREDIT TYPE", "CATEGORY", "MIN TERM", "MAX TERM", "MONTH RATE", "ANNUAL RATE"]
     reduced_values = getMinoredValues()
     if data_as_frameList:
-        try :
+        try:
             dataMatrix = data_as_frameList[2].values.tolist()[2:]
             for i in range(len(dataMatrix)):
                 dataMatrix[i][3:] = [
