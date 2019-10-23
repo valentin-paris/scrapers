@@ -28,7 +28,8 @@ import HL_KBC
 import HL_BPOST
 from link_tracker import check_links
 
-mailList = ['alerts@topcompare.be', 'quentin@topcompare.be', "bernaud.toukam@topcompare.be"]
+mailList = ['alerts@topcompare.be', 'quentin@topcompare.be', "bernaud.toukam@topcompare.be",
+            "jihane.elkhyari@topcompare.be", "thomas.saclier@topcompare.be"]
 mailTest = ["bernaud.toukam@topcompare.be"]
 console_file = "console_output.txt"
 

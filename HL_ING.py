@@ -40,6 +40,8 @@ def compute_coord_from_object(object):
             ]
 
 
+
+link = "https://www.ing.be/static/legacy/SiteCollectionDocuments/Bareme_CH_FR.pdf"
 def get_frame_by_coord(coordinates):
     try:
         return read_pdf("https://www.ing.be/static/legacy/SiteCollectionDocuments/Bareme_CH_FR.pdf", encoding='ISO-8859-1',
@@ -69,6 +71,8 @@ def scraper():
     return DataUtils.home_loan_scraper("ING", bank_data())
 
 # scraper()
+
+
 
 
 

@@ -174,7 +174,8 @@ def carrefourRatesUpdate(fileName, dirName, dailyScrape, tabColumns, fileForEmai
     return fileForEmail
 
 
-# send a mail with potentially attached file
+# send a mail with potentially attached file all parameters should be list of element except the subject
+#send_to list of recipients, message list of strings, filesToAttach list of file path
 def send_email_to(send_to, subject, message, filesToAttach):
     for mailUser in send_to:
         #load the server configuration from an external json file
@@ -225,5 +226,7 @@ def send_email_to(send_to, subject, message, filesToAttach):
 def get_console_file(file_name):
     pth = "{}/{}".format(os.getcwd(), file_name)
     return pth if os.path.isfile(pth) else ""
+
+
 
 
