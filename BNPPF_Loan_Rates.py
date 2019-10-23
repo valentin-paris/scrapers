@@ -26,7 +26,7 @@ prodctTypes = {
     },
     "NEW ECO_CAR":{
         "code": "216",
-        "product_ID": "BNPF0003"
+        "product_ID": "BNPF0008"
     },
     "SOFT_MOBILITY_NEW": {
         "code": "246",
