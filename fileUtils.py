@@ -108,13 +108,14 @@ def getLatestUpdate(directory, name):
         return max(list_of_files, key=os.path.getctime)
 
 '''
-    because the request data are never the same after each request ie the data_set rotates upon request, 
+    because the response data are never the same after each request ie the data_set rotates upon request, 
     the carrefour procedure first create a base knowledge of all the data_set that are already been requested
     and can therefore the scrape becomes sensitive only to relevant changes...
 '''
 #designed for carrefour loan scraper
 
-#trace if a loan is present in the current loan_base
+#trace if a loan is present in the current loan_base the current content is a
+# 2 dimensional list and the line is a simple list
 def trace_loan(current_content, line):
     if current_content == []:
         return [line]

@@ -83,13 +83,17 @@ def bankData():
             for amount in loanRangePerMonth[term]:
                 for eachTerm in range(12, term + 6, 6):
                     print('.', end='')
-                    loanJson = requestDataFor(loanId, amount, eachTerm)
-                    loanJson['rate'] = float(loanJson['personalProperty']['yearInterestPercent']['V'])
-                    loanJson['type'] = loanId
-                    loanJson['amount'] = float(loanJson['personalProperty']['loanAmount']['V'])
-                    loanJson['duration'] = eachTerm
-                    loanJson['productID'] = loantTypes[loanId][1]
-                    loanData.append(loanJson)
+                    try:
+                        loanJson = requestDataFor(loanId, amount, eachTerm)
+                    except:
+                        loanJson = None
+                    if loanJson:
+                        loanJson['rate'] = float(loanJson['personalProperty']['yearInterestPercent']['V'])
+                        loanJson['type'] = loanId
+                        loanJson['amount'] = float(loanJson['personalProperty']['loanAmount']['V'])
+                        loanJson['duration'] = eachTerm
+                        loanJson['productID'] = loantTypes[loanId][1]
+                        loanData.append(loanJson)
         print()
         bankData.append(loanData)
     return bankData
@@ -125,6 +129,9 @@ def kBC_loan_scrape():
 
 
 # kBC_loan_scrape()
+
+
+
 
 
 

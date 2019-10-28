@@ -49,7 +49,7 @@ def makeDataRequestFor(amount, category, duration):
     response = requests.request("POST", url, json=payload, headers=headers, params=querystring)
     return json.loads(response.text[6:])
 
-def buildStructuredData():
+def bank_data():
     structuredData = []
     print('CBC LOAN SCRAPE PROCESSING ', end='')
     for category in loanTypes:
@@ -58,13 +58,21 @@ def buildStructuredData():
                 ratePerMonth = []
                 for duration in amntToMonthRanges[amtRange]:
                     print('.', end='')
-                    dataForAmtAndDuration = makeDataRequestFor(amount, category, duration)
-                    dataForAmtAndDuration['type'] = category
-                    dataForAmtAndDuration['amount'] = amount
-                    dataForAmtAndDuration['duration'] = duration
-                    dataForAmtAndDuration['rate'] = dataForAmtAndDuration['personalProperty']['yearInterestPercent']['V']
-                    dataForAmtAndDuration['productID'] = loanTypes[category][1]
-                    ratePerMonth.append(dataForAmtAndDuration)
+                    try:
+                        dataForAmtAndDuration = makeDataRequestFor(amount, category, duration)
+                    except:
+                        print(amount)
+                        print(duration)
+                        print(category)
+                        dataForAmtAndDuration = None
+
+                    if dataForAmtAndDuration:
+                        dataForAmtAndDuration['type'] = category
+                        dataForAmtAndDuration['amount'] = amount
+                        dataForAmtAndDuration['duration'] = duration
+                        dataForAmtAndDuration['rate'] = dataForAmtAndDuration['personalProperty']['yearInterestPercent']['V']
+                        dataForAmtAndDuration['productID'] = loanTypes[category][1]
+                        ratePerMonth.append(dataForAmtAndDuration)
                 structuredData.append(ratePerMonth)
         print()
     return structuredData
@@ -89,7 +97,7 @@ def formatDataFrom(groups, provider):
     return frameToExport
 
 def cbcLoanScraper():
-    cbcBankData = buildStructuredData()
+    cbcBankData = bank_data()
     tab_Column = ['PROVIDER ', 'PRODUCTID', 'LOAN TYPE', 'MIN AMT', 'MAX AMT', 'TERM', 'RATE']
     return DataUtils.proc_data(cbcBankData, 'CBC BANK', 'CBC BANK SCRAPING', 'CBC LOANS', tab_Column)
 

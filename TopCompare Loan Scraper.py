@@ -82,7 +82,7 @@ def tcLoanScrape():
     print(filesToBeMailed, generalMessage)
     sys.stdout.close()
     filesToBeMailed += [fileUtils.get_console_file(console_file)]
-    fileUtils.send_email_to(mailList, 'daily scrape', generalMessage, filesToBeMailed)
+    fileUtils.send_email_to(mailTest, 'daily scrape', generalMessage, filesToBeMailed)
 
 
 
