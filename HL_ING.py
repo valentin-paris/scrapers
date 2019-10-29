@@ -1,19 +1,7 @@
-import tabula
 from tabula import read_pdf
 import DataUtils
-# import fileUtils
 
 
-url = "https://www.ing.be/static/legacy/SiteCollectionDocuments/Bareme_CH_FR.pdf"
-try:
-    data_as_frameList = tabula.read_pdf("https://www.ing.be/static/legacy/SiteCollectionDocuments/Bareme_CH_FR.pdf",
-                                        pages= "1", silent=True,  multiple_tables=True )
-except:
-    print("THE LINK FOR ING HOME LOAN IS NOT AVAILABLE PLEASE CHECK ON THE WEB SITE")
-    data_as_frameList = None
-
-
-# print(data_as_frameList)
 
 cpt = lambda d: d*(72/25.4)
 
@@ -40,8 +28,6 @@ def compute_coord_from_object(object):
             ]
 
 
-
-link = "https://www.ing.be/static/legacy/SiteCollectionDocuments/Bareme_CH_FR.pdf"
 def get_frame_by_coord(coordinates):
     try:
         return read_pdf("https://www.ing.be/static/legacy/SiteCollectionDocuments/Bareme_CH_FR.pdf", encoding='ISO-8859-1',
@@ -70,7 +56,7 @@ def bank_data():
 def scraper():
     return DataUtils.home_loan_scraper("ING", bank_data())
 
-# scraper()
+scraper()
 
 
 

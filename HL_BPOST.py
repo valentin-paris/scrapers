@@ -12,9 +12,9 @@ tab_col = [
     "LOAN FROM",
     "TO",
     "TAUX ANNUEL FIXE",
-    "TAUX ANNUEL VARIABLE 5/5/5 \n CAP 5/5",
-    "TAUX ANNUEL VARIABLE 10/5/5 \n CAP 5/5",
-    "TAUX ANNUEL VARIABLE 10/5/5 \n CAP 2/2"
+    "TAUX ANNUEL VARIABLE 5/5/5 CAP 5/5",
+    "TAUX ANNUEL VARIABLE 10/5/5 CAP 5/5",
+    "TAUX ANNUEL VARIABLE 10/5/5 CAP 2/2"
 ]
 
 #retrives the rates as list fron script
@@ -79,5 +79,4 @@ def scraper():
     else:
         print("LE LIEN BPOST HOME LOAN EST ACTUELLEMENT INDISPONIBLE")
         return None
-
 
