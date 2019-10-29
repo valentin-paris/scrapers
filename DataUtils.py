@@ -25,8 +25,11 @@ def formatDataFrom(groups, provider):
 
 
 def processData(dataMatrix, tab_Column, directoryName, fileName):
-    fileUtils.displayRates(tab_Column, dataMatrix)
-    return fileUtils.upToDate(fileName, directoryName, dataMatrix, tab_Column)
+    if dataMatrix:
+        fileUtils.displayRates(tab_Column, dataMatrix)
+        return fileUtils.upToDate(fileName, directoryName, dataMatrix, tab_Column)
+    else:
+        return None
 
 
 def addAtributes(loanList, lType, duration, rate, pdtID):
