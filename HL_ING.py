@@ -38,7 +38,10 @@ def get_frame_by_coord(coordinates):
 
 def bank_data():
     bank_data = []
-    content = get_frame_by_coord(compute_coord_from_object("variable_rate")).values.tolist()
+    try:
+        content = get_frame_by_coord(compute_coord_from_object("variable_rate")).values.tolist()
+    except:
+        content = None
     if content:
         for line in content[:6]:
             bank_data.append(["ING", "HOME LOAN", "FIX RATE", line[0], line[2]])
