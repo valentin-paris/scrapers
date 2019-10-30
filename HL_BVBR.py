@@ -8,6 +8,7 @@ cpt = lambda d: d*(72/25.4)
 #functional expressions to check for particular value in frame
 car = lambda l: l[0]
 cdr = lambda l: l[1:]
+
 def check_for_val_in_frame(frame, value):
     if frame == []:
         return []
@@ -67,7 +68,12 @@ def bank_data():
             except:
                 print("THE PDF STRUCTURE OF BVBR HOME LOANS HAS BEEN MODIFIED PLEASE PROCESS IT BACK!")
         else:
+            print("au départ")
+            print(rate_frame)
             variable_frame = check_for_val_in_frame(rate_frame.values.tolist(), "Variabilité")
+            print()
+            print("voici la frame variable")
+            print(variable_frame)
             if variable_frame:
                 for line in variable_frame:
                     bank_data.append(["BVBR", "HOME LOAN", line[0], line[1], line[2]])
@@ -79,3 +85,5 @@ def scraper():
     return home_loan_scraper("BVBR", bank_data())
 
 # scraper()
+
+# print(bank_data())
