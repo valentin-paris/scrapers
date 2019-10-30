@@ -107,6 +107,11 @@ def getLatestUpdate(directory, name):
         list_of_files = glob.glob(os.path.join(os.getcwd(), directory, "{}_{}".format(name, 'update'), '*.csv'))
         return max(list_of_files, key=os.path.getctime)
 
+#returns the path of console output file from its name
+def get_console_file(file_name):
+    pth = "{}/{}".format(os.getcwd(), file_name)
+    return pth if os.path.isfile(pth) else ""
+
 '''
     because the response data are never the same after each request ie the data_set rotates upon request, 
     the carrefour procedure first create a base knowledge of all the data_set that are already been requested
@@ -224,9 +229,7 @@ def send_email_to(send_to, subject, message, filesToAttach):
         # Terminate the SMTP session and close the connection
         s.quit()
 
-def get_console_file(file_name):
-    pth = "{}/{}".format(os.getcwd(), file_name)
-    return pth if os.path.isfile(pth) else ""
+
 
 
 

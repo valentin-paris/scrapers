@@ -72,8 +72,8 @@ def variable_data():
 def scraper():
     return DataUtils.home_loan_scraper("ARGENTA", fixed_rate_data()+variable_data())
 
-DataUtils.scrape_and_notify(scraper(), "ARGENTA HOME LOANS", test_mail)
+# DataUtils.scrape_and_notify(scraper(), "ARGENTA HOME LOANS", test_mail)
 
-# print(scraper())
+
 
 

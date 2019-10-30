@@ -1,5 +1,5 @@
 import fileUtils
-from  tabula import read_pdf
+from tabula import read_pdf
 
 #BankData is a matrix ie list of list of jsonData type amount duration and rate
 def createGroups(bankData):
@@ -15,7 +15,7 @@ def createGroups(bankData):
                             )].append(loanElement['amount'])
     return loanGroups
 
-
+#create a 2x2 list of data from group dict structure
 def formatDataFrom(groups, provider):
     frameToExport = []
     for eachGroup in groups:
@@ -30,7 +30,7 @@ def addAtributes(loanList, lType, duration, rate, pdtID):
         loan['rate'] = rate
         loan['productID'] = pdtID
 
-#to compute coordinate from mm to px
+#to compute coordinate from mm to px for pdf scraped file
 cpt = lambda d: d*(72/25.4)
 
 #returns a data_frame from the given page in pdf
@@ -47,7 +47,7 @@ def get_frame_by_coord(bank, url, coordinates, page):
     except:
         print("THE LINK {} FOR HOME LOAN IS NOT AVAILABLE PLEASE CHECK ON THE WEB SITE".format(bank.upper))
 
-# return tabulate cordinate for object in a dict-positions
+# return tabulate coordinates for object in a dict-positions
 def compute_coord_from_object( positions, l_object):
     return [
                 positions[l_object]["start"]["y"],
@@ -56,7 +56,8 @@ def compute_coord_from_object( positions, l_object):
                 positions[l_object]["end"]["x"]
             ]
 
-
+#perform the data comparison and the file operations for data that doens't need to be grouped
+#dataMatrix is a 2x2 list of data
 def processData(dataMatrix, tab_Column, directoryName, fileName):
     if dataMatrix:
         fileUtils.displayRates(tab_Column, dataMatrix)
