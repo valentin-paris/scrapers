@@ -70,7 +70,7 @@ def bank_data():
         else:
             print("au départ")
             print(rate_frame)
-            variable_frame = check_for_val_in_frame(rate_frame.values.tolist(), "Variabilité")
+            variable_frame = check_for_val_in_frame(rate_frame.values.tolist(), "Variabilit")
             print()
             print("voici la frame variable")
             print(variable_frame)
