@@ -80,4 +80,4 @@ def scraper():
         print("LE LIEN BPOST HOME LOAN EST ACTUELLEMENT INDISPONIBLE")
         return None
 
-print(scraper())
+# print(scraper())
