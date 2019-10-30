@@ -59,8 +59,7 @@ def bank_data():
 def scraper():
     return DataUtils.home_loan_scraper("ING", bank_data())
 
-scraper()
-
+# scraper()
 
 
 

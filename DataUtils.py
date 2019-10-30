@@ -23,31 +23,12 @@ def formatDataFrom(groups, provider):
                               max(map(int, groups[eachGroup])), int(eachGroup[1]), float(eachGroup[2])])
     return frameToExport
 
-
-def processData(dataMatrix, tab_Column, directoryName, fileName):
-    if dataMatrix:
-        fileUtils.displayRates(tab_Column, dataMatrix)
-        return fileUtils.upToDate(fileName, directoryName, dataMatrix, tab_Column)
-    else:
-        return None
-
-
 def addAtributes(loanList, lType, duration, rate, pdtID):
     for loan in loanList:
         loan['type'] = lType
         loan['duration'] = duration
         loan['rate'] = rate
         loan['productID'] = pdtID
-
-#define a more generic function to process the data
-def proc_data(b_data, provider, dir_name, file_name, tab_col):
-    data_matrix = formatDataFrom(createGroups(b_data), provider)
-    if data_matrix:
-        fileUtils.displayRates(tab_col, data_matrix)
-        return fileUtils.upToDate(file_name, dir_name, data_matrix, tab_col)
-    else:
-        return None
-
 
 #to compute coordinate from mm to px
 cpt = lambda d: d*(72/25.4)
@@ -75,7 +56,24 @@ def compute_coord_from_object( positions, l_object):
                 positions[l_object]["end"]["x"]
             ]
 
-#design for home loan
+
+def processData(dataMatrix, tab_Column, directoryName, fileName):
+    if dataMatrix:
+        fileUtils.displayRates(tab_Column, dataMatrix)
+        return fileUtils.upToDate(fileName, directoryName, dataMatrix, tab_Column)
+    else:
+        return None
+
+#define a more generic function to process the data with grouping of data for large dataset
+def proc_data(b_data, provider, dir_name, file_name, tab_col):
+    data_matrix = formatDataFrom(createGroups(b_data), provider)
+    if data_matrix:
+        fileUtils.displayRates(tab_col, data_matrix)
+        return fileUtils.upToDate(file_name, dir_name, data_matrix, tab_col)
+    else:
+        return None
+
+#design for home loan to handle exceptions
 def home_loan_scraper(bank, b_data):
     tab_col = ["PROVIDER", "CATEGORY", "CREDIT TYPE", "TERM", "RATE"]
     if b_data:
@@ -91,4 +89,22 @@ def process_crf_data(dataMatrix, tab_Column, directoryName, fileName):
     data_to_display = fileUtils.createNewFrame(dataMatrix, fileUtils.getFileContentAsList(fileName, directoryName))
     fileUtils.displayRates(tab_Column, data_to_display)
     return fileUtils.carrefourRatesUpdate(fileName, directoryName, dataMatrix, tab_Column, [])
+
+'''
+            perform the scraping for an individual bank and send notification
+            
+file_to_mail --> is a list of file path i.e the result of the scrape procedure 
+bank --> is a string representing the bank_name
+mail_list --> is a list of email adresses
+
+                     exemple usage  for argenta 
+scrape_and_notify(scraper(), "ARGENTA HOME LOANS", ["email01@domain.be", email02@domain.be])
+'''
+def scrape_and_notify(file_to_email, bank, mail_list):
+    if file_to_email:
+        message = ["{} UPDATED ITS RATES A FILE IS ATTACHED WITH UP TO DATE RATES".format(bank.upper())]
+        fileUtils.send_email_to(mail_list, "{} SCRAPE".format(bank.upper()), message, file_to_email)
+    else:
+        message = ["{} SCRAPE EXECUTED SUCCESSFULLY.".format(bank.upper()), "RATES ARE UP TO DATE."]
+        fileUtils.send_email_to(mail_list, "{} SCRAPE".format(bank.upper()), message, file_to_email)
 
