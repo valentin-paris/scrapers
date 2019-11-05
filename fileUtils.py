@@ -110,7 +110,7 @@ def getLatestUpdate(directory, name):
 #returns the path of console output file from its name
 def get_console_file(file_name):
     pth = "{}/{}".format(os.getcwd(), file_name)
-    return pth if os.path.isfile(pth) else ""
+    return pth if os.path.isfile(pth) else []
 
 '''
     because the response data are never the same after each request ie the data_set rotates upon request, 

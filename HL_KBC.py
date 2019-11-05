@@ -7,39 +7,39 @@ from DataUtils import compute_coord_from_object
 positions = {
     "fix_rate": {
         "start": {
-            "x": cpt(295),
-            "y": cpt(70)
+            "x": cpt(192.44),
+            "y": cpt(43)
 
         },
         "end": {
-            "x": cpt(398),
-            "y": cpt(105)
+            "x": cpt(238.15),
+            "y": cpt(62.12)
         }
     },
 
     "variable_rate (1/1/1)": {
         "start": {
-            "x": cpt(9.4),
-            "y": cpt(78)
+            "x": cpt(6.27),
+            "y": cpt(54.17)
 
         },
         "end": {
-            "x": cpt(100.5),
-            "y": cpt(105)
+            "x": cpt(65.92),
+            "y": cpt(65.10)
         }
     },
     "variable_rate (3/3/3)": {
         "start": {
-            "x": cpt(109),
-            "y": cpt(78)
+            "x": cpt(71.69),
+            "y": cpt(52.28)
 
         },
         "end": {
-            "x": cpt(192),
-            "y": cpt(105)
+            "x": cpt(105.01),
+            "y": cpt(65.34)
         }
     },
-    "variable_rate (5/5/5)": dict(start=dict(x=cpt(203), y=cpt(78)), end= dict(x=cpt(288), y=cpt(105))),
+    "variable_rate (5/5/5)": dict(start=dict(x=cpt(132.46), y=cpt(52.23)), end= dict(x=cpt(167.90), y=cpt(65.13))),
 }
 
 def get_frame_by_coord(coordinates):
@@ -53,7 +53,7 @@ def get_frame_by_coord(coordinates):
 def bankData():
     bankData = []
     for l_type in positions:
-        product_list = get_frame_by_coord(compute_coord_from_object( positions, l_type)).values.tolist()
+        product_list = get_frame_by_coord(compute_coord_from_object(positions, l_type)).values.tolist()
         for line in product_list:
             bankData.append(["KBC", "HOME LOAN", l_type, line[0], line[1]])
     return bankData
@@ -63,3 +63,8 @@ def scraper():
 
 
 # scraper()
+
+mail_list = ["bernaud.toukam@topcompare.be", "jihane.elkhyari@topcompare.be", "thomas.saclier@topcompare.be", "quentin@topcompare.be"]
+mail_test = ["bernaud.toukam@topcompare.be"]
+DataUtils.scrape_and_notify(scraper(), "KBC HOMELOANS", mail_list)
+

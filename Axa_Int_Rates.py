@@ -20,7 +20,7 @@ axaLoanTypes = {
         'level1': 39,
         'level2': 42,
         'level3': 50,
-        'productID': 'AXAB0002'
+        'productID': 'AXAB0001'
     },
     '2nd_hand_car_btn_3Y_to_5Y': {
         'level1': 39,

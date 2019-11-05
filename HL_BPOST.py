@@ -32,10 +32,12 @@ def requestForRates():
         #convert the script to xml document
         soup_rate = BeautifulSoup(rate_script, "lxml")
         # print(soup_rate.prettify())
+        # print(ast.literal_eval(soup_rate.find_all("property", attrs={"label": "Taux annuel fixe"})[0].value.text)[-1])
+        # print(ast.literal_eval(soup_rate.find_all("property", attrs={"label": "Taux annuel fixe"})[0].value.text))
 
         #return the appropriate rate according to attribute as list [taux_annuel_fixe, taux_variable_1, taux_variable_2, taux_variable_3]
         return [
-            ast.literal_eval(soup_rate.find_all("property", attrs={"label": "Taux annuel fixe"})[0].value.text)[0],
+            ast.literal_eval(soup_rate.find_all("property", attrs={"label": "Taux annuel fixe"})[0].value.text)[-1],
             ast.literal_eval(
                 soup_rate.find_all("property", attrs={"label": "Taux annuel variable 5/5/5"})[0].value.text),
             ast.literal_eval(
@@ -81,3 +83,6 @@ def scraper():
         return None
 
 # print(scraper())
+
+# mail_list = ["bernaud.toukam@topcompare.be", "jihane.elkhyari@topcompare.be", "thomas.saclier@topcompare.be"]
+# DataUtils.scrape_and_notify(scraper(), "BPOST HOMELOANS", mail_list)
