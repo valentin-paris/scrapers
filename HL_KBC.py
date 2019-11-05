@@ -64,7 +64,7 @@ def scraper():
 
 # scraper()
 
-mail_list = ["bernaud.toukam@topcompare.be", "jihane.elkhyari@topcompare.be", "thomas.saclier@topcompare.be", "quentin@topcompare.be"]
-mail_test = ["bernaud.toukam@topcompare.be"]
-DataUtils.scrape_and_notify(scraper(), "KBC HOMELOANS", mail_list)
+# mail_list = ["bernaud.toukam@topcompare.be", "jihane.elkhyari@topcompare.be", "thomas.saclier@topcompare.be", "quentin@topcompare.be"]
+# mail_test = ["bernaud.toukam@topcompare.be"]
+# DataUtils.scrape_and_notify(scraper(), "KBC HOMELOANS", mail_list)
 
