@@ -89,3 +89,6 @@ def scraper():
     return DataUtils.home_loan_scraper("CBC", bank_data())
 
 # scraper()
+
+# mail_list = ["bernaud.toukam@topcompare.be", "jihane.elkhyari@topcompare.be", "thomas.saclier@topcompare.be"]
+# DataUtils.scrape_and_notify(scraper(), "CBC HOMELOANS", mail_list)

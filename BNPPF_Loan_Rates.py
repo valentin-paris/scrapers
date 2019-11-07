@@ -1,5 +1,6 @@
 import requests
 import fileUtils
+import DataUtils
 
 prodctTypes = {
     "PERSONAL LOAN": {
@@ -187,6 +188,8 @@ def scraper():
 #use the scraper method to run the scraper
 # scraper()
 
+# mail_list = ["bernaud.toukam@topcompare.be", "jihane.elkhyari@topcompare.be", "thomas.saclier@topcompare.be", "quentin@topcompare.be"]
+# DataUtils.scrape_and_notify(scraper(), "BNPPF RATES SCRAPE", mail_list)
 
 
 
