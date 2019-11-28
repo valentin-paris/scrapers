@@ -61,16 +61,24 @@ def compareFileAndList(fichier, directory, todayScrape):
     return [lines for lines in todayScrape if (lines not in currentContent)]
 
 
-# export a content to update file as csv
 def createUpdate(dirName, fileName, dataContent, tableColumns):
     newName = '{}_{}'.format(fileName, 'update')
-    updatePath = '{}\{}_{}'.format(dirName, fileName, 'update')
+    #check if the os windows
+    if os.name is 'nt':
+        #compute this path for windows
+        updatePath = '{}\{}_{}'.format(dirName, fileName, 'update')
+    else:
+        #compute this path for others
+        updatePath = '{}/{}_{}'.format(dirName, fileName, 'update')
     exportListToCsv(dataContent, tableColumns, updatePath, newName)
 
 
 # move the current scrapeFile to history file
 def moveToHistory(dirName, fileNamne, file):
-    historyPath = '{}\{}_{}'.format(dirName, fileNamne, 'History')
+    if os.name is 'nt':
+        historyPath = '{}\{}_{}'.format(dirName, fileNamne, 'History')
+    else:
+        historyPath = '{}/{}_{}'.format(dirName, fileNamne, 'History')
     checkToCreate(historyPath)
     os.rename(os.path.join(os.getcwd(), dirName, file), os.path.join(os.getcwd(), historyPath, file))
 
