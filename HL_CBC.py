@@ -42,7 +42,7 @@ positions = {
     },
     "variable_rate (5/5/5)": {
         "start": {
-            "x": cpt(154,40),
+            "x": cpt(154.40),
             "y": cpt(67.38)
 
         },
