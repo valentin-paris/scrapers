@@ -73,12 +73,14 @@ def tcLoanScrape():
             newData = tcBanksScrapers[bank]()
             filesToBeMailed += newData
             if newData:
-                generalMessage += ['{} updated its rates, a file is attached with up to date rates.'.format(bank)]
+                generalMessage += ['{}... UPDATED.'.format(bank)]
         except:
-            generalMessage += ['an error occured with {} scrape, please check the console for more informations.'.format(bank)]
+            generalMessage += ['{}... ERROR .'.format(bank)]
     if not generalMessage:
         generalMessage += ['the scraper executed sucessfully and there is no change in the rates!']
-    generalMessage += ["LINKS STATUS: "] + check_links()
+    else:
+        generalMessage = ["BANK RATES STATUS"] + generalMessage
+    generalMessage += ["", "LINKS STATUS: "] + check_links()
     print(filesToBeMailed, generalMessage)
     sys.stdout.close()
     filesToBeMailed += [fileUtils.get_console_file(console_file)]

@@ -11,7 +11,7 @@ loanTypes = {
     'RENOVATION LOAN': ('RL', 'EURO0004')
 }
 
-loanRange = list(range(2500, 10000, 1000)) + list(range(10000, 30000, 2500)) + list(range(30000, 110000, 10000))
+loanRange = list(range(2500, 10000, 1000)) + list(range(10000, 30000, 2000)) + list(range(30000, 110000, 10000))
 
 def makeRequestFor(lType, amount):
     url = "https://www.europabank.be/WebsiteAPI/rest/loan/amounts"
@@ -64,7 +64,7 @@ def processData(dataMatrix, tab_Column, directoryName, fileName):
 def europaLoanScraper():
    print('EUROPA BANK LOAN SCRAPE PROCESSING: ')
    tab_col = ['PROVIDER ', 'PRODUCTID', 'LOAN TYPE', 'MIN AMT', 'MAX AMT', 'TERM', 'RATE']
-   return DataUtils.proc_data(bankData(), 'EUROPA BANK', 'EURO_BANK SCRAPE', 'euro_bank_rates', tab_col)
+   return DataUtils.data_processing_last(bankData(), 'EUROPA BANK', 'EURO_BANK SCRAPE', 'euro_bank_rates', tab_col)
 
 
 

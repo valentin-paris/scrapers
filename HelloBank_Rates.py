@@ -35,7 +35,7 @@ loanCategories = {
 smallLoanRange = list(range(500, 3000, 500))
 
 #this range is made for big loans request
-bigLoansRange = list(range(1250, 10000, 1250)) + list(range(10000, 37500, 2500))
+bigLoansRange = list(range(1250, 10000, 1250)) + list(range(10000, 37500, 5000))
 
 
 '''
@@ -69,8 +69,9 @@ def bankData(category):
 #fetch the data for a category creates the groups and handle the file creation.
 def helloLoanProcedure(category):
     tab_Column = ['PROVIDER ', 'PRODUCTID', 'LOAN TYPE', 'MIN AMT', 'MAX AMT', 'TERM', 'RATE']
-    dataMatrix = DataUtils.formatDataFrom(DataUtils.createGroups(bankData(category)), 'HELLO BANK')
-    return DataUtils.processData(dataMatrix, tab_Column, 'HELLO BANK SCRAPING', category)
+    # dataMatrix = DataUtils.formatDataFrom(DataUtils.createGroups(bankData(category)), 'HELLO BANK')
+    # return DataUtils.processData(dataMatrix, tab_Column, 'HELLO BANK SCRAPING', category)
+    return DataUtils.data_processing_last(bankData(category), "HELLO BANK", "HELLO BANK SCRAPING", category, tab_Column)
 
 #this function is just for monitoring purposes in case of doubt it shows all the individual data and not in grouped forme
 def showCompleteData(category):
@@ -100,6 +101,10 @@ def helloBankScraper():
 
 
 # helloBankScraper()
+
+DataUtils.scrape_and_notify(helloBankScraper(), "hello bank", DataUtils.test_mail)
+
+
 
 
 

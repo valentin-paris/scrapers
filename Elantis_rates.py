@@ -7,7 +7,7 @@ import fileUtils
 def requestForData():
     url = "https://www.elantis.be/fr/simulateur-pret-a-temperament/"
 
-    querystring = {"objective":"renovation","renovation-amount":"12.500"}
+    querystring = {"objective": "renovation", "renovation-amount": "12.500"}
 
     headers = {
         'User-Agent': "PostmanRuntime/7.15.2",

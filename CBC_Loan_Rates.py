@@ -99,11 +99,10 @@ def formatDataFrom(groups, provider):
 def cbcLoanScraper():
     cbcBankData = bank_data()
     tab_Column = ['PROVIDER ', 'PRODUCTID', 'LOAN TYPE', 'MIN AMT', 'MAX AMT', 'TERM', 'RATE']
-    return DataUtils.proc_data(cbcBankData, 'CBC BANK', 'CBC BANK SCRAPING', 'CBC LOANS', tab_Column)
+    return DataUtils.data_processing_last(cbcBankData, 'CBC BANK', 'CBC BANK SCRAPING', 'CBC LOANS', tab_Column)
 
 
 # cbcLoanScraper()
-
 
 
 

@@ -149,8 +149,7 @@ def bankData():
 def axaLoanScraper():
     print('AXA LOAN SCRAPER PROCESSING ')
     tab_Column = ['PROVIDER ', 'PRODUCT_ID', 'LOAN TYPE', 'MIN AMT', 'MAX AMT', 'TERM', 'RATE']
-    return DataUtils.proc_data(bankData(), 'AXA_BANK', 'AXA SCRAPE', 'axa_rates', tab_Column)
-
+    return DataUtils.data_processing_last(bankData(), 'AXA_BANK', 'AXA SCRAPE', 'axa_rates', tab_Column)
 
 
 

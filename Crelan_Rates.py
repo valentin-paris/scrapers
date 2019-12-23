@@ -230,9 +230,12 @@ def homeLoanScraper():
 
 def crelanLoansScraper():
     tab_Column = ['PROVIDER ', 'PRODUCTID', 'LOAN TYPE', 'MIN AMT', 'MAX AMT', 'TERM', 'RATE']
-    dataMatrix = DataUtils.formatDataFrom(DataUtils.createGroups(bankData()), 'CRELAN')
-    return DataUtils.processData(dataMatrix, tab_Column, 'CRELAN SCRAPE', 'crelan_rates') + homeLoanScraper()
+    # dataMatrix = DataUtils.formatDataFrom(DataUtils.createGroups(bankData()), 'CRELAN')
+    return DataUtils.data_processing_last(bankData(), "CRELAN", "CRELAN SCRAPE", "crelan_rates", tab_Column)
+    # return DataUtils.processData(dataMatrix, tab_Column, 'CRELAN SCRAPE', 'crelan_rates') + homeLoanScraper()
 
+
+DataUtils.scrape_and_notify(crelanLoansScraper(), "crelan", DataUtils.test_mail)
 
 
 

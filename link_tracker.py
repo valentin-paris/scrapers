@@ -4,7 +4,7 @@ from fileUtils import no_double
 import json
 
 
-#returns all active personnal loans from the web-site
+# returns all active personnal loans from the web-site
 def personal_loan_links():
     link_list = []
     tc_personal_loan_url = "https://www.topcompare.be/api/personal-loan/v2/products"
@@ -28,7 +28,7 @@ def personal_loan_links():
             link_list.append({"id": btn_list[i].attrs["data-cgg-id"], "link": btn_list[i].attrs["data-url"]})
     return no_double(link_list)
 
-#returns links for particular car age and type
+# returns links for particular car age and type
 def links_by_car_age(car_age, car_type):
     link_list = []
     url = "https://www.topcompare.be/api/personal-loan/v2/products"
@@ -65,7 +65,7 @@ def links_by_car_age(car_age, car_type):
             link_list.append({"id": btn_list[i].attrs["data-cgg-id"], "link": btn_list[i].attrs["data-url"]})
     return no_double(link_list)
 
-#compute links for all the types of car
+# compute links for all the types of car
 def car_loan_links():
     ages_of_car = ("new", "0-1", "2-3", "3-4", "4-5", "5+")
     types_of_car = ("classic", "green")
@@ -75,7 +75,7 @@ def car_loan_links():
             all_car_links += links_by_car_age(car_age, car_type)
     return no_double(all_car_links)
 
-#returns links for particular moto age
+# returns links for particular moto age
 def moto_links_by_age(moto_age):
     link_list = []
     url = "https://www.topcompare.be/api/personal-loan/v2/products"
@@ -106,7 +106,7 @@ def moto_links_by_age(moto_age):
             link_list.append({"id": btn_list[i].attrs["data-cgg-id"], "link": btn_list[i].attrs["data-url"]})
     return no_double(link_list)
 
-#compute links for all the types of moto
+# compute links for all the types of moto
 def all_moto_links():
     ages_of_moto = ("new", "0-1", "2-3", "3-4", "4-5", "5+")
     all_links = []
@@ -114,15 +114,15 @@ def all_moto_links():
         all_links += moto_links_by_age(age)
     return no_double(all_links)
 
-#returns the links for all the products without duplicates
+# returns the links for all the products without duplicates
 def all_loan_links():
    return no_double(personal_loan_links() + car_loan_links() + all_moto_links())
 
-#contruct a link by adding appropriate head to the web-link
+# contruct a link by adding appropriate head to the web-link
 def construct_link(web_link):
     return "https://www.topcompare.be{}".format(web_link)
 
-#returns true if a link has a 200 status code else false
+# returns true if a link has a 200 status code else false
 def is_link_functional(link):
     try:
         return requests.request("GET", link).status_code == 200

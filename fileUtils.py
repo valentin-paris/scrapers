@@ -12,10 +12,10 @@ import ntpath
 import json
 
 #a custom function to remove duplicates from a list might be usefull
-no_double = lambda l : [] if l == [] else no_double(l[:-1]) + [l[-1]] if l[-1] not in l[:-1] else no_double(l[:-1])
+no_double = lambda l: [] if not l else no_double(l[:-1]) + [l[-1]] if l[-1] not in l[:-1] else no_double(l[:-1])
 
 #to show duplicates in a list
-show_double = lambda l : [] if l == [] else show_double(l[:-1]) + [l[-1]] if l[-1] in l[:-1] else show_double(l[:-1])
+show_double = lambda l: [] if not l else show_double(l[:-1]) + [l[-1]] if l[-1] in l[:-1] else show_double(l[:-1])
 
 # displays list as lisible tableau
 def displayRates(colonnes, content):

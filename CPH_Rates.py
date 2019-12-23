@@ -82,7 +82,8 @@ def bankData():
 
 def cphLoansScraper():
     tab_Column = ['PROVIDER ', 'PRODUCT_ID', 'LOAN TYPE', 'MIN AMT', 'MAX AMT', 'TERM', 'RATE']
-    return DataUtils.proc_data(bankData(), 'CPH', 'CPH SCRAPE', 'cph_rates', tab_Column)
+    # return DataUtils.proc_data(bankData(), 'CPH', 'CPH SCRAPE', 'cph_rates', tab_Column)
+    return DataUtils.data_processing_last(bankData(), 'CPH', 'CPH SCRAPE', 'cph_rates', tab_Column)
 
 
 # cphLoansScraper()

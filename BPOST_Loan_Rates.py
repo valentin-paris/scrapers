@@ -63,13 +63,51 @@ def formatDataFromBank(bank_data, provider):
     return frame_to_export
 
 
+
+def sort_frame_by_duration(data_frame):
+    durations = []
+    result = []
+    p_types = []
+    for line in data_frame:
+        if line[5] not in durations:
+            durations.append(line[5])
+        if line[2] not in p_types:
+            p_types.append(line[2])
+    for pdt in p_types:
+        for val in durations:
+            result += [line for line in data_frame if line[5] == val and line[2] == pdt]
+    return result
+
+def group_frame_by_duration_and_rate(data_frame):
+    data_frame = sort_frame_by_duration(data_frame)
+    minAmt = data_frame[0][3]
+    maxAmt = 0
+    result = []
+    rate = data_frame[0][6]
+    duration = data_frame[0][5]
+    for line in data_frame:
+        if line[6] == rate and line[5] == duration:
+            maxAmt = line[4]
+        else:
+            result.append([line[0], line[1], line[2], minAmt, maxAmt, duration, rate])
+            minAmt = line[3]
+            maxAmt = line[3]
+            rate = line[6]
+            duration = line[5]
+    return result
+
 def bpostLoanScraper():
     print('BPOST LOAN SCRAPER PROCESSING ...')
     tab_col = ['PROVIDER ', 'PRODUCTID', 'LOAN TYPE', 'MIN AMT', 'MAX AMT', 'TERM', 'RATE']
-    return DataUtils.proc_data(bankdata(), 'BPOST', 'BPOST SCRAPE', 'bpost_rates', tab_col)
+    dataMatrix = group_frame_by_duration_and_rate(formatDataFromBank(bankdata(), "BPOST"))
+    return DataUtils.processData(dataMatrix, tab_col, "BPOST SCRAPE", "bpost_rates")
+
 
 
 # bpostLoanScraper()
+
+
+
 
 
 

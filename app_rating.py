@@ -4,8 +4,9 @@ import json
 import fileUtils
 
 
-app_list =["AXA BANK", "ARGENTA", "BELFIUS", "CBC", "BNPPF", "BPOST", "CRELAN", "EUROPA BANK", "HELLO BANK",
+app_list = ["AXA BANK", "ARGENTA", "BELFIUS", "CBC", "BNPPF", "BPOST", "CRELAN", "EUROPA BANK", "HELLO BANK",
             "ING", "KBC", "KEY TRADE", "BDK", "DEUTSCHE BANK", "FINTRO", "NAGELMACKERS", "VDK", "CPH", "BEOBANK"]
+
 # urls and details for all androïd apps
 android_bank_apps = {
     "AXA BANK": {"id": "be.axa.mobilebanking"},
@@ -29,6 +30,7 @@ android_bank_apps = {
     "BEOBANK": {"id": "com.beobank_prod.bad", "hl": "en"}
 
 }
+
 
 def truncate(n, decimals=1):
     multiplier = 10 ** decimals
@@ -131,7 +133,6 @@ def get_ios_data(bank):
     }
 
 
-
 # the rate_computer computes a weighted rate for apps
 # parameters are data dict with rate and reviews keys
 def rate_computer(android_data, ios_data):
@@ -166,16 +167,53 @@ def get_tc_rate():
         score_tag = tag.find("div", {"data-col-title": "ScoreMobileApp"})
         app_rates[tag.attrs['data-cgg-id']] = float(
             score_tag.find("div", {"class": "column-primary card-column__value"}) \
-            .text.strip().replace(",", "."))
+                .text.strip().replace(",", "."))
 
     # return the rate of the apps in a dictionnary
     return app_rates
 
+
 # return the bank for a product type
 def product_to_bank(product):
-    for key in android_bank_apps:
+    for key in app_list:
         if product[:3] in key:
             return key
+
+
+def topCompare_product_rates(tc_rate):
+    prod_list = []
+    p_hash ={}
+    for value in list(tc_rate):
+        prod_list.append({product_to_bank(value): tc_rate[value]})
+    for elmt in fileUtils.no_double(prod_list):
+        for key in elmt:
+            p_hash[key] = elmt[key]
+    return p_hash
+
+
+def app_rate_frame():
+    frame = []
+    tc_website_rate = topCompare_product_rates(get_tc_rate())
+    for bank_app in app_list:
+        try:
+            tc_rate = tc_website_rate[bank_app]
+        except:
+            tc_rate = "-"
+        if bank_app in ios_bank_apps:
+            if bank_app in android_bank_apps:
+                and_data = get_android_data(bank_app)
+                ios_data = get_ios_data(bank_app)
+                frame.append([bank_app, and_data["rate"], and_data["reviews"], ios_data["rate"], ios_data["reviews"],
+                              rate_computer(and_data, ios_data), tc_rate])
+            else:
+                frame.append([bank_app, "-", "-", get_ios_data(bank_app)["reviews"], get_ios_data(bank_app)["rate"],
+                              get_ios_data(bank_app)["rate"]])
+        else:
+            frame.append([bank_app, get_android_data(bank_app)["rate"], get_android_data(bank_app)["reviews"],
+                          "-", "-", get_android_data(bank_app)["rate"], tc_rate])
+    # fileUtils.displayRates(header, frame)
+    return frame
+
 
 # compare the ratings and build a message
 def compare_rate_and_notify(delta):
@@ -184,7 +222,6 @@ def compare_rate_and_notify(delta):
     # TC website rates and products
     tc_product_and_rates = get_tc_rate()
     for pdt in tc_product_and_rates:
-
         # correspond a product to the appropriate bank
         bank = product_to_bank(pdt)
 
@@ -204,35 +241,19 @@ def compare_rate_and_notify(delta):
 
         # if the difference btn the actual rate and the tc_web site rate gt delta
         if actual_rate and abs(actual_rate - tc_product_and_rates[pdt]) > delta:
-            message += ["{} .... NOT OK!".format(bank)]
+            if not "{} .... NOT OK!".format(bank.lower()) in message:
+                message += ["{} .... NOT OK!".format(bank.lower())]
     if not message:
-        message += ["all the app ratings are up to date"]
+        message += ["", "APP RATINGS STATUS", "all app ratings ...................................OK!"]
+    else:
+        message = ["", "", "APP RATINGS STATUS WITH A DIFFERENCE OF MORE THAN: {}".format(delta)] + message
+    fileUtils.displayRates(["APP", "ANDROID_RATINGS", "ANDROID_REVIEWS", "IOS_RATINGS", "IOS_REVIEWS",
+                            "WEIGHTED_RATINGS", "TOP COMPARE RATINGS"], app_rate_frame())
     return message
 
-# print(compare_rate_and_notify(0.5))
 
+print(compare_rate_and_notify(0.25))
 
-def app_rate_frame():
-    header = ["APP", "ANDROID_RATE", "ANDROID_REVIEWS", "IOS_RATE", "IOS_REVIEWS", "WEIGHTED_RATE"]
-    frame = []
-    for bank_app in app_list:
-        if bank_app in ios_bank_apps:
-            if bank_app in android_bank_apps:
-                and_data = get_android_data(bank_app)
-                ios_data = get_ios_data(bank_app)
-                frame.append([bank_app, and_data["rate"], and_data["reviews"], ios_data["rate"], ios_data["reviews"],
-                              rate_computer(and_data, ios_data)])
-            else:
-                frame.append([bank_app, "-", "-", get_ios_data(bank_app)["reviews"], get_ios_data(bank_app)["rate"],
-                              get_ios_data(bank_app)["rate"]])
-        else:
-                frame.append([bank_app, get_android_data(bank_app)["rate"], get_android_data(bank_app)["reviews"],
-                              "-", "-", get_android_data(bank_app)["rate"]])
-    fileUtils.displayRates(header, frame)
-    return frame
-
-
-print(app_rate_frame())
 
 
 

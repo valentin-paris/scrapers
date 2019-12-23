@@ -66,6 +66,7 @@ def formatDataFrom(groups, provider):
 def addAttributeID(loanList, category):
     for loan in loanList:
         loan['productID'] = loanCategories[category][1]
+        loan["type"] = category
     return loanList
 
 
@@ -88,10 +89,8 @@ def cetelemLoanProcedure(category):
             loanList = addAttributeID(makeDataRequestFor(category, mnt), category)
             loanData.append(loanList)
     print()
-    dataMatrix = formatDataFrom(createGroups(category, loanData), 'CETELEM')
-    fileUtils.displayRates(tab_Column, dataMatrix)
-    return fileUtils.upToDate(category, 'CETELEM SCRAPING', dataMatrix, tab_Column)
-    # return dataMatrix
+    return DataUtils.data_processing_last(loanData, 'CETELEM', 'CETELEM SCRAPING', category, tab_Column)
+
 
 
 def cetelemLoanScraper():
@@ -186,3 +185,9 @@ dataSample = [
       'promo':None
    }
 ]
+
+
+import DataUtils
+DataUtils.scrape_and_notify(cetelemLoanScraper(), "cetelem", DataUtils.test_mail)
+
+print(makeDataRequestFor("Prêt Etudes", 2000))

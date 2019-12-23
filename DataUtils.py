@@ -1,27 +1,92 @@
 import fileUtils
 from tabula import read_pdf
 
-#BankData is a matrix ie list of list of jsonData type amount duration and rate
-def createGroups(bankData):
+mail_list = ["bernaud.toukam@topcompare.be", "jihane.elkhyari@topcompare.be", "thomas.saclier@topcompare.be",
+             "quentin@topcompare.be"]
+
+test_mail = ["bernaud.toukam@topcompare.be"]
+car = lambda l: l[0]
+cdr = lambda l: l[1:]
+
+
+# computes the first consecutive elements
+def get_first_range(list_range, delta):
+    if not list_range:
+        return []
+    elif not cdr(list_range):
+        return [car(list_range)]
+    elif car(list_range) == car(cdr(list_range)) - delta:
+        return [car(list_range)] + get_first_range(cdr(list_range), delta)
+    else:
+        return [car(list_range)]
+
+
+# returns the rest of the list after the consecutive element
+def rest_of_the_list(range_list, delta):
+    if not range_list:
+        return []
+    elif not cdr(range_list):
+        return []
+    elif car(range_list) == car(cdr(range_list)) - delta:
+        return rest_of_the_list(cdr(range_list), delta)
+    else:
+        return cdr(range_list)
+
+
+# create a range from consecutive elements
+def create_range(range_list, delta):
+    first_list = get_first_range(range_list, delta)
+    return [min(first_list), max(first_list)]
+
+
+# returns min and max val for every range
+def ranges_of_elements(range_list, delta):
+    if not range_list:
+        return []
+    else:
+        return [create_range(range_list, delta)] + ranges_of_elements(rest_of_the_list(range_list, delta), delta)
+
+
+def create_groups_from_dict(group_dict, delta):
+    for key in group_dict:
+        group_dict[key] = ranges_of_elements(group_dict[key], delta)
+    return group_dict
+
+
+# BankData is a matrix ie list of list of jsonData type amount duration and rate
+def createGroups(bankData, delta):
     loanGroups = {}
     for loanList in bankData:
         for loanElement in loanList:
-            if (loanElement['type'], loanElement['duration'], loanElement['rate'], loanElement['productID']) not in\
+            if (loanElement['type'], loanElement['duration'], loanElement['rate'], loanElement['productID']) not in \
                     loanGroups.keys():
                 loanGroups[(loanElement['type'], loanElement['duration'], loanElement['rate'], loanElement['productID']
                             )] = [loanElement['amount']]
             else:
                 loanGroups[(loanElement['type'], loanElement['duration'], loanElement['rate'], loanElement['productID']
                             )].append(loanElement['amount'])
-    return loanGroups
+    return create_groups_from_dict(loanGroups, delta)
 
-#create a 2x2 list of data from group dict structure
+
+# create a 2*2 matrix with appropriate range from group dict
+# to replace the function formatDataFrom
+def new_data_format(group_dict, provider):
+    frame_to_export = []
+    for group_key in group_dict:
+        for amount_range in group_dict[group_key]:
+            frame_to_export.append([provider, group_key[3], group_key[0], min(map(int, amount_range)),
+                                    max(map(int, amount_range)), int(group_key[1]), float(group_key[2])])
+    return frame_to_export
+
+
+# create a 2x2 list of data from group dict structure
 def formatDataFrom(groups, provider):
     frameToExport = []
     for eachGroup in groups:
         frameToExport.append([provider, eachGroup[3], eachGroup[0], min(map(int, groups[eachGroup])),
                               max(map(int, groups[eachGroup])), int(eachGroup[1]), float(eachGroup[2])])
     return frameToExport
+
 
 def addAtributes(loanList, lType, duration, rate, pdtID):
     for loan in loanList:
@@ -30,34 +95,39 @@ def addAtributes(loanList, lType, duration, rate, pdtID):
         loan['rate'] = rate
         loan['productID'] = pdtID
 
-#to compute coordinate from mm to px for pdf scraped file
-cpt = lambda d: d*(72/25.4)
 
-#returns a data_frame from the given page in pdf
-def get_df_from_pdf(bank, url, page, hasMultitable ):
+# to compute coordinate from mm to px for pdf scraped file
+cpt = lambda d: d * (72 / 25.4)
+
+
+# returns a data_frame from the given page in pdf
+def get_df_from_pdf(bank, url, page, hasMultitable):
     try:
         return read_pdf(url, pages=page, silent=True, multiple_tables=hasMultitable)
     except:
         print("THE LINK FOR {} HOME LOAN IS NOT AVAILABLE PLEASE CHECK ON THE WEB SITE".format(bank.upper()))
 
-#return a data_frame at particular postition in a pdf
+
+# return a data_frame at particular postition in a pdf
 def get_frame_by_coord(bank, url, coordinates, page):
     try:
-        return read_pdf(url, pages=page,  area=coordinates, silent=True)
+        return read_pdf(url, pages=page, area=coordinates, silent=True)
     except:
         print("THE LINK {} FOR HOME LOAN IS NOT AVAILABLE PLEASE CHECK ON THE WEB SITE".format(bank.upper))
 
-# return tabulate coordinates for object in a dict-positions
-def compute_coord_from_object( positions, l_object):
-    return [
-                positions[l_object]["start"]["y"],
-                positions[l_object]["start"]["x"],
-                positions[l_object]["end"]["y"],
-                positions[l_object]["end"]["x"]
-            ]
 
-#perform the data comparison and the file operations for data that doens't need to be grouped
-#dataMatrix is a 2x2 list of data
+# return tabulate coordinates for object in a dict-positions
+def compute_coord_from_object(positions, l_object):
+    return [
+        positions[l_object]["start"]["y"],
+        positions[l_object]["start"]["x"],
+        positions[l_object]["end"]["y"],
+        positions[l_object]["end"]["x"]
+    ]
+
+
+# perform the data comparison and the file operations for data that doens't need to be grouped
+# dataMatrix is a 2x2 list of data
 def processData(dataMatrix, tab_Column, directoryName, fileName):
     if dataMatrix:
         fileUtils.displayRates(tab_Column, dataMatrix)
@@ -65,31 +135,89 @@ def processData(dataMatrix, tab_Column, directoryName, fileName):
     else:
         return None
 
-#define a more generic function to process the data with grouping of data for large dataset
-def proc_data(b_data, provider, dir_name, file_name, tab_col):
-    data_matrix = formatDataFrom(createGroups(b_data), provider)
+
+def formatDataFromBank(bank_data, provider):
+    frame_to_export = []
+    for loanList in bank_data:
+        for loan in loanList:
+            frame_to_export.append([provider, loan['productID'], loan['type'], loan['amount'],
+                                    loan['duration'], loan['rate']])
+    return frame_to_export
+
+
+def sort_frame_by_duration(data_frame):
+    durations = []
+    result = []
+    p_types = []
+    for line in data_frame:
+        if line[4] not in durations:
+            durations.append(line[4])
+        if line[2] not in p_types:
+            p_types.append(line[2])
+    for pdt in p_types:
+        for val in durations:
+            result += [line for line in data_frame if line[4] == val and line[2] == pdt]
+    return result
+
+
+def group_frame_by_duration_and_rate(data_frame):
+    data_frame = sort_frame_by_duration(data_frame)
+    minAmt = data_frame[0][3]
+    maxAmt = 0
+    result = []
+    rate = data_frame[0][5]
+    duration = data_frame[0][4]
+    for line in data_frame:
+        if line[5] == rate and line[4] == duration:
+            maxAmt = line[3]
+        else:
+            result.append([line[0], line[1], line[2], minAmt, maxAmt, duration, rate])
+            minAmt = line[3]
+            maxAmt = line[3]
+            rate = line[5]
+            duration = line[4]
+    return result
+
+
+def data_processing_last(b_data, provider, dir_name, file_name, tab_col):
+    dataMatrix = group_frame_by_duration_and_rate(formatDataFromBank(b_data, provider))
+    if dataMatrix:
+        fileUtils.displayRates(tab_col, dataMatrix)
+        return fileUtils.upToDate(file_name, dir_name, dataMatrix, tab_col)
+    else:
+        return None
+
+
+# define a more generic function to process the data with grouping of data for large dataset
+def proc_data(b_data, provider, dir_name, file_name, tab_col, delta):
+    # data_matrix = formatDataFrom(createGroups(b_data, delta), provider)
+    data_matrix = new_data_format(createGroups(b_data, delta), provider)
     if data_matrix:
         fileUtils.displayRates(tab_col, data_matrix)
         return fileUtils.upToDate(file_name, dir_name, data_matrix, tab_col)
     else:
         return None
 
-#design for home loan to handle exceptions
+
+# design for home loan to handle exceptions
 def home_loan_scraper(bank, b_data):
     tab_col = ["PROVIDER", "CATEGORY", "CREDIT TYPE", "TERM", "RATE"]
     if b_data:
         try:
             print("{} HOME LOAN PROCESSING ...".format(bank))
             # fileUtils.displayRates(tab_col, b_data)
-            return processData(b_data, tab_col, "{} HOME LOANS".format(bank.upper()), "{}_hl_rates".format(bank.lower()))
+            return processData(b_data, tab_col, "{} HOME LOANS".format(bank.upper()),
+                               "{}_hl_rates".format(bank.lower()))
         except:
             print("THE STRUCTURE OF {} HOME LOAN PDF HAS BEEN MODIFIED PLEASE PROCESS IT BACK!".format(bank))
 
-#design for carrefour data
+
+# design for carrefour data
 def process_crf_data(dataMatrix, tab_Column, directoryName, fileName):
     data_to_display = fileUtils.createNewFrame(dataMatrix, fileUtils.getFileContentAsList(fileName, directoryName))
     fileUtils.displayRates(tab_Column, data_to_display)
     return fileUtils.carrefourRatesUpdate(fileName, directoryName, dataMatrix, tab_Column, [])
+
 
 '''
             perform the scraping for an individual bank and send notification
@@ -101,6 +229,8 @@ mail_list --> is a list of email adresses
                      exemple usage  for argenta 
 scrape_and_notify(scraper(), "ARGENTA HOME LOANS", ["email01@domain.be", email02@domain.be])
 '''
+
+
 def scrape_and_notify(file_to_email, bank, mail_list):
     if file_to_email:
         message = ["{} UPDATED ITS RATES A FILE IS ATTACHED WITH UP TO DATE RATES".format(bank.upper())]
@@ -108,4 +238,3 @@ def scrape_and_notify(file_to_email, bank, mail_list):
     else:
         message = ["{} SCRAPE EXECUTED SUCCESSFULLY.".format(bank.upper()), "RATES ARE UP TO DATE."]
         fileUtils.send_email_to(mail_list, "{} SCRAPE".format(bank.upper()), message, file_to_email)
-

@@ -6,7 +6,7 @@ test_mail = ["bernaud.toukam@topcompare.be"]
 try:
     data_as_frameList = tabula.read_pdf("https://www.argenta.be/content/dam/argenta/documents/emprunter/credit-logement"
                                         "/Feuille%20de%20tarifs%20Cr%C3%A9dits%20hypoth%C3%A9caires.pdf",
-                                        pages=3, multiple_tables=True, silent=True )
+                                        pages=2, multiple_tables=True, silent=True )
 except:
     print("THE ARGENTA HOME LOAN LINK IS MOMENTALLY UNAVAILABLE PLEASE CHECK ON THE WEBSITE!")
     data_as_frameList = None
@@ -72,7 +72,7 @@ def variable_data():
 def scraper():
     return DataUtils.home_loan_scraper("ARGENTA", fixed_rate_data()+variable_data())
 
-# DataUtils.scrape_and_notify(scraper(), "ARGENTA HOME LOANS", test_mail)
+# DataUtils.scrape_and_notify(scraper(), "ARGENTA HOME LOANS", mail_list)
 
 
 
