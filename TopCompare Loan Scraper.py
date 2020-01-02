@@ -19,7 +19,7 @@ import HL_Argenta
 import HL_Belfius
 import HL_BNPPF
 import HL_BVBR
-import HL_CBC
+#import HL_CBC
 import HL_CPH
 import HL_FEDERALE_ASS
 import HL_HELLO_BANK
@@ -55,7 +55,7 @@ tcBanksScrapers = {
     "HOME LOAN BELFIUS": HL_Belfius.scraper,
     "HOME LOAN BNPPF": HL_BNPPF.scraper,
     "HOME LOAN BVBR": HL_BVBR.scraper,
-    "HOME LOAN CBC": HL_CBC.scraper,
+#    "HOME LOAN CBC": HL_CBC.scraper,
     "HOME LOAN CPH": HL_CPH.scraper,
     "HOME LOAN FEDERALE ASSUR": HL_FEDERALE_ASS.scraper,
     "HOME LOAN HELLO BANK": HL_HELLO_BANK.scraper,

@@ -8,39 +8,49 @@ cpt = lambda d: d*(72/25.4)
 positions = {
     "fix_rate": {
         "start": {
-            "x": cpt(353),
-            "y": cpt(92.5)
+            "x": cpt(222.19),
+            "y": cpt(58)
 
         },
         "end": {
-            "x": cpt(455),
-            "y": cpt(130)
+            "x": cpt(265.63),
+            "y": cpt(77.58)
         }
     },
 
     "variable_rate (1/1/1)": {
         "start": {
-            "x": cpt(29),
-            "y": cpt(92.5)
+            "x": cpt(19.23),
+            "y": cpt(63.74)
 
         },
         "end": {
-            "x": cpt(140.5),
-            "y": cpt(130)
+            "x": cpt(86.27),
+            "y": cpt(83.82)
         }
     },
     "variable_rate (3/3/3)": {
         "start": {
-            "x": cpt(145),
-            "y": cpt(92.5)
+            "x": cpt(89.29),
+            "y": cpt(67.55)
 
         },
         "end": {
-            "x": cpt(245.5),
-            "y": cpt(130)
+            "x": cpt(150.15),
+            "y": cpt(80.49)
         }
     },
-    "variable_rate (5/5/5)": dict(start=dict(x=cpt(250), y=cpt(92.5)), end= dict(x=cpt(348.5), y=cpt(130))),
+    "variable_rate (5/5/5)": {
+        "start": {
+            "x": cpt(154.40),
+            "y": cpt(67.38)
+
+        },
+        "end": {
+            "x": cpt(216.79),
+            "y": cpt(80.49)
+        }
+    },
 }
 
 def compute_coord_from_object(object):
