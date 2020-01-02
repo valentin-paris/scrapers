@@ -2,26 +2,7 @@ import requests
 import json
 import fileUtils
 
-querystring = {"noCache":"1565095706063-8754"}
 
-headers = {
-    'Connection': "keep-alive",
-    'Accept': "application/json, text/plain, */*",
-    'Cache-Control': "private, max-age=0, no-cache",
-    'Accept-Language': "fr",
-    'channel': "b2c.public.cetelem",
-    'User-Agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36",
-    'Referer': "https://www.cetelem.be/fr/simulation-pret-personnel",
-    'Accept-Encoding': "gzip, deflate, br",
-    'Postman-Token': "b74ccaaa-ae00-48de-8398-59ca1ecd8704,5c92f791-64f3-4885-9d35-4e26a0ab17eb",
-    'Host': "www.cetelem.be",
-    'Cookie': "TS01ac33dc=0103eefa50bb1d367f2d78d8162a7d53364677060727f4038ec1a1550aa572d706b540a549d7229c3b7a363728e12d8a6430cd8bf7; TS01114853=011bf91c2272843799d21b02416ec157eaeff1113e09cad1f3d90039f31101cd0cc7c92c34ef5e6794b2f0e3356ee7760a79cf553e",
-    'cache-control': "no-cache"
-    }
-#
-# response = requests.request("GET", url, headers=headers, params=querystring)
-#
-# print(response.text)
 
 loanCategories = {
                     'Prêt Voiture neuve': (761, 'CETE0002'),
@@ -37,39 +18,38 @@ smallLoansRange = list(range(1250, 5500, 750))
 
 bigLoansRange = list(range(2500, 20000, 1500)) + list(range(20000, 45000, 5000)) + list(range(45000, 85000, 10000))
 
+
+# request the website and return json data
 def makeDataRequestFor(category, amount):
+    querystring = {"noCache": "1565095706063-8754"}
+
+    headers = {
+        'Connection': "keep-alive",
+        'Accept': "application/json, text/plain, */*",
+        'Cache-Control': "private, max-age=0, no-cache",
+        'Accept-Language': "fr",
+        'channel': "b2c.public.cetelem",
+        'User-Agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36",
+        'Referer': "https://www.cetelem.be/fr/simulation-pret-personnel",
+        'Accept-Encoding': "gzip, deflate, br",
+        'Postman-Token': "b74ccaaa-ae00-48de-8398-59ca1ecd8704,5c92f791-64f3-4885-9d35-4e26a0ab17eb",
+        'Host': "www.cetelem.be",
+        'Cookie': "TS01ac33dc=0103eefa50bb1d367f2d78d8162a7d53364677060727f4038ec1a1550aa572d706b540a549d7229c3b7a363728e12d8a6430cd8bf7; TS01114853=011bf91c2272843799d21b02416ec157eaeff1113e09cad1f3d90039f31101cd0cc7c92c34ef5e6794b2f0e3356ee7760a79cf553e",
+        'cache-control': "no-cache"
+    }
     url = "https://www.cetelem.be/backend/simulation/loan/amount/{}/1/{}".format(amount, loanCategories[category][0])
     response = requests.request("GET", url, headers=headers, params=querystring)
     return json.loads(response.text)
 
 
-def createGroups(category, cetelem_data):
-    loanGroups = {}
-    for loanList in cetelem_data:
-        for loanElement in loanList:
-            if (category, loanElement['duration'], loanElement['rate'], loanElement['productID']) not in loanGroups.keys():
-                loanGroups[(category, loanElement['duration'], loanElement['rate'],loanElement['productID'])]\
-                    = [loanElement['amount']]
-            else:
-                loanGroups[(category, loanElement['duration'], loanElement['rate'], loanElement['productID'])].\
-                    append(loanElement['amount'])
-    return loanGroups
-
-def formatDataFrom(groups, provider):
-    frameToExport = []
-    for eachGroup in groups:
-        frameToExport.append([provider,  eachGroup[3], eachGroup[0], min(map(int, groups[eachGroup])),
-                              max(map(int, groups[eachGroup])), int(eachGroup[1]), float(eachGroup[2])])
-    return frameToExport
-
-
+# add attributes to website json
 def addAttributeID(loanList, category):
     for loan in loanList:
         loan['productID'] = loanCategories[category][1]
         loan["type"] = category
     return loanList
 
-
+# perform the scraping
 def cetelemLoanProcedure(category):
     tab_Column = ['PROVIDER ', 'PRODUCTID', 'LOAN TYPE', 'MIN AMT', 'MAX AMT', 'TERM', 'RATE']
     loanData = []
@@ -92,22 +72,16 @@ def cetelemLoanProcedure(category):
     return DataUtils.data_processing_last(loanData, 'CETELEM', 'CETELEM SCRAPING', category, tab_Column)
 
 
-
 def cetelemLoanScraper():
     print('CETELEM SCRAPE PROCESSING', end='')
     result = []
     for category in loanCategories:
-        print('PROCESSING', end='')
+        # print('PROCESSING', end='')
         result + cetelemLoanProcedure(category)
     return result
 
 
-
-
-
 # cetelemLoanScraper()
-
-#print(makeDataRequestFor('Prêt Voiture neuve', 13500))
 
 
 #this shows how the data are stuctured from the web site
@@ -187,7 +161,6 @@ dataSample = [
 ]
 
 
-import DataUtils
-DataUtils.scrape_and_notify(cetelemLoanScraper(), "cetelem", DataUtils.test_mail)
+# import DataUtils
+# DataUtils.scrape_and_notify(cetelemLoanScraper(), "cetelem", DataUtils.test_mail)
 
-print(makeDataRequestFor("Prêt Etudes", 2000))

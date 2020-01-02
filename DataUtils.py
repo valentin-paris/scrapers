@@ -5,88 +5,6 @@ mail_list = ["bernaud.toukam@topcompare.be", "jihane.elkhyari@topcompare.be", "t
              "quentin@topcompare.be"]
 
 test_mail = ["bernaud.toukam@topcompare.be"]
-car = lambda l: l[0]
-cdr = lambda l: l[1:]
-
-
-# computes the first consecutive elements
-def get_first_range(list_range, delta):
-    if not list_range:
-        return []
-    elif not cdr(list_range):
-        return [car(list_range)]
-    elif car(list_range) == car(cdr(list_range)) - delta:
-        return [car(list_range)] + get_first_range(cdr(list_range), delta)
-    else:
-        return [car(list_range)]
-
-
-# returns the rest of the list after the consecutive element
-def rest_of_the_list(range_list, delta):
-    if not range_list:
-        return []
-    elif not cdr(range_list):
-        return []
-    elif car(range_list) == car(cdr(range_list)) - delta:
-        return rest_of_the_list(cdr(range_list), delta)
-    else:
-        return cdr(range_list)
-
-
-# create a range from consecutive elements
-def create_range(range_list, delta):
-    first_list = get_first_range(range_list, delta)
-    return [min(first_list), max(first_list)]
-
-
-# returns min and max val for every range
-def ranges_of_elements(range_list, delta):
-    if not range_list:
-        return []
-    else:
-        return [create_range(range_list, delta)] + ranges_of_elements(rest_of_the_list(range_list, delta), delta)
-
-
-def create_groups_from_dict(group_dict, delta):
-    for key in group_dict:
-        group_dict[key] = ranges_of_elements(group_dict[key], delta)
-    return group_dict
-
-
-# BankData is a matrix ie list of list of jsonData type amount duration and rate
-def createGroups(bankData, delta):
-    loanGroups = {}
-    for loanList in bankData:
-        for loanElement in loanList:
-            if (loanElement['type'], loanElement['duration'], loanElement['rate'], loanElement['productID']) not in \
-                    loanGroups.keys():
-                loanGroups[(loanElement['type'], loanElement['duration'], loanElement['rate'], loanElement['productID']
-                            )] = [loanElement['amount']]
-            else:
-                loanGroups[(loanElement['type'], loanElement['duration'], loanElement['rate'], loanElement['productID']
-                            )].append(loanElement['amount'])
-    return create_groups_from_dict(loanGroups, delta)
-
-
-# create a 2*2 matrix with appropriate range from group dict
-# to replace the function formatDataFrom
-def new_data_format(group_dict, provider):
-    frame_to_export = []
-    for group_key in group_dict:
-        for amount_range in group_dict[group_key]:
-            frame_to_export.append([provider, group_key[3], group_key[0], min(map(int, amount_range)),
-                                    max(map(int, amount_range)), int(group_key[1]), float(group_key[2])])
-    return frame_to_export
-
-
-# create a 2x2 list of data from group dict structure
-def formatDataFrom(groups, provider):
-    frameToExport = []
-    for eachGroup in groups:
-        frameToExport.append([provider, eachGroup[3], eachGroup[0], min(map(int, groups[eachGroup])),
-                              max(map(int, groups[eachGroup])), int(eachGroup[1]), float(eachGroup[2])])
-    return frameToExport
-
 
 def addAtributes(loanList, lType, duration, rate, pdtID):
     for loan in loanList:
@@ -184,17 +102,6 @@ def data_processing_last(b_data, provider, dir_name, file_name, tab_col):
     if dataMatrix:
         fileUtils.displayRates(tab_col, dataMatrix)
         return fileUtils.upToDate(file_name, dir_name, dataMatrix, tab_col)
-    else:
-        return None
-
-
-# define a more generic function to process the data with grouping of data for large dataset
-def proc_data(b_data, provider, dir_name, file_name, tab_col, delta):
-    # data_matrix = formatDataFrom(createGroups(b_data, delta), provider)
-    data_matrix = new_data_format(createGroups(b_data, delta), provider)
-    if data_matrix:
-        fileUtils.displayRates(tab_col, data_matrix)
-        return fileUtils.upToDate(file_name, dir_name, data_matrix, tab_col)
     else:
         return None
 

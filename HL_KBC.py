@@ -39,16 +39,20 @@ positions = {
             "y": cpt(65.34)
         }
     },
-    "variable_rate (5/5/5)": dict(start=dict(x=cpt(132.46), y=cpt(52.23)), end= dict(x=cpt(167.90), y=cpt(65.13))),
+    "variable_rate (5/5/5)": dict(start=dict(x=cpt(132.46), y=cpt(52.23)), end=dict(x=cpt(167.90), y=cpt(65.13))),
 }
+
 
 def get_frame_by_coord(coordinates):
     try:
-        return read_pdf("https://multimediafiles.kbcgroup.eu/ng/published/KBC/PDF/WONEN/kbc-woningkrediet-tarievenkaart.pdf", encoding='ISO-8859-1',
-                        pages="1",  area=coordinates)
+        return read_pdf(
+            "https://multimediafiles.kbcgroup.eu/ng/published/KBC/PDF/WONEN/kbc-woningkrediet-tarievenkaart.pdf",
+            encoding='ISO-8859-1',
+            pages="1", area=coordinates)
     except:
         print("THE LINK KBC FOR HOME LOAN IS NOT AVAILABLE PLEASE CHECK ON THE WEB SITE")
         return None
+
 
 def bankData():
     bankData = []
@@ -58,13 +62,12 @@ def bankData():
             bankData.append(["KBC", "HOME LOAN", l_type, line[0], line[1]])
     return bankData
 
+
 def scraper():
     return DataUtils.home_loan_scraper("KBC", bankData())
-
 
 # scraper()
 
 # mail_list = ["bernaud.toukam@topcompare.be", "jihane.elkhyari@topcompare.be", "thomas.saclier@topcompare.be", "quentin@topcompare.be"]
 # mail_test = ["bernaud.toukam@topcompare.be"]
 # DataUtils.scrape_and_notify(scraper(), "KBC HOMELOANS", mail_list)
-

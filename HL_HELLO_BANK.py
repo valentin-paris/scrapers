@@ -15,6 +15,7 @@ positions = {
     }
 }
 
+
 def bankData():
     bankData = []
     for l_type in positions:
@@ -24,8 +25,8 @@ def bankData():
             bankData.append(["HELLO BANK", "HOME LOAN", l_type, line[0], line[1]])
     return bankData
 
+
 def scraper():
     return DataUtils.home_loan_scraper("hello bank", bankData())
-
 
 # scraper()

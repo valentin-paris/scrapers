@@ -252,7 +252,7 @@ def compare_rate_and_notify(delta):
     return message
 
 
-print(compare_rate_and_notify(0.25))
+# print(compare_rate_and_notify(0.25))
 
 
 

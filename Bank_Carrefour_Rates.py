@@ -4,7 +4,6 @@ import DataUtils
 import requests
 
 
-
 def requestForData():
     params = (
         ('retailer', '2487635'),
@@ -53,11 +52,12 @@ def requestForData():
     response = requests.post('https://loan.carrefourfinance.be/fimsim/', params=params, data=data)
     return json.loads(json.loads(response.text)['uidl'])
 
-#print(requestForData())
+
+# print(requestForData())
 
 def bankData():
     dataList = requestForData()['state']['1']['materialCodesMapping'][1]
-    list_of_Data = [dataList[random.randint(0, len(dataList)-1)]['rateRanges']]
+    list_of_Data = [dataList[random.randint(0, len(dataList) - 1)]['rateRanges']]
     for loanList in list_of_Data:
         for loan in loanList:
             loan['duration'] = loan['minDuration']
@@ -67,15 +67,18 @@ def bankData():
             loan['productID'] = 'CAFI0001'
     return list_of_Data
 
+
 # print(bankData())
 
 def dataToExport(bankData, provider):
     frameToExport = []
     for loanList in bankData:
         for loan in loanList:
-            frameToExport.append([provider, loan['productID'], loan['type'], loan['amount'], float(loan['maxCreditAmount']),
-                                  loan['duration'], loan['maxDuration'], loan['rate']])
+            frameToExport.append(
+                [provider, loan['productID'], loan['type'], loan['amount'], float(loan['maxCreditAmount']),
+                 loan['duration'], loan['maxDuration'], loan['rate']])
     return frameToExport
+
 
 # print(dataToExport(bankData(), 'CAF'))
 
@@ -85,9 +88,3 @@ def carrefourLoanScraper():
     return DataUtils.process_crf_data(dataMatrix, tab_Column, 'CARREFOUR SCRAPE', 'carrefour_rates')
 
 # carrefourLoanScraper()
-
-
-
-
-
-

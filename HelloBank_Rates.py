@@ -6,7 +6,7 @@ import DataUtils
 '''
                                         GLOBAL VARIABLES
 '''
-querystring = {"noCache":"1565077788759-5428"}
+querystring = {"noCache": "1565077788759-5428"}
 
 headers = {
     'Accept': "application/json, text/plain, */*",
@@ -20,8 +20,7 @@ headers = {
     'Host': "credit.hellobank.be",
     'Cookie': "TS017d8c48=0103eefa50b2377a9c2f21fabf9c547aa9d946a8a9c0124dcb44f2e1aa963f5f8ba0da6351674cc1603a884c98cf44f20f20e7c771; TS01114853=011bf91c22f66656111560ddcb680deb057903530477fbf1ba4da9b3ad01f5310d1dc401f48b0e1d096cd9152b8b84fae85477416b",
     'cache-control': "no-cache"
-    }
-
+}
 
 loanCategories = {
     'Travaux': (763, 'HBNK0003'),
@@ -31,27 +30,31 @@ loanCategories = {
     'Appareils Diditaux': (770, 'HBNK0005')
 }
 
-#this is for small loans like prêt pour appareils digitaux
+# this is for small loans like prêt pour appareils digitaux
 smallLoanRange = list(range(500, 3000, 500))
 
-#this range is made for big loans request
+# this range is made for big loans request
 bigLoansRange = list(range(1250, 10000, 1250)) + list(range(10000, 37500, 5000))
-
 
 '''
                                            FUNCTIONS
 '''
-#build the querry and make the request for a given price and category and returns the data as python object
+
+
+# build the querry and make the request for a given price and category and returns the data as python object
 def makeDataRequestFor(category, amount):
-    url = "https://credit.hellobank.be/backend/simulation/loan/amount/{}/1/{}".format(amount, loanCategories[category][0])
+    url = "https://credit.hellobank.be/backend/simulation/loan/amount/{}/1/{}".format(amount,
+                                                                                      loanCategories[category][0])
     response = requests.request("GET", url, headers=headers, params=querystring)
     return json.loads(response.text)
+
 
 def addAttributeId(loanList, category):
     for loan in loanList:
         loan['productID'] = loanCategories[category][1]
         loan['type'] = category
     return loanList
+
 
 def bankData(category):
     helloLoanData = []
@@ -66,14 +69,15 @@ def bankData(category):
     print()
     return helloLoanData
 
-#fetch the data for a category creates the groups and handle the file creation.
+
+# fetch the data for a category creates the groups and handle the file creation.
 def helloLoanProcedure(category):
     tab_Column = ['PROVIDER ', 'PRODUCTID', 'LOAN TYPE', 'MIN AMT', 'MAX AMT', 'TERM', 'RATE']
-    # dataMatrix = DataUtils.formatDataFrom(DataUtils.createGroups(bankData(category)), 'HELLO BANK')
-    # return DataUtils.processData(dataMatrix, tab_Column, 'HELLO BANK SCRAPING', category)
     return DataUtils.data_processing_last(bankData(category), "HELLO BANK", "HELLO BANK SCRAPING", category, tab_Column)
 
-#this function is just for monitoring purposes in case of doubt it shows all the individual data and not in grouped forme
+
+# this function is just for monitoring purposes in case of doubt it shows all the individual data and not in grouped
+# forme
 def showCompleteData(category):
     tab_Column = ['PROVIDER ', 'LOAN TYPE', 'AMOUNT', 'TERM', 'RATE']
     helloLoanData = []
@@ -86,11 +90,13 @@ def showCompleteData(category):
             helloLoanData.append(makeDataRequestFor(category, mnt))
     for loanList in helloLoanData:
         for loanElement in loanList:
-            completeData.append(['HELLO BANK', category, loanElement['amount'], loanElement['duration'], loanElement['rate']])
+            completeData.append(
+                ['HELLO BANK', category, loanElement['amount'], loanElement['duration'], loanElement['rate']])
     fileUtils.displayRates(tab_Column, completeData)
 
+
 #                                           SCRAPER
-#scrape all categories
+# scrape all categories
 def helloBankScraper():
     print('HELLOBANK SCRAPE PROCESSING ', end='')
     result = []
@@ -99,21 +105,6 @@ def helloBankScraper():
         result + helloLoanProcedure(category)
     return result
 
-
 # helloBankScraper()
 
-DataUtils.scrape_and_notify(helloBankScraper(), "hello bank", DataUtils.test_mail)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# DataUtils.scrape_and_notify(helloBankScraper(), "hello bank", DataUtils.test_mail)

@@ -5,26 +5,6 @@ import DataUtils
 import math
 
 
-url = "https://mycph.cph.be/api/Simulation"
-headers = {
-    'Connection': "keep-alive",
-    'Content-Length': "94",
-    'Sec-Fetch-Mode': "cors",
-    'X-XSRF-Token': "1o1MGWzKeFsxHhUwTmHWa8YGs0G3NXbBZnM5JhnD4GwvKaKK3qr1Glvtxu8mkALVI1XI8EjDTiGvc8byTsE_1tkpJKo1",
-    'Accept-Language': "fr-BE",
-    'User-Agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.100 Safari/537.36",
-    'Content-Type': "application/json",
-    'Accept': "application/json, text/javascript, */*; q=0.01",
-    'X-Requested-With': "XMLHttpRequest",
-    'Origin': "https://mycph.cph.be",
-    'Sec-Fetch-Site': "same-origin",
-    'Cache-Control': "no-cache",
-    'Postman-Token': "02e02a41-f729-4544-81b4-c6f2b8f8ab32,9e6d355f-4a51-4e99-9f2d-2a35b8acd36a",
-    'Host': "mycph.cph.be",
-    'Cookie': "ApplicationGatewayAffinity=26c356c7bd253fe0307342d6fd2bf03d72cb588088d2a8e07c409d599f21e87e",
-    'Accept-Encoding': "gzip, deflate",
-    'cache-control': "no-cache"
-    }
 
 
 cphProducts = {
@@ -41,9 +21,31 @@ cphProducts = {
                 'energy autres': (70, 'CPHX0003')
               }
 
+
 loanRateAmt = list(range(1250, 10000, 1250)) + list(range(10000, 50000, 5000)) + list(range(50000, 110000, 10000))
 
 def applyLoanRequest(amount, product):
+    url = "https://mycph.cph.be/api/Simulation"
+    headers = {
+        'Connection': "keep-alive",
+        'Content-Length': "94",
+        'Sec-Fetch-Mode': "cors",
+        'X-XSRF-Token': "1o1MGWzKeFsxHhUwTmHWa8YGs0G3NXbBZnM5JhnD4GwvKaKK3qr1Glvtxu8mkALVI1XI8EjDTiGvc8byTsE_1tkpJKo1",
+        'Accept-Language': "fr-BE",
+        'User-Agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.100 Safari/537.36",
+        'Content-Type': "application/json",
+        'Accept': "application/json, text/javascript, */*; q=0.01",
+        'X-Requested-With': "XMLHttpRequest",
+        'Origin': "https://mycph.cph.be",
+        'Sec-Fetch-Site': "same-origin",
+        'Cache-Control': "no-cache",
+        'Postman-Token': "02e02a41-f729-4544-81b4-c6f2b8f8ab32,9e6d355f-4a51-4e99-9f2d-2a35b8acd36a",
+        'Host': "mycph.cph.be",
+        'Cookie': "ApplicationGatewayAffinity=26c356c7bd253fe0307342d6fd2bf03d72cb588088d2a8e07c409d599f21e87e",
+        'Accept-Encoding': "gzip, deflate",
+        'cache-control': "no-cache"
+    }
+
     payload = {
                 "amount": amount,
                 "productID": cphProducts[product][0],
@@ -87,4 +89,6 @@ def cphLoansScraper():
 
 
 # cphLoansScraper()
+
+# DataUtils.scrape_and_notify(cphLoansScraper(), "CPH", DataUtils.test_mail)
 

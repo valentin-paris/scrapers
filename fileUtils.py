@@ -11,7 +11,7 @@ from email import encoders
 import ntpath
 import json
 
-#a custom function to remove duplicates from a list might be usefull
+# a custom function to remove duplicates from a list might be usefull
 no_double = lambda l: [] if not l else no_double(l[:-1]) + [l[-1]] if l[-1] not in l[:-1] else no_double(l[:-1])
 
 #to show duplicates in a list
@@ -36,7 +36,7 @@ def checkToCreate(dirName):
     if not os.path.exists(final_path):
         os.makedirs(final_path)
 
-#returns the delimiter of a csv wether , or ;
+# returns the delimiter of a csv wether , or ;
 def detectDelimiter(csvFile):
     with open(csvFile, 'r') as myCsvfile:
         header=myCsvfile.readline()
@@ -127,7 +127,7 @@ def get_console_file(file_name):
 '''
 #designed for carrefour loan scraper
 
-#trace if a loan is present in the current loan_base the current content is a
+# trace if a loan is present in the current loan_base the current content is a
 # 2 dimensional list and the line is a simple list
 def trace_loan(current_content, line):
     if current_content == []:
@@ -145,7 +145,8 @@ def trace_loan(current_content, line):
     else:
         return [line] + current_content[1:]
 
-#trace each loan in the daily scrape and add only the new ones to the current loan_base
+
+#  each loan in the daily scrape and add only the new ones to the current loan_base
 def createNewFrame(dailyscrape, curentContent):
     if not dailyscrape:
         return curentContent
@@ -153,7 +154,7 @@ def createNewFrame(dailyscrape, curentContent):
         curentContent = trace_loan(curentContent, dailyscrape[0])
         return createNewFrame(dailyscrape[1:], curentContent)
 
-#returns the content of csv file as list
+# returns the content of csv file as list
 def getFileContentAsList(fileName, directory):
     if os.path.exists(os.path.join(os.getcwd(), directory)):
         if os.listdir(os.path.join(os.getcwd(), directory)):
@@ -164,7 +165,7 @@ def getFileContentAsList(fileName, directory):
     else:
         return []
 
-#handle data by creating a signaficant database to become less sensitive to non relevant changes
+# handle data by creating a signaficant database to become less sensitive to non relevant changes
 def carrefourRatesUpdate(fileName, dirName, dailyScrape, tabColumns, fileForEmail):
     checkToCreate(dirName)
     found = False
@@ -189,7 +190,7 @@ def carrefourRatesUpdate(fileName, dirName, dailyScrape, tabColumns, fileForEmai
 
 
 # send a mail with potentially attached file all parameters should be list of element except the subject
-#send_to list of recipients, message list of strings, filesToAttach list of file path
+# send_to list of recipients, message list of strings, filesToAttach list of file path
 def send_email_to(send_to, subject, message, filesToAttach):
     for mailUser in send_to:
         #load the server configuration from an external json file

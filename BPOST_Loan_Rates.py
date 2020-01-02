@@ -33,6 +33,7 @@ def requestDataFor(creditType):
     response = requests.request("GET", url, headers=headers, params=querystring)
     return json.loads(response.text)
 
+
 def bankdata():
     bank_data = []
     for lType in loanTypes:
@@ -54,6 +55,7 @@ def bankdata():
         bank_data.append(data_for_type)
     return bank_data
 
+
 def formatDataFromBank(bank_data, provider):
     frame_to_export = []
     for loanList in bank_data:
@@ -61,7 +63,6 @@ def formatDataFromBank(bank_data, provider):
             frame_to_export.append([provider, loan['productID'], loan['type'], loan['amount'], loan['amountMax'],
                                     loan['duration'], loan['rate']])
     return frame_to_export
-
 
 
 def sort_frame_by_duration(data_frame):
@@ -96,6 +97,7 @@ def group_frame_by_duration_and_rate(data_frame):
             duration = line[5]
     return result
 
+
 def bpostLoanScraper():
     print('BPOST LOAN SCRAPER PROCESSING ...')
     tab_col = ['PROVIDER ', 'PRODUCTID', 'LOAN TYPE', 'MIN AMT', 'MAX AMT', 'TERM', 'RATE']
@@ -103,8 +105,9 @@ def bpostLoanScraper():
     return DataUtils.processData(dataMatrix, tab_col, "BPOST SCRAPE", "bpost_rates")
 
 
-
 # bpostLoanScraper()
+
+# DataUtils.scrape_and_notify(bpostLoanScraper(), "BPOST", DataUtils.test_mail)
 
 
 

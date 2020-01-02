@@ -140,15 +140,6 @@ def formatDataFromBank(bank_data, provider):
                                     loan['duration'], loan['maxDuration'], loan['rate']])
     return frame_to_export
 
-# def bnpLoanScraper():
-#     print('BNP SCRAPE PROCESSING ...')
-#     tab_col = ['PROVIDER ', 'PRODUCTID', 'LOAN TYPE', 'MIN AMT', 'MAX AMT', 'MINTERM','MAXTERM' , 'RATE']
-#     data_matrix = formatDataFromBank(bankData(), 'BNP')
-#     if data_matrix:
-#         fileUtils.displayRates(tab_col, data_matrix)
-#         return fileUtils.upToDate('bnp_rates', 'BNP SCRAPE', data_matrix, tab_col, [])
-#     else:
-#         return None
 
 #for testing purposes another way to store the rate may be better
 
@@ -190,7 +181,7 @@ def scraper():
 # scraper()
 
 
-DataUtils.scrape_and_notify(scraper(), "BNPPF RATES SCRAPE", test_mail)
+# DataUtils.scrape_and_notify(scraper(), "BNPPF RATES SCRAPE", test_mail)
 
 
 

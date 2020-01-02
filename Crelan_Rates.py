@@ -1,27 +1,6 @@
 import requests
 import json
 import DataUtils
-# import fileUtils
-url = "https://www.crelan.be/credits-simulation-rs/loan-simulation/credit-rate-from-amount"
-
-headers = {
-    'authority': "www.crelan.be",
-    'method': "POST",
-    'path': "/credits-simulation-rs/loan-simulation/credit-rate-from-amount",
-    'scheme': "https",
-    'accept': "*/*",
-    'accept-encoding': "gzip, deflate, br",
-    'accept-language': "fr-FR,fr;q=0.9,en-US;q=0.8,en;q=0.7",
-    'content-length': "128",
-    'content-type': "application/json; charset=UTF-8",
-    'User-Agent': "PostmanRuntime/7.15.2",
-    'Cache-Control': "no-cache",
-    'Postman-Token': "a28eabec-af20-4702-95ad-bfa1f2995973,f4db9f6c-4faf-433e-b7d3-9754a8a3dd76",
-    'Host': "www.crelan.be",
-    'Cookie': "visid_incap_1549027=cu5ueFVES1arcjasafZpWWm9Ul0AAAAAQUIPAAAAAABvsi/hSHTn9Iroi38523MD; incap_ses_770_1549027=WBnAG5FbOALXUqx1zZevCmm9Ul0AAAAAf+NhdpJMis49zoP8rVn9rw==",
-    'Connection': "keep-alive",
-    'cache-control': "no-cache"
-    }
 
 reqRangeAmnt = {
     30: list(range(2501, 3700, 500)),
@@ -38,8 +17,6 @@ loanPurposes = {'new_car': 'CREL0001',
                 'renovation': 'CREL0003',
                 'eco_energy': 'CREL0005'
                 }
-
-homeLoanUrl = "https://www.crelan.be/credits-simulation-rs/loan-simulation/credit-rate-from-monthly-cost"
 
 hLHeaders = {
     'authority': "www.crelan.be",
@@ -61,10 +38,29 @@ hLHeaders = {
     }
 
 hLMonthPaymentRange = list(range(100, 10000, 500)) + [10000]
-# hLMonthPaymentRange = [100, 1000, 10000]
 hLDurationRange = list(range(10, 30, 2)) + [30]
 
 def applyRequestFor(destination, amount, duration):
+    url = "https://www.crelan.be/credits-simulation-rs/loan-simulation/credit-rate-from-amount"
+
+    headers = {
+        'authority': "www.crelan.be",
+        'method': "POST",
+        'path': "/credits-simulation-rs/loan-simulation/credit-rate-from-amount",
+        'scheme': "https",
+        'accept': "*/*",
+        'accept-encoding': "gzip, deflate, br",
+        'accept-language': "fr-FR,fr;q=0.9,en-US;q=0.8,en;q=0.7",
+        'content-length': "128",
+        'content-type': "application/json; charset=UTF-8",
+        'User-Agent': "PostmanRuntime/7.15.2",
+        'Cache-Control': "no-cache",
+        'Postman-Token': "a28eabec-af20-4702-95ad-bfa1f2995973,f4db9f6c-4faf-433e-b7d3-9754a8a3dd76",
+        'Host': "www.crelan.be",
+        'Cookie': "visid_incap_1549027=cu5ueFVES1arcjasafZpWWm9Ul0AAAAAQUIPAAAAAABvsi/hSHTn9Iroi38523MD; incap_ses_770_1549027=WBnAG5FbOALXUqx1zZevCmm9Ul0AAAAAf+NhdpJMis49zoP8rVn9rw==",
+        'Connection': "keep-alive",
+        'cache-control': "no-cache"
+    }
     payload = {
                 "amount": amount,
                 "destinationId": destination,
@@ -79,7 +75,7 @@ def applyRequestFor(destination, amount, duration):
     except:
         print("VOTRE REQUETE N'A PAS PU ABOUTIR CE SITE EST MOMENTANEMENT INDISPONIBLE")
 
-#in the range rates there is a particularity with 2nd hand car loan so we develop a custum procedure for it
+# in the range rates there is a particularity with 2nd hand car loan so we develop a custum procedure for it
 def bankData():
     bankData = []
     print('CRELAN SCRAPE PROCESSING: ')
@@ -134,6 +130,7 @@ def bankData():
     return bankData
 
 def hLoanRequest(amount, period, category):
+    homeLoanUrl = "https://www.crelan.be/credits-simulation-rs/loan-simulation/credit-rate-from-monthly-cost"
     payload = {
         "periodType": "YEARLY",
         "destinationId": "home",
@@ -187,7 +184,7 @@ def hl_bankdata():
         print()
     return bankData
 
-#we had to redefine the functions due to the particularity of home loans data
+# we had to redefine the functions due to the particularity of home loans data
 def createGroupsForHomeLoan(bankData):
     loanGroups = {}
     for loanList in bankData:
@@ -201,12 +198,6 @@ def createGroupsForHomeLoan(bankData):
                      loanElement['category'])].append(loanElement['amount'])
     return loanGroups
 
-def formatDataFrom(groups, provider):
-    frameToExport = []
-    for eachGroup in groups:
-        frameToExport.append([provider, eachGroup[0],min(map(int, groups[eachGroup])), max(map(int, groups[eachGroup])), int(eachGroup[1]),
-                              float(eachGroup[2]), float(eachGroup[3]), str(eachGroup[4])])
-    return frameToExport
 
 def formatData_for_hloan(groups, provider):
     frameToExport = []
@@ -230,15 +221,10 @@ def homeLoanScraper():
 
 def crelanLoansScraper():
     tab_Column = ['PROVIDER ', 'PRODUCTID', 'LOAN TYPE', 'MIN AMT', 'MAX AMT', 'TERM', 'RATE']
-    # dataMatrix = DataUtils.formatDataFrom(DataUtils.createGroups(bankData()), 'CRELAN')
     return DataUtils.data_processing_last(bankData(), "CRELAN", "CRELAN SCRAPE", "crelan_rates", tab_Column)
-    # return DataUtils.processData(dataMatrix, tab_Column, 'CRELAN SCRAPE', 'crelan_rates') + homeLoanScraper()
 
 
-DataUtils.scrape_and_notify(crelanLoansScraper(), "crelan", DataUtils.test_mail)
-
-
-
+# DataUtils.scrape_and_notify(crelanLoansScraper(), "crelan", DataUtils.test_mail)
 
 
 # homeLoanScraper()

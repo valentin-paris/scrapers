@@ -2,7 +2,6 @@ import requests
 import json
 import DataUtils
 
-
 headers = {
     'Connection': "keep-alive",
     'Content-Length': "24",
@@ -16,12 +15,10 @@ headers = {
     'Host': "promo.ing.be",
     'Accept-Encoding': "gzip, deflate",
     'cache-control': "no-cache"
-    }
-
+}
 
 loanRange = list(range(1300, 25000, 2400)) + list(range(25000, 55000, 5000)) + list(range(55000, 135000, 10000))
 wideRange = list(range(1300, 5000, 1000)) + list(range(5000, 15000, 2500)) + list(range(15000, 135000, 10000))
-
 
 loansUrls = {
     'renovation': 'https://promo.ing.be/RenovationLoan/webservices/wsSimulation.asmx/GetSimulations',
@@ -35,18 +32,18 @@ renovationLoanSubTypes = {
 }
 
 mobilityLoansSubTypes = {
-        'new car': (1, 'INGX0004'),
-        'new eco-car': (2, 'INGX0004'),
-        'second-hand car (less than 3 years)': (3, 'INGX0005'),
-        'second-hand car (3 years or more)': (4, 'INGX0005'),
-        'electric bike': (5, 'INGX0004'),
-        'new motorbike': (6, 'INGX0004'),
-        'second-hand motorbyke (less than 3 years)': (7, 'INGX0005'),
-        'second-hand motorbyke (3 years or more)': (8, 'INGX0005'),
-        'new mobile home': (9, 'INGX0004'),
-        'second-hand mobile home(less than 3 years)': (10, 'INGX0005'),
-        'second-hand mobile home(3 years or more)': (11, 'INGX0005')
-    }
+    'new car': (1, 'INGX0004'),
+    'new eco-car': (2, 'INGX0004'),
+    'second-hand car (less than 3 years)': (3, 'INGX0005'),
+    'second-hand car (3 years or more)': (4, 'INGX0005'),
+    'electric bike': (5, 'INGX0004'),
+    'new motorbike': (6, 'INGX0004'),
+    'second-hand motorbyke (less than 3 years)': (7, 'INGX0005'),
+    'second-hand motorbyke (3 years or more)': (8, 'INGX0005'),
+    'new mobile home': (9, 'INGX0004'),
+    'second-hand mobile home(less than 3 years)': (10, 'INGX0005'),
+    'second-hand mobile home(3 years or more)': (11, 'INGX0005')
+}
 
 personalLoanSubTypes = {
     'furniture': (1, 'INGX0001'),
@@ -54,6 +51,7 @@ personalLoanSubTypes = {
     'computer and IT equipement': (3, 'INGX0001'),
     'other': (4, 'INGX0001')
 }
+
 
 def applyLoanRequest(amount, Ltype, url):
     rpayload = {"type": Ltype, "amount": amount}
@@ -87,17 +85,12 @@ def getLoansData(loanType, subTypes):
 def bankData():
     print('ING LOAN SCRAPE PROCESSING: ')
     return [getLoansData('renovation', renovationLoanSubTypes), getLoansData('mobility', mobilityLoansSubTypes),
-               getLoansData('personal', personalLoanSubTypes)]
+            getLoansData('personal', personalLoanSubTypes)]
+
 
 def iNGLoanscraper():
     tab_Column = ['PROVIDER ', 'PRODUCTID', 'LOAN TYPE', 'MIN AMT', 'MAX AMT', 'TERM', 'RATE']
-    dataMatrix = DataUtils.formatDataFrom(DataUtils.createGroups(bankData()), 'ING')
-    return DataUtils.processData(dataMatrix, tab_Column, 'ING SCRAPE', 'ing_rates')
-
-
+    return DataUtils.data_processing_last(bankData(), 'ING', 'ING SCRAPE', 'ing_rates', tab_Column)
 
 
 # iNGLoanscraper()
-
-
-

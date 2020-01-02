@@ -71,14 +71,13 @@ def bankData():
 def cofidisLoanScraper():
     print('COFIDIS SCRAPE PROCESSING ...')
     tab_col = ['PROVIDER ', 'PRODUCTID', 'LOAN TYPE', 'MIN AMT', 'MAX AMT', 'TERM', 'RATE']
-    # return DataUtils.proc_data(bankData(), 'COFIDIS', 'COFIDIS SCRAPE', 'cofidis_rate', tab_col, 1000)
     return DataUtils.data_processing_last(bankData(), 'COFIDIS', 'COFIDIS SCRAPE', 'cofidis_rate', tab_col)
 
 
 
 
 # cofidisLoanScraper()
-DataUtils.scrape_and_notify(cofidisLoanScraper(), "cofidis", DataUtils.test_mail)
+# DataUtils.scrape_and_notify(cofidisLoanScraper(), "cofidis", DataUtils.test_mail)
 
 
 

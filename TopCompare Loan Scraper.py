@@ -27,6 +27,7 @@ import HL_ING
 import HL_KBC
 import HL_BPOST
 from link_tracker import check_links
+from app_rating import compare_rate_and_notify
 
 mailList = ['alerts@topcompare.be', 'quentin@topcompare.be', "bernaud.toukam@topcompare.be",
             "jihane.elkhyari@topcompare.be", "thomas.saclier@topcompare.be"]
@@ -80,11 +81,11 @@ def tcLoanScrape():
         generalMessage += ['the scraper executed sucessfully and there is no change in the rates!']
     else:
         generalMessage = ["BANK RATES STATUS"] + generalMessage
-    generalMessage += ["", "LINKS STATUS: "] + check_links()
+    generalMessage += ["", "LINKS STATUS: "] + check_links() + compare_rate_and_notify(0.25)
     print(filesToBeMailed, generalMessage)
     sys.stdout.close()
     filesToBeMailed += [fileUtils.get_console_file(console_file)]
-    fileUtils.send_email_to(mailList, 'daily scrape', generalMessage, filesToBeMailed)
+    fileUtils.send_email_to(mailTest, 'daily scrape', generalMessage, filesToBeMailed)
 
 
 

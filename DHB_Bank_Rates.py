@@ -1,10 +1,8 @@
 import requests
 import json
 import DataUtils
-import time
 import urllib3
 
-url = "https://loans.dhbbank.com/BelgiumLoanAppForm/Home/CalculateInterestRate"
 
 loanAmtRange = list(range(5000, 14000, 500)) + list(range(14000, 101000, 1000))
 
@@ -14,6 +12,7 @@ dHBLoanTypes = {
 
 
 def makeRequestFor(creditType, amount, duration):
+    url = "https://loans.dhbbank.com/BelgiumLoanAppForm/Home/CalculateInterestRate"
     headers = {
         'Connection': "keep-alive",
         'Content-Length': "52",
@@ -79,8 +78,6 @@ def bankData():
 
     return bankData
 
-
-# print(bankData())
 
 def dHBLoanScraper():
     print("DHB LOAN SCRAPER PROCESSING:")

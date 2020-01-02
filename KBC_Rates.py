@@ -99,33 +99,9 @@ def bankData():
     return bankData
 
 
-def createGroupsForKBC(bankData):
-    loanGroups = {}
-    for loanList in bankData:
-        for loanElement in loanList:
-            if (loanElement['type'], loanElement['productID'], loanElement['duration'], loanElement['rate']) not in \
-                    loanGroups.keys():
-                loanGroups[(loanElement['type'],loanElement['productID'], loanElement['duration'], loanElement['rate'])]\
-                    = [loanElement['amount']]
-            else:
-                loanGroups[(loanElement['type'], loanElement['productID'], loanElement['duration'], loanElement['rate'])]\
-                    .append(loanElement['amount'])
-    return loanGroups
-
-
-def formatDataFrom(groups, provider):
-    frameToExport = []
-    for eachGroup in groups:
-        frameToExport.append([provider, eachGroup[0], eachGroup[1], min(map(int, groups[eachGroup])),
-                              max(map(int, groups[eachGroup])), int(eachGroup[2]), float(eachGroup[3])])
-    return frameToExport
-
-
 def kBC_loan_scrape():
     tab_Column = ['PROVIDER ', 'LOAN TYPE', 'PRODUCT_ID', 'MIN AMT', 'MAX AMT', 'TERM', 'RATE']
-    dataMatrix = formatDataFrom(createGroupsForKBC(bankData()), 'KBC')
-    return DataUtils.processData(dataMatrix, tab_Column, 'KBC BANK SCRAPE', 'kbc_rates')
-
+    return DataUtils.data_processing_last(bankData(), 'KBC BANK', 'KBC BANK SCRAPE', 'kbc_rates', tab_Column)
 
 
 # kBC_loan_scrape()

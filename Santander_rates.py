@@ -79,6 +79,7 @@ def loanProceduree(lType):
     print("SANTANDER {} LOANS SCRAPE PROCESSING ...".format(lType.upper()))
     bank_data = [data_for_type(lType)]
     tab_col = ['PROVIDER ', 'PRODUCTID', 'LOAN TYPE', 'MIN AMT', 'MAX AMT', 'TERM', 'RATE']
+    # DataUtils.DataUtils.data_processing_last(bank_data, 'SANTANDER', 'SANTANDER SCRAPE', 'santander_rates', tab_col)
     return DataUtils.proc_data(bank_data, "SANTANDER", "SANTANDER SCRAPE", "santander_{}_loans_rates".format(lType), tab_col)
 
 def santanderLoanScraper():
