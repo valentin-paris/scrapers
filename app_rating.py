@@ -246,7 +246,7 @@ def compare_rate_and_notify(delta):
     if not message:
         message += ["", "APP RATINGS STATUS", "all app ratings ...................................OK!"]
     else:
-        message = ["", "", "APP RATINGS STATUS WITH A DIFFERENCE OF MORE THAN: {}".format(delta)] + message
+        message = ["", "", "APP RATINGS STATUS WITH A DIFFERENCE OF MORE THAN: {}".format(delta), ""] + message
     fileUtils.displayRates(["APP", "ANDROID_RATINGS", "ANDROID_REVIEWS", "IOS_RATINGS", "IOS_REVIEWS",
                             "WEIGHTED_RATINGS", "TOP COMPARE RATINGS"], app_rate_frame())
     return message
