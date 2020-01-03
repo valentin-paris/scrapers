@@ -82,7 +82,7 @@ def tcLoanScrape():
     else:
         generalMessage = ["BANK RATES STATUS"] + generalMessage
     generalMessage += ["", "LINKS STATUS: "] + check_links() + compare_rate_and_notify(0.25)
-    print(filesToBeMailed, generalMessage)
+    # print(filesToBeMailed, generalMessage)
     sys.stdout.close()
     filesToBeMailed += [fileUtils.get_console_file(console_file)]
     fileUtils.send_email_to(mailTest, 'daily scrape', generalMessage, filesToBeMailed)
