@@ -28,9 +28,15 @@ import HL_KBC
 import HL_BPOST
 from link_tracker import check_links
 from app_rating import compare_rate_and_notify
+#from app_score_update_csv import update_score_csv
 
-mailList = ['alerts@topcompare.be', 'quentin@topcompare.be', "bernaud.toukam@topcompare.be",
-            "jihane.elkhyari@topcompare.be", "thomas.saclier@topcompare.be"]
+
+from app_rating import app_rate_frame
+import datetime
+import os.path
+
+
+mailList = ["valentin.paris@topcompare.be", "jihane.elkhyari@topcompare.be"]
 mailTest = ["bernaud.toukam@topcompare.be"]
 console_file = "console_output.txt"
 
@@ -89,6 +95,43 @@ def tcLoanScrape():
 
 
 
+
+def update_score_csv() :
+    max_days_for_update = 7
+    csv_file_path = "./app_score.csv"
+    if not(os.path.isfile(csv_file_path)):
+        csv_file = open(csv_file_path, "w")
+        csv_file.write("DATE;BANK;SCORE\n")
+        csv_file.close()
+
+    with open(csv_file_path, 'r') as csv_file:
+        last_line = csv_file.read().splitlines()[-1]
+
+    should_update = False
+    try:
+        last_date = last_line.split(';', 1)[0]
+        last_date = datetime.datetime.strptime(last_date, "%m/%d/%y").date()
+        diff = (last_date - datetime.date.today()).days
+        if(abs(diff) >= max_days_for_update):
+            should_update = True
+    except:
+        should_update = True
+
+    if(not(should_update)):
+        return False
+
+    rate = app_rate_frame()
+    csv_file = open(csv_file_path, "a")
+    cur_date = datetime.date.today().strftime("%m/%d/%y")
+
+    for bank_score in rate:
+        line = cur_date + ";" + bank_score[0] + ";" + str(bank_score[5])+"\n"
+        csv_file.write(line)
+
+    csv_file.close()
+
+    
+update_score_csv()
 tcLoanScrape()
 
 
