@@ -4,7 +4,7 @@ from DataUtils import home_loan_scraper
 # import fileUtils
 
 try:
-    data_as_frameList = read_pdf("https://www.federale.be/docs/default-source/default-document-library/particulieren-particuliers/tarif-ch-30-01-2019.pdf?sfvrsn=9f4b78d7_5",
+    data_as_frameList = read_pdf("https://www.federale.be/docs/default-source/default-document-library/particulieren-particuliers/tarif-ch-30-01-2019.pdf",
                                         pages= "1", silent=True,  multiple_tables=True )
 except:
     print("THE LINK FOR FEDERALE HOME LOAN IS NOT AVAILABLE PLEASE CHECK ON THE WEB SITE")
