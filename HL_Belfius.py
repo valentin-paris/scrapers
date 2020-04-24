@@ -1,14 +1,20 @@
 import tabula
 import DataUtils
 import ast
+import os
+import requests
 
 try:
-    data_as_frameList = tabula.read_pdf(
-        "https://www.belfius.be/imagingservlet/GetDocument?src=mifid&id=TARIFLOANFIDELITY_FR",
-        pages="all", multiple_tables=True)
+    url = 'https://www.belfius.be/imagingservlet/GetDocument?src=mifid&id=TARIFLOANFIDELITY_FR'
+    pdfFile = requests.get(url)
+    file = open('./HL_Belfius.pdf', 'wb')
+    file.write(pdfFile.content)
+    file.close()
+    data_as_frameList = tabula.read_pdf( "./HL_Belfius.pdf", pages="all", multiple_tables=True, silent=True)
+    os.remove("./HL_Belfius.pdf")
 except:
+    print("THE BELFIUS HOME LOAN LINK IS MOMENTALLY UNAVAILABLE PLEASE CHECK ON THE WEBSITE!")
     data_as_frameList = None
-
 
 # transform rate as string to rate as float from e.g  from 1,96 % to 1.96
 def computeRateFrom(rate_string):
