@@ -164,4 +164,3 @@ dataSample = [
 
 # import DataUtils
 # DataUtils.scrape_and_notify(cetelemLoanScraper(), "cetelem", DataUtils.test_mail)
-
