@@ -4,8 +4,7 @@ import DataUtils
 mail_list = ["bernaud.toukam@topcompare.be", "jihane.elkhyari@topcompare.be", "thomas.saclier@topcompare.be"]
 test_mail = ["bernaud.toukam@topcompare.be"]
 try:
-    data_as_frameList = tabula.read_pdf("https://www.argenta.be/content/dam/argenta/documents/emprunter/credit-logement"
-                                        "/Feuille%20de%20tarifs%20Cr%C3%A9dits%20hypoth%C3%A9caires.pdf",
+    data_as_frameList = tabula.read_pdf("https://www.argenta.be/content/dam/argenta/documents/emprunter/credit-logement/Feuille de tarifs Crédits hypothécaires.pdf",
                                         pages=2, multiple_tables=True, silent=True)
 
 
